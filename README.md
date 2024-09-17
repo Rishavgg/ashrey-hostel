@@ -58,7 +58,7 @@ The project is divided into several microservices:
 ## Technology Stack
 - **Spring Boot**
 - **Spring Cloud** (Eureka, Config Server)
-- **Keycloak** for Authentication
+- **Keycloak** for Authentication and Authorization
 - **Docker** for Containerization
 - **MySQL** for Database Management
 - **Kafka or RabbitMQ** (Optional for asynchronous communication)
@@ -67,14 +67,16 @@ The project is divided into several microservices:
 
 ## Prerequisites
 - **Java 11+**
+- **Python 3.10+**
 - **Maven**
 - **Docker**
-- **MySQL**
+- **PostgreSQL**
 - **Keycloak**
 
 ## Getting Started
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-repo/hostel-management-system.git
-cd hostel-management-system
+git clone https://github.com/Rishavgg/ashrey-hostel.git
+cd ashrey-hostel
+```
