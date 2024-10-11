@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,7 +39,7 @@ public class UserControllerTest {
                 .role("student")
                 .build();
 
-        Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn(user);
+        Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn((Map<String, String>) user);
 
         mockMvc.perform(post("/users/add-user")
                         .contentType(MediaType.APPLICATION_JSON)

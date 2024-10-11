@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -15,9 +18,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/add-user")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User newUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    public ResponseEntity createUser(@RequestBody User user) {
+        Map<String, String> message = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @GetMapping(value = "/get-user-by-id/{id}")

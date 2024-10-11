@@ -6,14 +6,30 @@ import com.manager.ashrey.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public Map<String, String> createUser(User user) {
+        HashMap<String, String> message = new HashMap<>();
+        if (userRepository.existsByUsername(user.getUsername())) {
+            message.put("message", "user name already exists");
+            return  message;
+        }
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            message.put("message", "User already exists with same email");
+            return  message;
+        }
+
+        userRepository.save(user);
+        message.put("message", "User Created Successfully");
+        return message;
     }
 
     public User getUserById(Long userId) {
