@@ -8,14 +8,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="manager" />
+        <module name="ashrey" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ashrey" target="17" />
       <module name="manager" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ashrey" options="-parameters" />
       <module name="manager" options="-parameters" />
     </option>
   </component>

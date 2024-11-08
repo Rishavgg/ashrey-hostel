@@ -132,6 +132,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>manager-ashrey</finalName>
 	</build>
 
 </project>
