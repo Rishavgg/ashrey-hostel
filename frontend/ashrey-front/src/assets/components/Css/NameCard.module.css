@@ -1,0 +1,88 @@
+.nameCard {
+    border-radius: 8px;
+    background-color: #fff;
+    display: flex;
+    min-width: 240px;
+    min-height: 96px;
+    align-items: flex-start;
+    gap: 20px;
+    width: 321px;
+    padding: 25px 24px;
+    border: 1px solid #d9d9d9;
+  }
+  
+  @media (max-width: 991px) {
+    .nameCard {
+      padding: 0 20px;
+    }
+  }
+  
+  .avatarBlock {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    line-height: 1.4;
+    width: 192px;
+  }
+  
+  .avatar {
+    border-radius: 5px;
+    background-color: #242323;
+    align-self: stretch;
+    min-height: 40px;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    padding: 0 4px;
+    font: 600 20px Inter, sans-serif;
+  }
+  
+  @media (max-width: 991px) {
+    .avatar {
+      white-space: normal;
+    }
+  }
+  
+  .info {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    flex-basis: 0%;
+    margin: auto 0;
+  }
+  
+  .name {
+    color: #000;
+    font: var(--sds-typography-body-font-weight-strong) var(--sds-typography-body-size-medium) var(--sds-typography-body-font-family);
+  }
+  
+  .id {
+    color: #b3b3b3;
+    font: 400 16px Inter, sans-serif;
+  }
+  
+  .statusContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    letter-spacing: -0.32px;
+    width: 61px;
+    font: 16px Inter, sans-serif;
+  }
+  
+  .status {
+    color: #000;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  .rank {
+    color: #b3b3b3;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-top: 4px;
+  }

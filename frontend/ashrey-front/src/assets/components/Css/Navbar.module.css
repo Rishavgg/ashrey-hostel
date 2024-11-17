@@ -1,0 +1,75 @@
+.outPassNav {
+    background-color: #f7f2fa;
+    display: flex;
+    max-width: 480px;
+    width: 21 rem;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 100vh;
+    position: absolute;
+    left:0;
+    top: 0;
+    overflow-x: hidden;
+  }
+  
+  @media (max-width: 640px) {
+    .outPassNav {
+      height: 100vh;
+      width: 30%;
+    }
+    
+  }
+  
+  .outPassHeader {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .outPassFooter {
+    background-color: #f7f2fa;
+    position: relative;
+    bottom: 0;
+    left:0;
+    display: flex;
+    width: 26 rem;
+    align-items: center;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+
+  /* .sectionHeader {
+    display: flex;
+    height: fit-content;
+    width: 100%;
+    align-items: center;
+    color: #49454f;
+    letter-spacing: 0.1px;
+    font: 600 14px/1 Roboto, sans-serif;
+  } */
+  
+  .headerContent {
+    border-radius: 100px;
+    display: flex;
+    width: 336px;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    padding: 14px 16px;
+  }
+
+  .headerTitle {
+    margin: auto 0;
+  }
+
+  .dividerLine {
+    height: 1px;
+    background-color: #cac4d0;
+    width: 90%;
+    border: none;
+    margin: 0;
+  } 
