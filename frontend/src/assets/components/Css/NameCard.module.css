@@ -1,0 +1,88 @@
+/* Parent container for the name card */
+.nameCard {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  min-width: 18rem;
+  padding: 18px; /* Direct value for padding */
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px; /* Simplified border-radius value */
+  border: 1px solid #dcdcdc; /* Neutral border color */
+  background-color: #ffffff; /* Neutral background color */
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.nameCard:hover {
+  background: var(--Schemes-Secondary-Container, #E8DEF8);
+}
+.nameCard:focus-visible { /* Focus only for keyboard navigation */
+  outline: none; /* Disable outline to avoid affecting dimensions */
+  box-shadow: inset 0 0 0 3px #CEB6F5; /* Create an inner border using box-shadow */
+}
+
+
+/* Avatar section */
+.avatarBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Spacing between avatar and info */
+  flex-shrink: 0;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem; /* Fixed size */
+  height: 2.5rem;
+  border-radius: 4px;
+  background-color: #242323; /* Dark background for avatar */
+}
+
+.letter {
+  color: #ffffff; /* White text */
+  font-size: 1.25rem; /* Larger font for initials */
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Info section for name and ID */
+.info {
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+  gap:6px;
+}
+
+.name,.status {
+  color: #000000; /* Strong black text */
+  font-size: 1rem; /* Standard font size */
+  font-weight: 600;
+  margin: 0; /* Reset margin */
+}
+
+.id,.year {
+  color: #b3b3b3; /* Muted text color */
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin: 0; /* Reset margin */
+}
+
+/* Status and Year section */
+.statusContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Align text to the right */
+  gap: 4px; /* Small spacing between status and year */
+}
+
+ .status {
+  text-align: right;
+}
+
+.year {
+  text-align: right;
+} 

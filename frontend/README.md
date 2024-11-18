@@ -48,3 +48,9 @@ export default tseslint.config({
   },
 })
 ```
+
+### 5. Added to implement click on the namecards:
+
+```bash
+npm install axios
+```

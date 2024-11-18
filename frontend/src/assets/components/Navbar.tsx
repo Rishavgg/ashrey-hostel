@@ -26,9 +26,9 @@ const Navbar: React.FC = () => {
         <NavItem
           icon="/path-to-icon1.png"
           label="Page 1"
-          badgeCount={4}
+          // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
+          isActive={true} // Static false, no active state
           onClick={() => {}} // Empty function placeholder
         />
         <NavItem

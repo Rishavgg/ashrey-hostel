@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 
-import Navbar from './assets/components/Navbar';
+// import Navbar from './assets/components/Navbar';
 import NameCard from './assets/components/NameCard';
+
+import SearchBar from './assets/components/searchbar';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,11 +13,15 @@ function App() {
     <>
       <div>
 
-      <Navbar/>
+      {/* <Navbar/> */}
+
+      <SearchBar
+        onSearch={(query) => console.log('Search query:', query)}
+        placeholder="Search for students by name"
+      />
       <NameCard
         name="Jhon Doe"
-        id="211478"
-        avatarLetter="J"
+        id= "211478"
         status="H 15 B9"
         year="2nd"
     />
