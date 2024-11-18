@@ -21,6 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-&ic(*1-di)%0tdaw+0!82ubk_g8nn&g!en1w=y0mgpz#p7%62%'
+KEYCLOAK_PUBLIC_KEY = """
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAokUDM6nAsR6/w4jDBaMg
+k9XfX0zx3yl+KDGWvilF1Cg20B3kQxkm5jjMd+3gqm9p76E1UbRRj6CstBaxjDjH
+5j+DSHyL91nXDXRCe14SpUou2YIimIEHrv++YoPdSHbIq9Z53spy0gKyUVdM1XWM
+r9gLaSYQlMOXVNGgBZq64uTo5+4R0iSRN9+z8XOgzIT7tWGT2yoJILHuvgwY32L6
++700FDPlGLjRTVRiClN6sIUW5NU/ioFsNYuzp4Vf19RX/4W0CbKlv7VV5T/R3+pz
+s+tUGz48RBIrmbcpWsoh3xv0ZTBG/Y4zuJ5uQ2raCYAfDj4eKJxUTFSW5u2ZEFKm
+CwIDAQAB
+-----END PUBLIC KEY-----
+"""
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auth_service',
     'chatbot_service',
-    'notify_service'
+    'notify_service',
+    # 'django_keycloak.apps.KeycloakAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -50,7 +63,40 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django_keycloak.middleware.KeycloakMiddleware',  # Keycloak Middleware
+    # 'django_keycloak.middleware.BaseKeycloakMiddleware',
+    'auth_service.middleware.KeycloakTokenMiddleware',
 ]
+
+# Keycloak settings for Django
+AUTHENTICATION_BACKENDS = [
+    # 'django_keycloak.auth.backends.KeycloakAuthorizationCodeBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# LOGIN_URL = 'keycloak_login'
+
+KEYCLOAK_SERVER_URL = 'http://localhost:8080/'
+KEYCLOAK_REALM = 'myrealm'
+KEYCLOAK_CLIENT_ID = 'ashrey-manager-client'
+KEYCLOAK_CLIENT_SECRET = "rH9avNUwiZXL29ysjewpAXmgwzXc4HzY"
+KEYCLOAK_REDIRECT_URI = 'http://localhost:8081/callback/'
+LOGOUT_REDIRECT_URL = 'http://localhost:8081/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'http://localhost:8081/home/' 
+
+
+
+# PASSWORD_HASHERS = [
+#     'django_keycloak.hashers.PBKDF2SHA512PasswordHasher',
+# ]
+
+# Set redirect URIs and other Keycloak settings as needed
+KEYCLOAK_CONFIG = {
+    'OIDC_USERINFO_URL': f'{KEYCLOAK_SERVER_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/userinfo',
+    'OIDC_TOKEN_URL': f'{KEYCLOAK_SERVER_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/token',
+    'OIDC_AUTHORIZE_URL': f'{KEYCLOAK_SERVER_URL}/realms/{KEYCLOAK_REALM}/protocol/openid-connect/auth',
+}
 
 ROOT_URLCONF = 'facilitator.urls'
 
