@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import SearchBar from './searchbar';
+import SearchBar from './SearchBar';
 import ToggleButton from './ToggleButton';
 import Dropdown from './Dropdown';
 import PageTitle from './PageTitle';

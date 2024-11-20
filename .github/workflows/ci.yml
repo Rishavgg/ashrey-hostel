@@ -1,0 +1,32 @@
+name: Bump Version and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd facilitator-services
+          pip install -r requirements.txt
+
+      - name: Bump version
+        run: |
+          cd facilitator-services
+          bump2version patch  # Change this to minor or major as needed
+
+    #   - name: Push changes and tags
+    #     run: |
+    #       git push origin main --tags
