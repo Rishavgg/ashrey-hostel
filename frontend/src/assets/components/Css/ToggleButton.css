@@ -1,0 +1,40 @@
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content; /* top be updated later */
+    height: 50px ; /* Adjust this height as needed */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    min-width: 170px;
+  }
+  
+  .toggle-option {
+    padding: 0 20px; /* Remove vertical padding */
+    display: flex;
+    width: 50px;
+    align-items: center;
+    justify-content: center;
+    flex: 1; /* Ensure equal width distribution */
+    height: 100%; /* Fill the container height */
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1px;
+    background-color: #ccc;
+    height: 50%; /* Fill the container height */
+  }
+  
+  .selected {
+    background-color: #e4d9fa; /* Light purple background */
+    color: #000;
+  }
+  

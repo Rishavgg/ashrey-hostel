@@ -1,0 +1,19 @@
+.SectionHeaderContainer {
+    border-radius: 100px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    justify-content: flex-start;
+    /* padding: 18px 16px; */
+  }
+  
+  .SectionHeaderText {
+    align-self: stretch;
+    gap: 12px;
+    margin: auto 0;
+    font: 600 14px/1 Roboto, sans-serif;
+    color: #49454f;
+    padding: 16px 16px;
+  }

@@ -80,3 +80,34 @@ The project is divided into several microservices:
 git clone https://github.com/Rishavgg/ashrey-hostel.git
 cd ashrey-hostel
 ```
+
+## Run Frontend
+
+### 1. Navigate to the project directory:
+
+```bash
+cd ashrey-hostel/frontend/ashrey-front
+```
+### 2.Install the project dependencies:
+
+```bash
+npm install
+```
+
+### 3. Install Vite
+
+```bash
+npm install -g vite
+```
+
+### 4. If Vite is missing from the devDependencies, install it as a devDependency:
+
+```bash
+npm install vite --save-dev
+```
+
+### 5. To start the development server:
+
+```bash
+npm dev run
+```

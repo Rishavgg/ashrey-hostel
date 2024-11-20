@@ -1,0 +1,9 @@
+.pageTitle {
+    padding: 20px;
+    width: inherit;
+    border-radius: 10px;
+    background-color: #E8DEF8 ;
+    text-align: center;
+    font-family: Roboto, inter, sans-serif;
+
+}
