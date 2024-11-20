@@ -12,7 +12,7 @@
   background-color: #ffffff; /* Neutral background color */
   font-family: 'Inter', sans-serif;
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: background-color 0.3s,box-shadow 0.1s ease;
 }
 
 .nameCard:hover {

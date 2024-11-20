@@ -1,253 +1,49 @@
 .searchInput {
-    flex: 1; /* Take up available space */
+    flex: 1;
     border: none;
     outline: none;
     padding: 8px 16px;
     font-size: 16px;
     background-color: transparent;
-    color: #333; /* Adjust based on theme */
+    color: #333;
   }
   
   .searchInput::placeholder {
-    color: #aaa; /* Placeholder color */
-  }
-  
-
-  .studentSearch {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px 40px;
-  }
-  
-  @media (max-width: 991px) {
-    .studentSearch {
-      padding: 0 20px;
-    }
-  }
-  
-  .title {
-    align-self: stretch;
-    border-radius: 8px;
-    background-color: #e8def8;
-    width: 100%;
-    color: #000;
-    text-align: center;
-    letter-spacing: -0.25px;
-    padding: 20px 10px;
-    font: 500 40px/1.6 Roboto, -apple-system, Roboto, Helvetica, sans-serif;
-    border: 2px solid #e2e2e2;
-  }
-  
-  @media (max-width: 991px) {
-    .title {
-      max-width: 100%;
-    }
-  }
-  
-  .controlsContainer {
-    display: flex;
-    margin-top: 16px;
-    width: 100%;
-    align-items: start;
-    gap: 20px;
-    justify-content: start;
-    flex-wrap: wrap;
-  }
-  
-  @media (max-width: 991px) {
-    .controlsContainer {
-      max-width: 100%;
-    }
-  }
-  
-  .viewToggle {
-    border-radius: 8px;
-    background-color: #fff;
-    display: flex;
-    min-width: 192px;
-    min-height: 56px;
-    align-items: center;
-    color: #000;
-    text-align: center;
-    justify-content: start;
-    flex-grow: 1;
-    width: 185px;
-    font: 400 16px Roboto, sans-serif;
-    border: 1px solid #d9d9d9;
-  }
-  
-  @media (max-width: 991px) {
-    .viewToggle {
-      white-space: initial;
-    }
-  }
-  
-  .toggleOption {
-    align-self: stretch;
-    width: 64px;
-    flex: 1;
-    margin: auto 0;
-    padding: 16px;
-  }
-  
-  .divider {
-    background-color: #d9d9d9;
-    align-self: stretch;
-    width: 1px;
-    height: 26px;
-    margin: auto 0;
-  }
-  
-  .inputField {
-    display: flex;
-    min-height: 56px;
-    flex-direction: column;
-    color: #49454f;
-    font-weight: 400;
-    justify-content: start;
-    flex-grow: 1;
-    width: 124px;
-  }
-  
-  .inputWrapper {
-    border-radius: 4px;
-    border: 1px solid #79747e;
-    display: flex;
-    min-height: 56px;
-    width: 100%;
-    flex-direction: column;
-    justify-content: start;
-  }
-  
-  .inputContent {
-    border-radius: 4px 4px 0 0;
-    display: flex;
-    width: 100%;
-    align-items: start;
-    justify-content: start;
-    flex: 1;
-    height: 100%;
-    padding: 4px 0 4px 16px;
-  }
-  
-  .inputInner {
-    position: relative;
-    display: flex;
-    min-height: 48px;
-    width: 100%;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    flex: 1;
-    flex-basis: 0%;
-    padding: 12px 0;
-  }
-  
-  .placeholderText {
-    gap: 10px;
-    letter-spacing: 0.5px;
-    font: 16px / 24px Roboto;
-  }
-  
-  .labelText {
-    align-self: stretch;
-    background: #fef7ff;
-    position: absolute;
-    letter-spacing: 0.4px;
-    left: -4px;
-    top: -12px;
-    padding: 0 4px;
-    font: 12px / 16px Roboto;
+    color: #aaa;
   }
   
   .searchBar {
     border-radius: 8px;
     background-color: #e8def8;
     display: flex;
-    min-width: 240px;
     align-items: center;
-    gap: 40px 100px;
-    justify-content: space-between;
-    flex-grow: 1;
-    width: 409px;
-    padding: 4px 16px;
-  }
-  
-  @media (max-width: 991px) {
-    .searchBar {
-      max-width: 100%;
-    }
-  }
-  
-  .searchText {
-    color: #49454f;
-    letter-spacing: 0.5px;
-    align-self: stretch;
-    margin: auto 0;
-    font: 400 16px Roboto, sans-serif;
+    gap: 16px;
+    width: 100%;
+    max-width: 504px;
+    padding: 6px 16px;
   }
   
   .searchIcon {
-    align-self: stretch;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
     width: 48px;
-    margin: auto 0;
+    cursor: pointer;
   }
   
   .iconWrapper {
-    align-self: stretch;
-    display: flex;
-    min-height: 48px;
-    width: 48px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: auto 0;
-  }
-  
-  .iconContainer {
-    border-radius: 100px;
-    display: flex;
-    width: 100%;
-    max-width: 40px;
-    align-items: center;
-    gap: 10px;
-    overflow: hidden;
-    justify-content: center;
-  }
-  
-  .iconInner {
-    align-self: stretch;
     display: flex;
     width: 40px;
+    height: 40px;
     align-items: center;
-    gap: 10px;
     justify-content: center;
-    margin: auto 0;
-    padding: 8px;
+    overflow: hidden;
   }
   
   .searchIconImage {
-    aspect-ratio: 1;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
     object-position: center;
-    width: 24px;
-    align-self: stretch;
-    margin: auto 0;
   }
   
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }

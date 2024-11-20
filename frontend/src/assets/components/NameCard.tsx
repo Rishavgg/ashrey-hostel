@@ -6,11 +6,27 @@ interface NameCardProps {
   id: string; // Unique identifier for the card
   status: string;
   year: string;
+  feesStatus?: 'u' | 'p'; // Optional prop, can be "u" or "p"
 }
 
-const NameCard: React.FC<NameCardProps> = ({ name, id, status, year }) => {
+const NameCard: React.FC<NameCardProps> = ({ name, id, status, year, feesStatus }) => {
   // Extract the first letter from the name
   const avatarLetter = name.charAt(0).toUpperCase();
+
+  // Determine background colors based on feesStatus
+  const backgroundColor =
+    feesStatus === 'u'
+      ? '#F7F8CC'
+      : feesStatus === 'p'
+      ? '#D7F7D2'
+      : ''; // Default: no color
+
+  const hoverBackgroundColor =
+    feesStatus === 'u'
+      ? '#F1F3A8'
+      : feesStatus === 'p'
+      ? '#BBF1B2'
+      : ''; // Default: no hover color
 
   const handleCardClick = async (id: string) => {
     try {
@@ -34,7 +50,24 @@ const NameCard: React.FC<NameCardProps> = ({ name, id, status, year }) => {
   };
 
   return (
-    <article className={styles.nameCard} onClick={() => handleCardClick(id)}>
+    <article
+      className={styles.nameCard}
+      onClick={() => handleCardClick(id)}
+      style={{
+        backgroundColor,
+        transition: 'background-color 0.3s',
+      }}
+      onMouseEnter={(e) => {
+        if (hoverBackgroundColor) {
+          (e.currentTarget as HTMLElement).style.backgroundColor = hoverBackgroundColor;
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (backgroundColor) {
+          (e.currentTarget as HTMLElement).style.backgroundColor = backgroundColor;
+        }
+      }}
+    >
       <div className={styles.avatarBlock}>
         <div className={styles.avatar}>
           <div className={styles.letter}>{avatarLetter}</div>

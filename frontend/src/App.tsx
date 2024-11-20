@@ -1,30 +1,45 @@
 import { useState } from 'react'
 import './App.css'
 
-// import Navbar from './assets/components/Navbar';
+import Navbar from './assets/components/Navbar';
 import NameCard from './assets/components/NameCard';
-
-import SearchBar from './assets/components/searchbar';
-
+import FilterBar from './assets/components/FilterBar';
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
       <div>
+      
+      <div style={{display:'flex',flexDirection:'row'}}>
+      <div style={{width:'25%'}}><Navbar/></div>
+      <div style={{width:'75%'}}><FilterBar title='page title' /></div>
+      
+      </div>
+      
 
-      {/* <Navbar/> */}
-
-      <SearchBar
-        onSearch={(query) => console.log('Search query:', query)}
-        placeholder="Search for students by name"
-      />
       <NameCard
         name="Jhon Doe"
         id= "211478"
         status="H 15 B9"
         year="2nd"
-    />
+        // feesStatus=''
+      />
+      <NameCard
+      name="Jhon Doe"
+      id= "211478"
+      status="H 15 B9"
+      year="2nd"
+      feesStatus='p'
+      />
+      <NameCard
+          name="Jhon Doe"
+          id= "211478"
+          status="H 15 B9"
+          year="2nd"
+          feesStatus='u'
+      />
+
 
 
     

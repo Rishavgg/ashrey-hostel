@@ -5,9 +5,9 @@
     width: 21 rem;
     flex-direction: column;
     justify-content: space-between;
-    margin: 0 auto;
+    margin: 0;
     height: 100vh;
-    position: absolute;
+    position: sticky;
     left:0;
     top: 0;
     overflow-x: hidden;
