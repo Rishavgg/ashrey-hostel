@@ -1,17 +1,24 @@
 package com.manager.ashrey.controller;
 
-
+import com.manager.ashrey.config.JwtBlacklist;
 import com.manager.ashrey.config.JwtUtil;
 import com.manager.ashrey.entity.Student;
 import com.manager.ashrey.repository.StudentRepository;
+import com.manager.ashrey.response.ResponseDTO;
 import com.manager.ashrey.service.EmailService;
+import com.manager.ashrey.service.StudentAuthService;
 import com.manager.ashrey.service.StudentDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/student/auth")
@@ -30,50 +37,106 @@ public class StudentAuthController {
     private StudentRepository studentRepository;
 
     @Autowired
+    private StudentAuthService studentAuthService;
+
+    @Autowired
     private EmailService emailService;
 
-    @PostMapping("/login/{rollNumber}/{tempPassword}")
-    public String login(@PathVariable String rollNumber, @PathVariable String tempPassword ) throws Exception {
-        // Step 1: Check if the roll number exists in the database
-        Student student = studentRepository.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new RuntimeException("Student with roll number " + rollNumber + " not found"));
+    @Autowired
+    private JwtBlacklist jwtBlacklist;
 
-        // Step 2: Authenticate the student using the temporary password
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(rollNumber, tempPassword)
-            );
-        } catch (Exception e) {
-            throw new Exception("Invalid credentials");
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/addStudent")
+    public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) throws BadRequestException {
+        if (studentRepository.existsByRollNumber(student.getRollNumber())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new ResponseDTO("Roll number already exists"));
         }
 
-        // Step 3: Generate JWT token after successful authentication
-        final UserDetails userDetails = studentDetailsService.loadUserByUsername(rollNumber);
-        return jwtUtil.generateToken(userDetails.getUsername());
+        String tempPassword = generateTemporaryPassword();
+        student.setTemporaryPassword(passwordEncoder.encode(tempPassword));
+        student.setPasswordChanged(false);
+
+        String msg = studentAuthService.addStudent(student);
+
+        sendEmailWithCredentials(student.getEmail(), student.getRollNumber(), tempPassword);
+        ResponseDTO response = new ResponseDTO(msg);
+        return ResponseEntity.ok(response);
     }
 
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDTO> login(@RequestParam String rollNumber, @RequestParam String tempPassword) {
+        try {
+            Student student = studentRepository.findByRollNumber(rollNumber);
+            if (student == null) {
+                throw new RuntimeException("Student not found");
+            }
+            if (!passwordEncoder.matches(tempPassword, student.getTemporaryPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ResponseDTO("Invalid roll number or password"));
+            }
+
+            UserDetails userDetails = studentDetailsService.loadUserByUsername(rollNumber);
+            String token = jwtUtil.generateToken(userDetails.getUsername());
+
+            return ResponseEntity.ok(new ResponseDTO("Login successful", token));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO("An error occurred during login."));
+        }
+    }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String rollNumber, @RequestParam String newPassword) {
-        Student student = studentRepository.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String rollNumber, @RequestParam String newPassword) {
+        try {
+            Student student = studentRepository.findByRollNumber(rollNumber);
 
-        student.setTemporaryPassword(newPassword);
-        student.setPasswordChanged(true);
-        studentRepository.save(student);
+            if (student == null) {
+                throw new RuntimeException("Student not found");
+            }
 
-        return "Password updated successfully";
+            String encodedPassword = passwordEncoder.encode(newPassword);
+
+            student.setTemporaryPassword(encodedPassword);
+            student.setPasswordChanged(true);
+            studentRepository.save(student);
+
+            return ResponseEntity.ok(new ResponseDTO("Password updated successfully"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO("An error occurred while updating the password."));
+        }
     }
 
-    @PostMapping("/send-email")
-    public String sendEmailWithCredentials(@RequestParam String email) {
-        Student student = studentRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+    private String generateTemporaryPassword() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
 
-        String subject = "Login Credentials";
-        String body = "Your roll number is " + student.getRollNumber() + " and your temporary password is " + student.getTemporaryPassword();
+    private void sendEmailWithCredentials(String email, String rollNumber, String tempPassword) {
+        String subject = "Your Login Credentials";
+        String body = "Your roll number is " + rollNumber + " and your temporary password is " + tempPassword;
         emailService.sendSimpleMessage(email, subject, body);
-
-        return "Email sent successfully";
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDTO> logout(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String jwt = authorizationHeader.substring(7);
+
+            jwtBlacklist.blacklistToken(jwt);
+
+            return ResponseEntity.ok(new ResponseDTO("Logout successful"));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ResponseDTO("No token found in request"));
+    }
+
 }

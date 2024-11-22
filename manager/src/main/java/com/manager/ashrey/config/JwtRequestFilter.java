@@ -24,6 +24,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private JwtBlacklist jwtBlacklist;  // Inject blacklist service
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -36,14 +39,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             rollNumber = jwtUtil.extractUsername(jwt);
+
+            // Check if token is blacklisted
+            if (jwtBlacklist.isBlacklisted(jwt)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);  // Token is invalid
+                response.getWriter().write("Token has been logged out or invalidated");
+                return;  // Return early
+            }
         }
 
         if (rollNumber != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             UserDetails userDetails = this.studentDetailsService.loadUserByUsername(rollNumber);
 
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
-
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(
@@ -54,4 +62,3 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 }
-

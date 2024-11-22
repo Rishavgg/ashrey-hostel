@@ -26,6 +26,7 @@ public class Student {
 //    @JoinColumn(name = "user_id", nullable = false)
 //    private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;

@@ -8,6 +8,8 @@ import com.manager.ashrey.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -27,8 +29,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Student getStudentByRollNumber(String rollNumber) {
-        return studentRepository.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new RuntimeException("Student not found with roll number: " + rollNumber));
+        // Assuming findByRollNumber returns a Student, not Optional<Student>
+        Student student = studentRepository.findByRollNumber(rollNumber);
+
+        if (student != null) {
+            throw new RuntimeException("Student not found");
+        }
+        return student;
+
     }
 
     public Student assignRoom(Long studentId, Long roomId) {

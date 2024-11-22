@@ -1,5 +1,6 @@
 package com.manager.ashrey.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 @Configuration
@@ -35,22 +42,43 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build(); // Directly return the AuthenticationManager without using 'and()'
     }
 
-    // Configure HTTP security settings
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())  // Disable CSRF (Cross-Site Request Forgery) protection for stateless APIs
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/student/auth/**").permitAll()  // Allow public access
-                        .requestMatchers("/student/dashboard", "/student/room-application", "/student/complaints").hasAuthority("ROLE_STUDENT")  // Role-based access
-                        .anyRequest().authenticated()  // Protect all other routes
+                        .requestMatchers("**").permitAll()
+                        .requestMatchers("/student/dashboard", "/students/room-application", "/students/complaints").authenticated()
+                        .anyRequest().denyAll()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Stateless sessions (JWT-based)
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter before username/password filter
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
 
-    // Password encoder bean using BCrypt
+    private CorsConfigurationSource corsConfigurationSource() {
+        return new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Arrays.asList(
+                        "http://localhost:8000",
+                        "http://localhost:5173",
+                        "http://localhost:4200"
+                ));
+                configuration.setAllowedMethods(Collections.singletonList("*"));
+                configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(Collections.singletonList("*"));
+                configuration.setExposedHeaders(List.of("Authorization"));
+                configuration.setMaxAge(3600L);
+
+                return configuration;
+            }
+        };
+    }
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
