@@ -1,0 +1,138 @@
+/* Parent container for the enhanced name card */
+.enhancedNameCard {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    min-width: 20rem;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.1s ease;
+  }
+  
+  .enhancedNameCard:hover {
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+  }
+  
+  .enhancedNameCard:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 3px #CEB6F5;
+  }
+  
+  /* Avatar section */
+  .avatarBlock {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 4px;
+    background-color: #242323;
+  }
+  
+  .letter {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  /* Info section for name and ID */
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .name {
+    color: #000000;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .id {
+    color: #b3b3b3;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  /* Details block for visit and date information */
+  .detailsBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .visitInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .placeOfVisit, .reasonForVisit {
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .dateInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .date {
+    color: #6b6b6b;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  
+  .daysDifference {
+    color: #6b6b6b;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #f4f4f4;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  /* Status and year section */
+  .statusContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  
+  .status {
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: right;
+  }
+  
+  .year {
+    color: #b3b3b3;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-align: right;
+  }
+  

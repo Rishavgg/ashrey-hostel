@@ -4,7 +4,7 @@ import { useAuth } from "../../Context/UseAuth";
 import { useForm } from "react-hook-form";
 import "./LoginPage.css";
 
-import LoginPageImage from './LoginPageImage.png';
+import LoginPageImage from '../../Assets/images/LoginPageImage.png';
 
 
 

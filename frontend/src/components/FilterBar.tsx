@@ -18,15 +18,15 @@ const FilterBar: React.FC<FilterBarProps>=({ title })=>{
       <div style={{ display:"flex", height:"55px", alignItems:'flex-end',justifyContent:'space-between',width:'100%'}}>
       <ToggleButton/>
       <Dropdown
-        label="Sort"
-        options={["A-Z", "Z-A", "Date"]}
+        label="Year"
+        options={["1st", "2nd", "3rd","4th"]}
         defaultSelected="A-Z"
         onOptionSelect={(selected) => console.log("Selected Sort Option:", selected)}
       />
 
       <Dropdown
-        label="Group"
-        options={["Year", "Month", "Day"]}
+        label="Hostel"
+        options={["H15 B9", "H15 B9", "H15 B9"]}
         defaultSelected="Year"
         onOptionSelect={(selected) => console.log("Selected Sort Option:", selected)}
       />

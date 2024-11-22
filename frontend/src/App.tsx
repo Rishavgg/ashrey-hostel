@@ -4,6 +4,7 @@ import "./App.css";
 import { UserProvider } from "./Context/UseAuth.tsx";
 import { Outlet } from "react-router-dom";
 
+
 function App() {
     return (
         <UserProvider>
@@ -14,3 +15,5 @@ function App() {
 }
 
 export default App;
+
+

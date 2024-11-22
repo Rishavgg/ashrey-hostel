@@ -2,7 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LoginPage from "../Pages/LoginPage/LoginPage";
 import Navbar from "../components/Navbar.tsx";
-import ResetPage from "../Pages/ResetPage/Resetpage.tsx"
+import ResetPage from "../Pages/ResetPage/ResetPage.tsx"
+import Temp from "../Pages/Temp/Temp.tsx"
 
 
 export const router = createBrowserRouter([
@@ -13,7 +14,8 @@ export const router = createBrowserRouter([
 
             { path: "login", element: <LoginPage /> },
             { path: 'navbar', element: <Navbar/> },
-            { path: 'Reset', element: <ResetPage/> },
+            { path: 'reset', element: <ResetPage/> },
+            { path: 'temp', element: <Temp/> },
         ],
     },
 ]);
