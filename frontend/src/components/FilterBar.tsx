@@ -1,10 +1,10 @@
 import React from 'react';
 
 
-import SearchBar from './SearchBar';
-import ToggleButton from './ToggleButton';
-import Dropdown from './Dropdown';
-import PageTitle from './PageTitle';
+import SearchBar from './SearchBar.tsx';
+import ToggleButton from './ToggleButton.tsx';
+import Dropdown from './Dropdown.tsx';
+import PageTitle from './PageTitle.tsx';
 
 
 interface FilterBarProps{
