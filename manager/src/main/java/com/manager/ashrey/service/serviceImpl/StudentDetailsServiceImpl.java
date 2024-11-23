@@ -23,8 +23,13 @@ public class StudentDetailsServiceImpl implements UserDetailsService, StudentDet
 
     @Override
     public UserDetails loadUserByUsername(String rollNumber) throws UsernameNotFoundException {
-        Student student = studentRepository.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new UsernameNotFoundException("Student not found with roll number: " + rollNumber));
+        // Assuming findByRollNumber returns a Student, not Optional<Student>
+        Student student = studentRepository.findByRollNumber(rollNumber);
+
+        if (student == null) {
+            throw new RuntimeException("Student not found");
+        }
+
 
         return new org.springframework.security.core.userdetails.User(
                 student.getRollNumber(),
