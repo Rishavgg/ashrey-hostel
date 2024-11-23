@@ -1,60 +1,54 @@
 .navItem {
     border-radius: 4px;
-    background-color: rgba(247, 242, 250, 1);
+    background-color: rgba(247, 242, 250, 1); /* Default background */
+    color: rgba(29, 25, 43, 1); /* Default text color */
     display: flex;
-    overflow: hidden;
-    width: 100%;
-    color: rgba(29, 25, 43, 1);
-    letter-spacing: 0.1px;
-    justify-content: flex-start;
-    font: 600 14px/1 Roboto, sans-serif;
-    transition: background-color 0.3s, outline 0.1s, box-shadow 0.1s;
+    gap: 0.75rem; /* Vertically align content */
+    justify-content: flex-start; /* Align content to the left */
+    gap: 12px; /* Space between icon and label */
+    width: 100%; /* Full width of the navbar */
+    font: 600 14px/1 Roboto, sans-serif; /* Font styling */
     cursor: pointer;
-    position: relative;
+    align-self: stretch;
+    transition: background-color 0.3s, outline 0.1s, box-shadow 0.1s; /* Smooth transitions */
 }
+
 
 .navItem:hover {
-    background-color: #E0E0E0;
+    background-color: #e0e0e0; /* Background on hover */
 }
 
-.navItem:focus-visible { /* Focus only for keyboard navigation */
-    outline: none; /* Disable outline to avoid affecting dimensions */
-    box-shadow: inset 0 0 0 3px #CEB6F5; /* Create an inner border using box-shadow */
+.navItem:focus-visible { /* Focus styling for keyboard navigation */
+    outline: none;
+    box-shadow: inset 0 0 0 3px #ceb6f5; /* Inner border for focus */
 }
 
 .navItem.active {
-    background-color: #E8DEF8;
+    background-color: #e8def8; /* Background when active */
 }
 
 .stateLayer {
     display: flex;
-    min-width: 240px;
-    width: 100%;
     align-items: center;
     gap: 12px;
-    justify-content: flex-start;
-    height: fit-content;
-    flex: 1;
-    flex-basis: 0%;
-    padding: 12px 16px;
+    flex: 1; /* Allow flexible alignment */
+    padding: 12px 12px 12px 3px ;
 }
 
 .icon {
-    aspect-ratio: 1;
-    object-fit: contain;
-    object-position: center;
-    width: 24px;
-    align-self: stretch;
-    margin: auto 0;
+    width: 24px; /* Icon size */
+    aspect-ratio: 1; /* Keep icon square */
+    object-fit: contain; /* Ensure the image fits nicely */
 }
 
 .label {
-    align-self: stretch;
-    flex: 1;
-    flex-basis: 0%;
-    margin: auto 0;
-    text-align: left;
+    flex: 1; /* Take remaining space */
+    text-align: left; /* Align text to the left */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Clip overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
 }
+
 
 .badgeLabel {
     border-radius: 0;
@@ -76,3 +70,4 @@
     white-space: nowrap;
     border-width: 0;
 }
+

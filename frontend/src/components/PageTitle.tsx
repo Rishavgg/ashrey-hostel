@@ -9,7 +9,7 @@ const PageTitle:React.FC<PageTitleProps> =({text})=>{
 
     return(
         <div className={styles.pageTitle}>
-            <h1>{text}</h1>
+            <h1 >{text}</h1>
         </div>
     )
 }

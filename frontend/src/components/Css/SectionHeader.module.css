@@ -1,19 +1,21 @@
 .SectionHeaderContainer {
-    border-radius: 100px;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 10px;
-    overflow: hidden;
-    justify-content: flex-start;
-    /* padding: 18px 16px; */
-  }
-  
-  .SectionHeaderText {
-    align-self: stretch;
-    gap: 12px;
-    margin: auto 0;
-    font: 600 14px/1 Roboto, sans-serif;
-    color: #49454f;
-    padding: 16px 16px;
-  }
+  border-radius: 100px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px; /* Space between child elements */
+  justify-content: flex-start; /* Ensure enough padding for content visibility */
+  background-color: transparent; /* Retain existing background styling */
+  /* Add separation from adjacent elements */
+}
+
+.SectionHeaderText {
+  align-self: stretch; /* Ensure it aligns properly with container height */
+  margin: auto 0; /* Center vertically within the container */
+  font: 600 14px/1 Roboto, sans-serif; /* Maintain font settings */
+  color: #49454f; /* Retain text color */
+  white-space: nowrap; /* Prevent text wrapping */
+  padding: 12px 4px;
+  text-overflow: ellipsis; /* Display ellipsis for overflow text */
+}
+
