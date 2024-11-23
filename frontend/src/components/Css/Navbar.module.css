@@ -1,49 +1,49 @@
 .outPassNav {
-    background-color: #f7f2fa;
+  background-color: #f7f2fa;
     display: flex;
-    max-width: 480px;
-    width: 21 rem;
     flex-direction: column;
     justify-content: space-between;
-    margin: 0;
-    /* height: 100vh; */
+    height: 100vh;
     position: sticky;
-    left:0;
     top: 0;
-    overflow-x: hidden;
-  }
-  
-  @media (max-width: 640px) {
-    .outPassNav {
-      height: 100vh;
-      width: 30%;
-    }
-    
-  }
-  
-  .outPassHeader {
-    display: flex;
-    width: 90%;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    /* overflow: scroll; */
-  }
-  
-  .outPassFooter {
-    background-color: #f7f2fa;
-    position: relative;
-    /* position: absolute; */
-    z-index: 3;
-    bottom: 0;
-    left:0;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 20px;
-    justify-content: flex-start;
-    padding: 20px;
-  }
+    left: 0;
+    /* overflow: hidden; */
+    width: -moz-fit-content;
+    width: 20rem;
+    min-width: fit-content;
+}
+
+
+.outPassHeader {
+  display: flex;
+  flex-direction: column; /* Stack NavItems vertically */
+  overflow-y: auto; /* Add vertical scrolling for content overflow */
+  scrollbar-width: thin; /* Thin scrollbar for modern browsers */
+  padding: 12px;
+  width: 100%; /* Ensure it matches the navbar width */
+}
+
+.outPassHeader::-webkit-scrollbar {
+  width: 6px; /* Vertical scrollbar width */
+}
+
+.outPassHeader::-webkit-scrollbar-thumb {
+  background-color: #cac4d0;
+  border-radius: 3px;
+}
+
+.outPassFooter {
+  background-color: #f7f2fa;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 14px;
+  gap: 10px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
 
   /* .sectionHeader {
     display: flex;
@@ -72,7 +72,11 @@
   .dividerLine {
     height: 1px;
     background-color: #cac4d0;
-    width: 90%;
+    width: 100%;
+    padding: 0.75px;
     border: none;
     margin: 0;
   } 
+
+
+  
