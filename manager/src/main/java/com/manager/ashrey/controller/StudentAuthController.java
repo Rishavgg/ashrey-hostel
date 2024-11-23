@@ -48,7 +48,7 @@ public class StudentAuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/addStudent")
+    @PostMapping(value = "/addStudent")
     public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) throws BadRequestException {
         if (studentRepository.existsByRollNumber(student.getRollNumber())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -67,7 +67,7 @@ public class StudentAuthController {
     }
 
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login")
     public ResponseEntity<ResponseDTO> login(@RequestParam String rollNumber, @RequestParam String tempPassword) {
         try {
             Student student = studentRepository.findByRollNumber(rollNumber);
@@ -90,7 +90,7 @@ public class StudentAuthController {
         }
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping(value = "/reset-password")
     public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String rollNumber, @RequestParam String newPassword) {
         try {
             Student student = studentRepository.findByRollNumber(rollNumber);
@@ -123,7 +123,7 @@ public class StudentAuthController {
         emailService.sendSimpleMessage(email, subject, body);
     }
 
-    @PostMapping("/logout")
+    @PostMapping(value = "/logout")
     public ResponseEntity<ResponseDTO> logout(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
 

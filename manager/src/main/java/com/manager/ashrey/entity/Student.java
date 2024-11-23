@@ -22,29 +22,29 @@ public class Student {
     @Column(unique = true, nullable = false)
     private String rollNumber;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "Student_name")
+    private String name;
 
     @Column
     private String contact;
 
     @Column
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     @Column(nullable = false)
     private String temporaryPassword;
 
     @Column(nullable = false)
     private Boolean passwordChanged = false;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @JsonIgnore
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)

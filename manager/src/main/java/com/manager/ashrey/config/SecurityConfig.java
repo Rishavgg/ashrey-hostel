@@ -39,16 +39,16 @@ public class SecurityConfig {
         authenticationManagerBuilder
                 .userDetailsService(studentDetailsService)
                 .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build(); // Directly return the AuthenticationManager without using 'and()'
+        return authenticationManagerBuilder.build();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("**").permitAll()
+                        .requestMatchers("/student/auth/**", "/warden/**").permitAll()
                         .requestMatchers("/student/dashboard", "/students/room-application", "/students/complaints").authenticated()
-                        .anyRequest().denyAll()
+//                        .anyRequest().denyAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

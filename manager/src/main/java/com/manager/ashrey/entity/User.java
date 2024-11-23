@@ -41,23 +41,24 @@ public class User {
     @Column(unique = true)
     private String keycloakId;
 
-    // One-to-One relationship with Student, Warden, Caretaker
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-//    private Student student;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Warden warden;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Caretaker caretaker;
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
     }
+
+    // One-to-One relationship with Student, Warden, Caretaker
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Student student;
+//
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Warden warden;
+//
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Caretaker caretaker;
+
 
 }
 

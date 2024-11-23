@@ -3,8 +3,6 @@ package com.manager.ashrey.controller;
 import com.manager.ashrey.entity.Student;
 import com.manager.ashrey.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +12,6 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
-
-    @PostMapping(value = "/add-student")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student newStudent = studentService.createStudent(student);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newStudent);
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long id) {

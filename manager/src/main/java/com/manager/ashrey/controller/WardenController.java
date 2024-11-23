@@ -1,35 +1,45 @@
 package com.manager.ashrey.controller;
 
+import com.manager.ashrey.entity.Student;
 import com.manager.ashrey.entity.Warden;
+import com.manager.ashrey.service.WardenDashboardService;
 import com.manager.ashrey.service.WardenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/wardens")
+@RequestMapping("/warden")
 public class WardenController {
 
     @Autowired
-    private WardenService wardenService;
+    private WardenDashboardService wardenDashboardService;
 
-    @PostMapping(value = "/add-warden")
-    public ResponseEntity<Warden> createWarden(@RequestBody Warden warden) {
-        Warden newWarden = wardenService.createWarden(warden);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newWarden);
+    @GetMapping(value = "/dashboard/all/student")
+    public ResponseEntity<Page<Student>> getAllStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(wardenDashboardService.getAllStudents(page, size));
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Warden> getWardenById(@PathVariable Long id) {
-        Warden warden = wardenService.getWardenById(id);
-        return ResponseEntity.ok(warden);
+    @GetMapping("/dashboard/search")
+    public ResponseEntity<Page<Student>> searchStudents(
+            @RequestParam String searchTerm,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(wardenDashboardService.searchStudents(searchTerm, page, size));
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<Void> deleteWarden(@PathVariable Long id) {
-        wardenService.deleteWarden(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping(value = "/dashboard/filter")
+    public ResponseEntity<Page<Student>> filterStudents(
+            @RequestParam String hostelName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(wardenDashboardService.filterStudents(hostelName, page, size));
     }
+
+
 }
 
