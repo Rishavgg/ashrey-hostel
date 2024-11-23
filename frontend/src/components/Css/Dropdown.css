@@ -1,13 +1,13 @@
 /* Dropdown Container */
 .dropdown-container {
     position: relative;
-    width: 10rem;
+    width: 10vw;
     height: 50px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     margin: 0px;
-    min-width: 118px;
+    /* min-width: 118px; */
   }
   
   /* Dropdown Header */
@@ -68,4 +68,12 @@
     color: #000;
     border-radius: 7px;
   }
+  
+
+@media (max-width: 1180px) {
+  .dropdown-container {
+    width: 30%; 
+  }
+}
+
   
