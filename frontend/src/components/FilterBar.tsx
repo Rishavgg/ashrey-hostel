@@ -13,7 +13,7 @@ interface FilterBarProps{
 
 const FilterBar: React.FC<FilterBarProps>=({ title })=>{
     return(
-        <div style={{display:'flex' , flexDirection:'column', padding:'20px', gap:'20px',position:'sticky',width:'78rem'}}>
+        <div style={{display:'flex' , flexDirection:'column', padding:'20px', gap:'20px',position:'sticky',width:'100%'}}>
       <PageTitle text={title}/>
       <div style={{ display:"flex", height:"55px", alignItems:'flex-end',justifyContent:'space-between',width:'100%',gap:'20px'}}>
       <ToggleButton/>
@@ -36,6 +36,8 @@ const FilterBar: React.FC<FilterBarProps>=({ title })=>{
         placeholder="Search for students by name"
       />
     </div>
+
+    
     </div>
     )
 }
