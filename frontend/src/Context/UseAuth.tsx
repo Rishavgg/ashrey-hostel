@@ -9,7 +9,7 @@ import axios from "axios";
 type UserContextType = {
     user: UserProfile | null;
     token: string | null;
-    registerUser: (email: string, userName: string, password: string) => Promise<void>;
+    registerUser: (name: string, email: string, userName: string, contact: string) => Promise<void>;
     loginUser: (userName: string, password: string) => Promise<void>;
     logoutUser: () => void;
     isLoggedIn: () => boolean;
@@ -37,20 +37,13 @@ export const UserProvider = ({ children }: Props) => {
         setIsReady(true);
     }, [])
 
-    const registerUser = async (email: string, userName: string, password: string) => {
-        const res = await registerAPI(email, userName, password);
+    const registerUser = async (name: string, userName: string, email: string, contact: string) => {
+        const res = await registerAPI(name, email, userName, contact);
         try {
-            if (res?.data) {
-                localStorage.setItem("token", res.data.token);
-                const userObj = {
-                    userName: res.data.userName,
-                    message: res.data.message,
-                };
-                localStorage.setItem("user", JSON.stringify(userObj));
-                setToken(res.data.token);
-                setUser(userObj);
-                toast.success("Registered successfully.");
-                navigate("/dashboard");
+            if (res?.message === "Student added successfully") {
+                toast.success("Email sent successfully");
+            } else {
+                toast.warning(res?.message);
             }
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
