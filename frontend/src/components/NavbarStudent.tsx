@@ -6,6 +6,7 @@ import NavItem from './NavItem.tsx';
 // import Divider from './Divider';
 import FabButton from './Fab.tsx';
 import {useAuth} from "../Context/UseAuth";
+import logoutIcon from '../Assets/icon/out.svg';
 
 
 const StudentNavbar: React.FC = () => {
@@ -92,7 +93,7 @@ const StudentNavbar: React.FC = () => {
                 }}
             />
             <FabButton
-                iconSrc="https://cdn.builder.io/api/v1/image/assets/d6efea5f7c3649c8b97e0c2c59aefd56/48ffa0f155057dbb615739a024a4781d51840d631c6830f27270f0a60b5b595a?apiKey=d6efea5f7c3649c8b97e0c2c59aefd56&"
+                iconSrc={logoutIcon}
                 iconAlt="Action icon"
                 onClick={logoutUser} // Logout functionality added here
             /></footer>
