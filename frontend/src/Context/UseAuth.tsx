@@ -10,7 +10,7 @@ type UserContextType = {
     user: UserProfile | null;
     token: string | null;
     registerUser: (email: string, userName: string, password: string) => Promise<void>;
-    loginUser: (userName: string, password: string, redirectPath?: string) => Promise<void>; // Updated here
+    loginUser: (userName: string, password: string) => Promise<void>; // Updated here
     logout: () => void;
     isLoggedIn: () => boolean;
 };
@@ -56,7 +56,7 @@ export const UserProvider = ({ children }: Props) => {
         }
     };
 
-    const loginUser = async (userName: string, password: string, redirectPath: string = "/dashboard") => {
+    const loginUser = async (userName: string, password: string) => {
         try {
             const res = await loginAPI(userName, password);
             if (res?.body) {
@@ -69,7 +69,7 @@ export const UserProvider = ({ children }: Props) => {
                 setToken(res.body); // Update state with JWT token
                 setUser(userObj); // Update state with user info
                 toast.success("Login successfully.");
-                navigate(redirectPath); // Navigate to the intended path
+                navigate("/student-dashboard"); // Navigate to the intended path
             }
         } catch (error) {
             toast.warning("Server error occurred");
