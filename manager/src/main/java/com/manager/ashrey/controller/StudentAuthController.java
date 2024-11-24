@@ -68,7 +68,7 @@ public class StudentAuthController {
 
 
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> login(@RequestParam String rollNumber, @RequestParam String tempPassword) {
+    public ResponseEntity<ResponseDTO> login(@RequestParam(name = "rollNumber") String rollNumber, @RequestParam(name = "tempPassword") String tempPassword) {
         try {
             Student student = studentRepository.findByRollNumber(rollNumber);
             if (student == null) {
