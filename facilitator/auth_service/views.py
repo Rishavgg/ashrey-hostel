@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import logout as auth_logout
 from django.shortcuts import redirect
 from jose import jwt
-
+from .models import CustomUser
 logger = logging.getLogger(__name__)
 KEYCLOAK_PUBLIC_KEY = settings.KEYCLOAK_PUBLIC_KEY
 
@@ -27,6 +27,7 @@ keycloak_openid = KeycloakOpenID(
 def home_view(request):
     return render(request, 'auth_service/home.html')
 
+@login_required
 def dashboard_view(request):
     return render(request, 'auth_service/error.html')
 
@@ -75,71 +76,196 @@ def decode_token_without_verification(token):
     decoded_bytes = base64.urlsafe_b64decode(payload_part + padding)
     return json.loads(decoded_bytes)
 
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+from django.http import HttpResponseForbidden
 
 def callback_view(request):
-    # Assume access_token is retrieved successfully from Keycloak
-    logger.info("Callback view accessed")
-    print("Entering callback view...")
-
-    # Retrieve the authorization code from the request
+    # Retrieve and decode the token
     code = request.GET.get('code')
     if not code:
-        logger.error("Authorization code not found in request")
-        print("Authorization code not found in request")
-        messages.error(request, "Authorization failed. Please try again.")
-        return HttpResponse(f"Authorization failed. Please try again : {str(e)}", status=400)
-
-    logger.info(f"Authorization code received: {code}")
-    print(f"Authorization code received: {code}")
+        return HttpResponse("Authorization code missing", status=400)
 
     try:
+        # Exchange authorization code for token
         token_response = keycloak_openid.token(
             grant_type='authorization_code',
             code=code,
             redirect_uri=settings.KEYCLOAK_REDIRECT_URI,
             client_id=settings.KEYCLOAK_CLIENT_ID,
-            client_secret=settings.KEYCLOAK_CLIENT_SECRET,
-            scope='openid profile email'
+            client_secret=settings.KEYCLOAK_CLIENT_SECRET
         )
-        logger.info("Token exchange completed")
-        logger.debug(f"Full token response: {token_response}")
-        print("Token exchange completed")
-        print(f"Full token response: {token_response}")
+        access_token = token_response.get('access_token')
+        decoded_token = decode_token_without_verification(access_token)
     except Exception as e:
-        logger.error(f"Token exchange failed: {str(e)}")
-        print(f"Token exchange failed: {str(e)}")
-        messages.error(request, "Token exchange failed. Please try again.")
-        return HttpResponse(f"Token exchange failed: {str(e)}", status=400)
+        return HttpResponse(f"Token exchange or decoding failed: {e}", status=400)
 
-    # Extract access and ID tokens
-    access_token = token_response.get('access_token')
-    id_token = token_response.get('id_token')
-    print(f"Access token: {access_token}")
+    # Extract roles
+    roles = decoded_token.get("realm_access", {}).get("roles", [])
 
-    if not access_token:
-        return HttpResponse("Access token missing", status=400)
+    # Check if the user has the required roles
+    allowed_roles = {"warden", "chief_warden", "admin", "caretaker"}
+    user_roles = set(roles).intersection(allowed_roles)
+    if not user_roles:
+        return HttpResponseForbidden("You do not have the required roles to access this system.")
 
-    try:
-        decoded_token = decode_token_without_verification(access_token)  # Replace with verified decode in prod
-        username = decoded_token.get("preferred_username", "Unknown")
-        email = decoded_token.get("email", "No email")
-        roles = decoded_token.get("realm_access", {}).get("roles", [])
-
-        # Log details
-        print(f"Username: {username}, Email: {email}, Roles: {roles}")
-        user_info = {
+    # Map Keycloak roles to Django groups
+    user_info = {
         'username': decoded_token.get('preferred_username'),
         'email': decoded_token.get('email'),
-        'roles': decoded_token.get('realm_access', {}).get('roles', [])
+        'roles': roles,
     }
+    user, created = CustomUser.objects.get_or_create(
+        username=user_info['username'],
+        defaults={'email': user_info['email']}
+    )
+    user.first_name = decoded_token.get('given_name', '')
+    user.last_name = decoded_token.get('family_name', '')
+    user.save()
 
-        # Set session
-        request.session['is_authenticated'] = True
-        request.session['user_info'] = user_info
-        return redirect('auth_service:dashboard')   
+    for role in user_roles:
+        group, _ = Group.objects.get_or_create(name=role)
+        user.groups.add(group)
 
-    except Exception as e:
-        return HttpResponse(f"Error decoding token: {str(e)}", status=400)
+    # Log the user in
+    login(request, user)
+    return redirect('auth_service:dashboard')
+
+
+# def callback_view(request):
+#     logger.info("Callback view accessed")
+#     print("Entering callback view...")
+
+#     # Retrieve the authorization code from the request
+#     code = request.GET.get('code')
+#     if not code:
+#         logger.error("Authorization code not found in request")
+#         print("Authorization code not found in request")
+#         messages.error(request, "Authorization failed. Please try again.")
+#         return HttpResponse("Authorization failed. Please try again.", status=400)
+
+#     logger.info(f"Authorization code received: {code}")
+#     print(f"Authorization code received: {code}")
+
+#     try:
+#         # Exchange the authorization code for tokens
+#         token_response = keycloak_openid.token(
+#             grant_type='authorization_code',
+#             code=code,
+#             redirect_uri=settings.KEYCLOAK_REDIRECT_URI,
+#             client_id=settings.KEYCLOAK_CLIENT_ID,
+#             client_secret=settings.KEYCLOAK_CLIENT_SECRET,
+#             scope='openid profile email'
+#         )
+#         logger.info("Token exchange completed")
+#         logger.debug(f"Full token response: {token_response}")
+#         print(f"Full token response: {token_response}")
+#     except Exception as e:
+#         logger.error(f"Token exchange failed: {str(e)}")
+#         print(f"Token exchange failed: {str(e)}")
+#         messages.error(request, "Token exchange failed. Please try again.")
+#         return HttpResponse(f"Token exchange failed: {str(e)}", status=400)
+
+#     # Extract the access token
+#     access_token = token_response.get('access_token')
+#     if not access_token:
+#         return HttpResponse("Access token missing", status=400)
+
+#     try:
+#         # Decode the access token
+#         decoded_token = decode_token_without_verification(access_token)
+#         username = decoded_token.get("preferred_username", "Unknown")
+#         email = decoded_token.get("email", "No email")
+#         roles = decoded_token.get("realm_access", {}).get("roles", [])
+
+#         # Fetch or create the CustomUser
+#         user, created = CustomUser.objects.get_or_create(
+#             username=username,
+#             defaults={"email": email}
+#         )
+
+#         # Update user details
+#         user.first_name = decoded_token.get("given_name", "")
+#         user.last_name = decoded_token.get("family_name", "")
+#         user.is_staff = "admin" in roles  # Example role-based permission logic
+#         user.save()
+
+#         # Log the user in
+#         login(request, user)
+#         return redirect('auth_service:dashboard')
+
+#     except Exception as e:
+#         logger.error(f"Error handling user login: {str(e)}")
+#         print(f"Error handling user login: {str(e)}")
+#         return HttpResponse(f"Error handling user login: {str(e)}", status=400)
+
+# def callback_view(request):
+#     # Assume access_token is retrieved successfully from Keycloak
+#     logger.info("Callback view accessed")
+#     print("Entering callback view...")
+
+#     # Retrieve the authorization code from the request
+#     code = request.GET.get('code')
+#     if not code:
+#         logger.error("Authorization code not found in request")
+#         print("Authorization code not found in request")
+#         messages.error(request, "Authorization failed. Please try again.")
+#         return HttpResponse(f"Authorization failed. Please try again : {str(e)}", status=400)
+
+#     logger.info(f"Authorization code received: {code}")
+#     print(f"Authorization code received: {code}")
+
+#     try:
+#         token_response = keycloak_openid.token(
+#             grant_type='authorization_code',
+#             code=code,
+#             redirect_uri=settings.KEYCLOAK_REDIRECT_URI,
+#             client_id=settings.KEYCLOAK_CLIENT_ID,
+#             client_secret=settings.KEYCLOAK_CLIENT_SECRET,
+#             scope='openid profile email'
+#         )
+#         logger.info("Token exchange completed")
+#         logger.debug(f"Full token response: {token_response}")
+#         print("Token exchange completed")
+#         print(f"Full token response: {token_response}")
+#     except Exception as e:
+#         logger.error(f"Token exchange failed: {str(e)}")
+#         print(f"Token exchange failed: {str(e)}")
+#         messages.error(request, "Token exchange failed. Please try again.")
+#         return HttpResponse(f"Token exchange failed: {str(e)}", status=400)
+
+#     # Extract access and ID tokens
+#     access_token = token_response.get('access_token')
+#     id_token = token_response.get('id_token')
+#     print(f"Access token: {access_token}")
+
+#     if not access_token:
+#         return HttpResponse("Access token missing", status=400)
+
+#     try:
+#         decoded_token = decode_token_without_verification(access_token)  # Replace with verified decode in prod
+#         username = decoded_token.get("preferred_username", "Unknown")
+#         email = decoded_token.get("email", "No email")
+#         roles = decoded_token.get("realm_access", {}).get("roles", [])
+
+#         # Log details
+#         print(f"Username: {username}, Email: {email}, Roles: {roles}")
+#         user_info = {
+#         'username': decoded_token.get('preferred_username'),
+#         'email': decoded_token.get('email'),
+#         'roles': decoded_token.get('realm_access', {}).get('roles', [])
+#     }
+
+#         # Set session
+#         request.session['is_authenticated'] = True
+#         request.session['user_info'] = user_info
+#         print("here before login")
+#         login(request, user)
+#         print("here after login")
+#         return redirect('auth_service:dashboard')   
+
+#     except Exception as e:
+#         return HttpResponse(f"Error decoding token: {str(e)}", status=400)
 
 # Utility function to handle Keycloak user authentication
 def authenticate_user_from_keycloak(userinfo):
