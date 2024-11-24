@@ -2,6 +2,8 @@ package com.manager.ashrey.controller;
 
 import com.manager.ashrey.config.JwtBlacklist;
 import com.manager.ashrey.config.JwtUtil;
+import com.manager.ashrey.dto.ResetPasswordDto;
+import com.manager.ashrey.dto.UserDto;
 import com.manager.ashrey.entity.Student;
 import com.manager.ashrey.repository.StudentRepository;
 import com.manager.ashrey.response.ResponseDTO;
@@ -68,38 +70,42 @@ public class StudentAuthController {
 
 
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> login(@RequestParam(name = "rollNumber") String rollNumber, @RequestParam(name = "tempPassword") String tempPassword) {
+    public ResponseEntity<ResponseDTO> login(@RequestBody UserDto userDto) {
         try {
-            Student student = studentRepository.findByRollNumber(rollNumber);
+            Student student = studentRepository.findByRollNumber(userDto.getRollNumber());
             if (student == null) {
                 throw new RuntimeException("Student not found");
             }
-            if (!passwordEncoder.matches(tempPassword, student.getTemporaryPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new ResponseDTO("Invalid roll number or password"));
+            if (!passwordEncoder.matches(userDto.getPassword(), student.getTemporaryPassword())) {
+                return ResponseEntity.ok(new ResponseDTO("Wrong Credential"));
             }
 
-            UserDetails userDetails = studentDetailsService.loadUserByUsername(rollNumber);
+            UserDetails userDetails = studentDetailsService.loadUserByUsername(userDto.getRollNumber());
             String token = jwtUtil.generateToken(userDetails.getUsername());
 
             return ResponseEntity.ok(new ResponseDTO("Login successful", token));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO("An error occurred during login."));
+            return ResponseEntity.ok(new ResponseDTO("Wrong Credential"));
         }
     }
 
     @PostMapping(value = "/reset-password")
-    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String rollNumber, @RequestParam String newPassword) {
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
         try {
-            Student student = studentRepository.findByRollNumber(rollNumber);
+            Student student = studentRepository.findByRollNumber(resetPasswordDto.getRollNumber());
 
             if (student == null) {
-                throw new RuntimeException("Student not found");
+                return ResponseEntity.ok(new ResponseDTO("Student not found!"));
             }
-
-            String encodedPassword = passwordEncoder.encode(newPassword);
+            if (student.getPasswordChanged()) {
+                return ResponseEntity.ok(new ResponseDTO("You have already Changed you password once, contact warden"));
+            }
+            String oldEncodedPassword = passwordEncoder.encode(resetPasswordDto.getOldPassword());
+            if (!passwordEncoder.matches(resetPasswordDto.getOldPassword(), student.getTemporaryPassword())) {
+                return ResponseEntity.ok(new ResponseDTO("Wrong Temporary Password!"));
+            }
+            String encodedPassword = passwordEncoder.encode(resetPasswordDto.getPassword());
 
             student.setTemporaryPassword(encodedPassword);
             student.setPasswordChanged(true);
@@ -108,8 +114,7 @@ public class StudentAuthController {
             return ResponseEntity.ok(new ResponseDTO("Password updated successfully"));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO("An error occurred while updating the password."));
+            return ResponseEntity.ok(new ResponseDTO("An error occurred while updating the password!"));
         }
     }
 
