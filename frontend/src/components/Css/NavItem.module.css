@@ -1,7 +1,7 @@
 .navItem {
     border-radius: 4px;
     background-color: rgba(247, 242, 250, 1); /* Default background */
-    color: rgba(29, 25, 43, 1); /* Default text color */
+    color: #49454f; /* Default text color */
     display: flex;
     gap: 0.75rem; /* Vertically align content */
     justify-content: flex-start; /* Align content to the left */
@@ -39,6 +39,7 @@
     width: 24px; /* Icon size */
     aspect-ratio: 1; /* Keep icon square */
     object-fit: contain; /* Ensure the image fits nicely */
+    color: #49454f;
 }
 
 .label {

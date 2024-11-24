@@ -19,7 +19,7 @@
     align-items: center;
     gap: 16px;
     width: 100%;
-    max-width: 504px;
+    /* max-width: 504px; */
     padding: 6px 16px;
   }
   
@@ -45,5 +45,76 @@
     height: 24px;
     object-fit: contain;
     object-position: center;
+  }
+  
+
+
+
+  /* =============== */
+
+
+  .searchBar {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Add slight space between the input and icon */
+    padding: 5px; /* Small padding for the container */
+    background-color: #e8def8; /* Original background color */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 8px; /* Slightly rounded corners */
+    width: 46%; /* Make it responsive */
+    max-width: 100%; /* Prevents horizontal overflow */
+    box-sizing: border-box; /* Includes padding in width calculations */
+  }
+  
+  .searchInput {
+    flex: 1; /* Allow the input to take up remaining space */
+    border: none; /* Remove default border */
+    outline: none; /* Remove focus outline */
+    padding: 8px; /* Add padding for better usability */
+    font-size: 14px; /* Standard font size */
+    color: black; /* Original text color */
+    box-sizing: border-box; /* Includes padding in calculations */
+  }
+  
+  .searchInput::placeholder {
+    color: #888; /* Subtle placeholder color */
+  }
+  
+  .searchIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; /* Make it clickable */
+    width: 36px; /* Fixed width for the icon */
+    height: 36px; /* Fixed height for the icon */
+    border-radius: 4px; /* Match container corners */
+  }
+  
+  .searchIconImage {
+    width: 20px; /* Size of the icon */
+    height: 20px; /* Match proportions */
+    object-fit: contain; /* Prevent distortion */
+  }
+  
+  /* Prevent content from spilling out */
+  @media (max-width: 1180px) {
+    .searchBar {
+      padding: 5px;
+      width: 100%; /* Adjust padding for smaller screens */
+    }
+  
+    .searchInput {
+      font-size: 13px; /* Slightly smaller font for smaller screens */
+    }
+  
+    .searchIcon {
+      width: 32px; /* Reduce icon size slightly */
+      height: 32px;
+    }
+  
+    .searchIconImage {
+      width: 18px;
+      height: 18px;
+    }
   }
   

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './Css/Navbar.module.css';
 
 import SectionHeader from './SectionHeader.tsx';
@@ -8,6 +8,13 @@ import FabButton from './Fab.tsx';
 
 
 const Navbar: React.FC = () => {
+
+  const [activeElement,setActiveElement]=useState<string |null>('Find a student');
+
+  const handleClick= (label:string)=>{
+    setActiveElement(label);
+  }
+
   return (
     <nav className={styles.outPassNav}>
       <header className={styles.outPassHeader}>
@@ -21,24 +28,24 @@ const Navbar: React.FC = () => {
           label="Find a student"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Find a student'} // Static false, no active state
+          onClick={() => {handleClick('Find a student')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Hostel fees status"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Hostel fees status'} // Static false, no active state
+          onClick={() => {handleClick('Hostel fees status')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Add/edit student details"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Add/edit student details'} // Static false, no active state
+          onClick={() => {handleClick('Add/edit student details')}} // Empty function placeholder
         />
 
         <SectionHeader text="Allocation"/>
@@ -50,16 +57,16 @@ const Navbar: React.FC = () => {
           label="Manual Allocation"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Manual Allocation'} // Static false, no active state
+          onClick={() => {handleClick('Manual Allocation')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Mass Allocation"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Mass Allocation'} // Static false, no active state
+          onClick={() => {handleClick('Mass Allocation')}} // Empty function placeholder
         />
 
         <NavItem
@@ -67,8 +74,8 @@ const Navbar: React.FC = () => {
           label="Allocation Request"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Allocation Request'} // Static false, no active state
+          onClick={() => {handleClick('Allocation Request')}} // Empty function placeholder
         />
 
       <SectionHeader text="Outpass"/>
@@ -80,16 +87,16 @@ const Navbar: React.FC = () => {
           label="Outpass Requests"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Outpass Requests'} // Static false, no active state
+          onClick={() => {handleClick('Outpass Requests')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Out of campus"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Out of campus'} // Static false, no active state
+          onClick={() => {handleClick('Out of campus')}} // Empty function placeholder
         />
 
         <NavItem
@@ -97,8 +104,8 @@ const Navbar: React.FC = () => {
           label="Outpass history"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Outpass history'} // Static false, no active state
+          onClick={() => {handleClick('Outpass history')}} // Empty function placeholder
         />
         <SectionHeader text="Hostel Details"/>
         
@@ -109,16 +116,16 @@ const Navbar: React.FC = () => {
           label="Public Room List"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Public Room List'} // Static false, no active state
+          onClick={() => {handleClick('Public Room List')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Add/Edit Rooms"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeElement==='Add/Edit Rooms'} // Static false, no active state
+          onClick={() => {handleClick('Add/Edit Rooms')}} // Empty function placeholder
         />
 
 

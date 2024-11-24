@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Css/Navbar.module.css';
 
 import SectionHeader from './SectionHeader.tsx';
@@ -8,6 +8,13 @@ import FabButton from './Fab.tsx';
 
 
 const StudentNavbar: React.FC = () => {
+
+  const [activeItem, setActiveItem]= useState<string|null>('Find a Room');
+
+  const handleClick= (label:string)=>{
+    setActiveItem(label)
+  }
+
   return (
     <nav className={styles.outPassNav}>
       <header className={styles.outPassHeader}>
@@ -19,34 +26,34 @@ const StudentNavbar: React.FC = () => {
         <NavItem
           icon="/add.svg"
           label="Participate in Mass Allocation"
-          // badgeCount={4}
+          badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeItem=== 'Participate in Mass Allocation'} // Static false, no active state
+          onClick={() => {handleClick('Participate in Mass Allocation')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="List Of Rooms"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeItem === 'List of Rooms'} // Static false, no active state
+          onClick={() => {handleClick('List of Rooms')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Find a Room"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeItem=== 'Find a Room'} // Static false, no active state
+          onClick={() => {handleClick('Find a Room')}} // Empty function placeholder
         />
         <NavItem
         icon="/add.svg"
         label="Request Room change"
         // badgeCount={4}
         link="" // Placeholder value
-        isActive={false} // Static false, no active state
-        onClick={() => {}} // Empty function placeholder
+        isActive={activeItem==='Request Room change'} // Static false, no active state
+        onClick={() => {handleClick('Request Room change')}} // Empty function placeholder
       />
 
         <SectionHeader text="Room and Inventory"/>
@@ -58,16 +65,16 @@ const StudentNavbar: React.FC = () => {
           label="Inventory Form"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeItem==='Inventory Form'} // Static false, no active state
+          onClick={() => {handleClick('Inventory Form')}} // Empty function placeholder
         />
         <NavItem
           icon="/add.svg"
           label="Regsiter A Complaint"
           // badgeCount={4}
           link="" // Placeholder value
-          isActive={false} // Static false, no active state
-          onClick={() => {}} // Empty function placeholder
+          isActive={activeItem==='Register A Complaint'} // Static false, no active state
+          onClick={() => {handleClick('Register A Complaint')}} // Empty function placeholder
         />
 
         

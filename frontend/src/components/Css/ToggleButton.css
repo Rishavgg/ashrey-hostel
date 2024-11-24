@@ -5,17 +5,17 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
-    width: fit-content; /* top be updated later */
+    width: 18%; /* top be updated later */
     height: 50px ; /* Adjust this height as needed */
     font-family: Arial, sans-serif;
     font-size: 16px;
-    min-width: 170px;
+    /* min-width: 170px; */
   }
   
   .toggle-option {
     padding: 0 20px; /* Remove vertical padding */
     display: flex;
-    width: 50px;
+    width: 50%;
     align-items: center;
     justify-content: center;
     flex: 1; /* Ensure equal width distribution */
@@ -38,3 +38,11 @@
     color: #000;
   }
   
+
+  /* ================== */
+
+  @media (max-width: 1180px) {
+    .toggle-container {
+      width: 30%; 
+    }
+  }
