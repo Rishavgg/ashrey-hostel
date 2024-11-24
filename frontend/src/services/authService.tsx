@@ -30,4 +30,18 @@ export const registerAPI = async (email: string, userName: string, password: str
     } catch (error) {
         handleError(error)
     }
-}
+};
+
+export const logoutAPI = async (token: string) => {
+    try {
+        const response = await axios.post(api + "/student/auth/logout", null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw new Error('Logout failed');
+    }
+};

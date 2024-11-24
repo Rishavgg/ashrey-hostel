@@ -2,7 +2,7 @@ import {UserProfile} from "../Models/User.ts";
 import React, {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import {loginAPI, registerAPI} from "../services/authService.tsx";
+import {loginAPI, logoutAPI, registerAPI} from "../services/authService.tsx";
 import axios from "axios";
 
 
@@ -11,7 +11,7 @@ type UserContextType = {
     token: string | null;
     registerUser: (email: string, userName: string, password: string) => Promise<void>;
     loginUser: (userName: string, password: string) => Promise<void>; // Updated here
-    logout: () => void;
+    logoutUser: () => void;
     isLoggedIn: () => boolean;
 };
 
@@ -74,25 +74,38 @@ export const UserProvider = ({ children }: Props) => {
         } catch (error) {
             toast.warning("Server error occurred");
         }
-    }; 
-
-
-    const isLoggedIn = () => {
-        return !!user;
-    }
-
-    const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        setUser(null);
-        setToken(null);
-        delete axios.defaults.headers.common.Authorization;
-        navigate("/");
     };
 
 
+    const isLoggedIn = () => {
+        return user !== null && token !== null;
+    };
+
+
+    const logoutUser = async () => {
+        try {
+            if (token) {
+                const res = await logoutAPI(token);
+                if (res?.message === "Logout successful") {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    setUser(null);
+                    setToken(null);
+                    delete axios.defaults.headers.common.Authorization;
+                    toast.success("Logout successful.");
+                    navigate("/student-login");
+                }
+            }
+        } catch (error) {
+            console.error("Logout failed: ", error);
+            toast.warning("Logout failed.");
+        }
+    };
+
+
+
     return (
-        <UserContext.Provider value={{loginUser, user, token, logout, isLoggedIn, registerUser}}>
+        <UserContext.Provider value={{loginUser, user, token, logoutUser, isLoggedIn, registerUser}}>
             {isReady ? children : null}
         </UserContext.Provider>
     );
