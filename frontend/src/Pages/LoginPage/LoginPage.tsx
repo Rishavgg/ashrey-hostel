@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../Context/UseAuth";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import "./LoginPage.css";
 
 import LoginPageImage from '../../Assets/images/LoginPageImage.png';
@@ -19,7 +19,7 @@ const validation = Yup.object().shape({
 
 const LoginPage = () => {
     const { loginUser } = useAuth();
-    const location = useLocation();
+    // const location = useLocation();
     const {
         register,
         handleSubmit,
@@ -27,10 +27,10 @@ const LoginPage = () => {
     } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
 
     // Determine the redirect path (fallback to dashboard if no previous path)
-    const redirectPath = location.state?.from?.pathname || "/dashboard";
+    // const redirectPath = location.state?.from?.pathname || "/student-dashboard";
 
     const handleLogin = (form: LoginFormsInputs) => {
-        loginUser(form.userName, form.password, redirectPath); // Pass redirectPath to loginUser
+        loginUser(form.userName, form.password); // Pass redirectPath to loginUser
     };
 
     return (
