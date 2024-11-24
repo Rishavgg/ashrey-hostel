@@ -67,7 +67,7 @@ const LoginPage = () => {
                             </label>
                             <input
                                 type="password"
-                                id="password"
+                                id="password"   
                                 className="form-input"
                                 placeholder="••••••••"
                                 {...register("password")}
