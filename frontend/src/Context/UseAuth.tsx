@@ -2,7 +2,7 @@ import {UserProfile} from "../Models/User.ts";
 import React, {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import {loginAPI, registerAPI} from "../services/authService.tsx";
+import {loginAPI, logoutAPI, registerAPI, resetAPI} from "../services/authService.tsx";
 import axios from "axios";
 
 
@@ -11,10 +11,10 @@ type UserContextType = {
     token: string | null;
     registerUser: (email: string, userName: string, password: string) => Promise<void>;
     loginUser: (userName: string, password: string) => Promise<void>;
-    logout: () => void;
+    logoutUser: () => void;
     isLoggedIn: () => boolean;
+    resetUser: (userName: string, oldPassword: string, password: string) => void;
 };
-
 
 type Props = { children: React.ReactNode};
 
@@ -38,13 +38,13 @@ export const UserProvider = ({ children }: Props) => {
     }, [])
 
     const registerUser = async (email: string, userName: string, password: string) => {
+        const res = await registerAPI(email, userName, password);
         try {
-            const res = await registerAPI(email, userName, password);
             if (res?.data) {
                 localStorage.setItem("token", res.data.token);
                 const userObj = {
                     userName: res.data.userName,
-                    email: res.data.email,
+                    message: res.data.message,
                 };
                 localStorage.setItem("user", JSON.stringify(userObj));
                 setToken(res.data.token);
@@ -52,6 +52,7 @@ export const UserProvider = ({ children }: Props) => {
                 toast.success("Registered successfully.");
                 navigate("/dashboard");
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.warning("Server error occurred");
         }
@@ -61,17 +62,20 @@ export const UserProvider = ({ children }: Props) => {
         try {
             const res = await loginAPI(userName, password);
             if (res?.body) {
-                localStorage.setItem("token", res.body); // Save the JWT token
+                localStorage.setItem("token", res.body);
                 const userObj = {
-                    userName, // Just use the passed username directly
-                    email: res?.email || "", // Use the email from the response, if available
+                    userName,
+                    message: res?.message || "",
                 };
-                localStorage.setItem("user", JSON.stringify(userObj)); // Save user info
-                setToken(res.body); // Update state with JWT token
-                setUser(userObj); // Update state with user info
+                localStorage.setItem("user", JSON.stringify(userObj));
+                setToken(res.body);
+                setUser(userObj);
                 toast.success("Login successfully.");
-                navigate("/dashboard");
+                navigate("/student-dashboard");
+            } else {
+                toast.warning(res?.message);
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.warning("Server error occurred");
         }
@@ -79,21 +83,49 @@ export const UserProvider = ({ children }: Props) => {
 
 
     const isLoggedIn = () => {
-        return !!user;
-    }
-
-    const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        setUser(null);
-        setToken(null);
-        delete axios.defaults.headers.common.Authorization;
-        navigate("/");
+        return user !== null && token !== null;
     };
 
 
+    const logoutUser = async () => {
+        try {
+            if (token) {
+                const res = await logoutAPI(token);
+                if (res?.message === "Logout successful") {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    setUser(null);
+                    setToken(null);
+                    delete axios.defaults.headers.common.Authorization;
+                    toast.success("Logout successful.");
+                    navigate("/student-login");
+                }
+            }
+        } catch (error) {
+            console.error("Logout failed: ", error);
+            toast.warning("Logout failed.");
+        }
+    };
+
+    const resetUser = async (userName: string, oldPassword:string, password: string) => {
+        try {
+            const res = await resetAPI(userName, oldPassword, password);
+            if (res?.message === "Password updated successfully") {
+                toast.success("Password reset successfully.");
+                navigate("/student-login");
+            } else {
+                toast.warning(res?.message);
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            toast.warning("Server error occurred");
+        }
+    };
+
+
+
     return (
-        <UserContext.Provider value={{loginUser, user, token, logout, isLoggedIn, registerUser}}>
+        <UserContext.Provider value={{loginUser, user, token, logoutUser, isLoggedIn, registerUser, resetUser}}>
             {isReady ? children : null}
         </UserContext.Provider>
     );
