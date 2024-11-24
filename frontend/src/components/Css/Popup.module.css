@@ -1,0 +1,121 @@
+.container {
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 5px 21px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+    padding: 40px;
+    max-width: 522px;
+    margin: auto;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    border-radius: 8px;
+    background: #e8def8;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px;
+    margin: 0;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .fieldsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+    justify-content: space-between;
+    color: #49454f;
+  }
+  
+  .fieldContainer {
+    display: flex;
+    flex-direction: column;
+    width: 203px;
+  }
+  
+  .fieldLabel {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .fieldInput {
+    border-radius: 8px;
+    background: #f7f2fa;
+    border: 1px solid rgba(121, 116, 126, 0.18);
+    padding: 10px 19px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .actionButton {
+    border: none;
+    border-radius: 8px;
+    color: #49454F;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    padding: 10px;
+    transition: background 0.2s ease;
+  }
+  
+  .success {
+    background: #E8DEF8;
+  }
+  
+  .success:hover {
+    background: #cbb8e8;
+  }
+  
+  .danger {
+    background: #fdfdfd00;
+    border: 1px solid #49454F;
+
+  }
+  
+  .danger:hover {
+    background: #e6e6e6;
+  }
+  
+  .buttonIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
+  @media (max-width: 991px) {
+    .container {
+      padding: 20px;
+    }
+    
+    .fieldsGrid {
+      max-width: 100%;
+    }
+    
+    .fieldContainer {
+      width: 100%;
+    }
+    
+    .fieldInput {
+      max-width: 100%;
+    }
+  }
+  
