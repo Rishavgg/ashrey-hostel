@@ -2,7 +2,6 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../Context/UseAuth";
 import { useForm } from "react-hook-form";
-// import { useLocation } from "react-router-dom";
 import "./LoginPage.css";
 
 import LoginPageImage from '../../Assets/images/LoginPageImage.png';
