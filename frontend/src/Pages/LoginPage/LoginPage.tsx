@@ -2,11 +2,10 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../../Context/UseAuth";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import "./LoginPage.css";
 
 import LoginPageImage from '../../Assets/images/LoginPageImage.png';
-
-
 
 type LoginFormsInputs = {
     userName: string;
@@ -20,26 +19,29 @@ const validation = Yup.object().shape({
 
 const LoginPage = () => {
     const { loginUser } = useAuth();
+    const location = useLocation();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
 
+    // Determine the redirect path (fallback to dashboard if no previous path)
+    const redirectPath = location.state?.from?.pathname || "/dashboard";
+
     const handleLogin = (form: LoginFormsInputs) => {
-        loginUser(form.userName, form.password);
+        loginUser(form.userName, form.password, redirectPath); // Pass redirectPath to loginUser
     };
 
     return (
         <section className="login-container">
             <div className="login-wrapper">
                 <div className="image-container">
-                <img 
-                    src={LoginPageImage} 
-                    alt="Login Illustration" 
-                    className="login-image" 
-                />
-
+                    <img 
+                        src={LoginPageImage} 
+                        alt="Login Illustration" 
+                        className="login-image" 
+                    />
                 </div>
                 <div className="form-container">
                     <h1 className="form-title">Sign in to your account</h1>
