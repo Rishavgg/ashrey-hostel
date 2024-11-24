@@ -136,7 +136,7 @@ def callback_view(request):
         # Set session
         request.session['is_authenticated'] = True
         request.session['user_info'] = user_info
-        return redirect('auth_service:dashboard')
+        return redirect('auth_service:dashboard')   
 
     except Exception as e:
         return HttpResponse(f"Error decoding token: {str(e)}", status=400)
