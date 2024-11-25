@@ -48,7 +48,7 @@ import React from 'react';
 
 import SearchBar from './SearchBar.tsx';
 import ToggleButton from './ToggleButton.tsx';
-import Dropdown from './Dropdown.tsx';
+import Dropdown from './DropdownSearch.tsx';
 import PageTitle from './PageTitle.tsx';
 
 interface FilterBarProps {
@@ -88,16 +88,16 @@ const FilterBar: React.FC<FilterBarProps> = ({ title }) => {
         <ToggleButton />
         <Dropdown
           label="Year"
-          options={['1st', '2nd', '3rd', '4th']}
-          defaultSelected="A-Z"
+          options={['Any','1st', '2nd', '3rd', '4th']}
+          defaultSelected="Any"
           onOptionSelect={(selected) =>
             console.log('Selected Year Option:', selected)
           }
         />
         <Dropdown
           label="Hostel"
-          options={['H15 B9', 'H15 B9', 'H15 B9']}
-          defaultSelected="Year"
+          options={['Any','H1','H2','H3','H4','H5','H6','H7','H8']}
+          defaultSelected="Any"
           onOptionSelect={(selected) =>
             console.log('Selected Hostel Option:', selected)
           }

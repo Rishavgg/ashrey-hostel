@@ -16,11 +16,18 @@ const Dropdown: React.FC<DropdownProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(defaultSelected);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Filter options based on the search term
+  const filteredOptions = options.filter((option) =>
+    option.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleOptionClick = (option: string) => {
     setSelected(option);
     setIsOpen(false);
+    setSearchTerm(""); // Clear search when an option is selected
     if (onOptionSelect) {
       onOptionSelect(option); // Explicit call for the callback
     }
@@ -54,7 +61,18 @@ const Dropdown: React.FC<DropdownProps> = ({
       {/* Dropdown Options */}
       {isOpen && (
         <ul className="dropdown-options">
-          {options.map((option, index) => (
+          {/* Search Bar */}
+          <li className="dropdown-search">
+            <input
+              type="text"
+              className="dropdown-search-input"
+              placeholder="Search options..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </li>
+          {/* Filtered Options */}
+          {filteredOptions.map((option, index) => (
             <li
               key={index}
               className="dropdown-option"
@@ -63,6 +81,10 @@ const Dropdown: React.FC<DropdownProps> = ({
               {option}
             </li>
           ))}
+          {/* No Results */}
+          {filteredOptions.length === 0 && (
+            <li className="dropdown-no-results">No results found</li>
+          )}
         </ul>
       )}
     </div>
