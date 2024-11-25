@@ -6,6 +6,7 @@ import Warden from "../Pages/WardenDashboard/WardenDashboard.tsx";
 import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute";
 import WardenProtectedRoute from "./AdminProtectedRoute";
+import Test from "../Pages/test/test.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
             { path: "student-login", element: <LoginPage /> },
             { path: 'warden', element: <Warden/> },
             { path: 'reset', element: <ResetPage/> },
+            { path: 'test' ,element:<Test/>},
             {
                 path: 'warden-dashboard',
                 element: (

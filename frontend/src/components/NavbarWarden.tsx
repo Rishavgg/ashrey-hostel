@@ -6,6 +6,20 @@ import NavItem from './NavItem.tsx';
 // import Divider from './Divider';
 import FabButton from './Fab.tsx';
 
+// icons
+import logoutIcon from '../Assets/icon/out.svg';
+import assignIcon from '../Assets/icon/assign.svg';
+import profileIcon from '../Assets/icon/profile.svg';
+import editIcon from '../Assets/icon/edit.svg';
+// import cursorIcon from '../Assets/icon/cursor.svg';
+import listIcon from '../Assets/icon/list.svg';
+import reciptIcon from '../Assets/icon/recept.svg';
+import requestIcon from '../Assets/icon/request.svg';
+import notificationIcon from '../Assets/icon/notification.svg';
+import massAlocationIcon from '../Assets/icon/community.svg';
+import findIcon from '../Assets/icon/community.svg';
+import historyIcon from '../Assets/icon/history.svg';
+
 
 const Navbar: React.FC = () => {
 
@@ -24,7 +38,7 @@ const Navbar: React.FC = () => {
         <hr className={styles.dividerLine} />
 
         <NavItem
-          icon="/add.svg"
+          icon={findIcon}
           label="Find a student"
           // badgeCount={4}
           link="" // Placeholder value
@@ -32,7 +46,7 @@ const Navbar: React.FC = () => {
           onClick={() => {handleClick('Find a student')}} // Empty function placeholder
         />
         <NavItem
-          icon="/add.svg"
+          icon={reciptIcon}
           label="Hostel fees status"
           // badgeCount={4}
           link="" // Placeholder value
@@ -40,7 +54,7 @@ const Navbar: React.FC = () => {
           onClick={() => {handleClick('Hostel fees status')}} // Empty function placeholder
         />
         <NavItem
-          icon="/add.svg"
+          icon={editIcon}
           label="Add/edit student details"
           // badgeCount={4}
           link="" // Placeholder value
@@ -53,7 +67,7 @@ const Navbar: React.FC = () => {
         <hr className={styles.dividerLine} />
 
         <NavItem
-          icon="/add.svg"
+          icon={assignIcon}
           label="Manual Allocation"
           // badgeCount={4}
           link="" // Placeholder value
@@ -61,7 +75,7 @@ const Navbar: React.FC = () => {
           onClick={() => {handleClick('Manual Allocation')}} // Empty function placeholder
         />
         <NavItem
-          icon="/add.svg"
+          icon={massAlocationIcon}
           label="Mass Allocation"
           // badgeCount={4}
           link="" // Placeholder value
@@ -70,7 +84,7 @@ const Navbar: React.FC = () => {
         />
 
         <NavItem
-          icon="/add.svg"
+          icon={requestIcon}
           label="Allocation Request"
           // badgeCount={4}
           link="" // Placeholder value
@@ -83,7 +97,7 @@ const Navbar: React.FC = () => {
         <hr className={styles.dividerLine} />
 
         <NavItem
-          icon="/add.svg"
+          icon={assignIcon}
           label="Outpass Requests"
           // badgeCount={4}
           link="" // Placeholder value
@@ -91,7 +105,7 @@ const Navbar: React.FC = () => {
           onClick={() => {handleClick('Outpass Requests')}} // Empty function placeholder
         />
         <NavItem
-          icon="/add.svg"
+          icon={logoutIcon}
           label="Out of campus"
           // badgeCount={4}
           link="" // Placeholder value
@@ -100,7 +114,7 @@ const Navbar: React.FC = () => {
         />
 
         <NavItem
-          icon="/add.svg"
+          icon={historyIcon}
           label="Outpass history"
           // badgeCount={4}
           link="" // Placeholder value
@@ -112,7 +126,7 @@ const Navbar: React.FC = () => {
         <hr className={styles.dividerLine} />
 
         <NavItem
-          icon="/add.svg"
+          icon={listIcon}
           label="Public Room List"
           // badgeCount={4}
           link="" // Placeholder value
@@ -120,7 +134,7 @@ const Navbar: React.FC = () => {
           onClick={() => {handleClick('Public Room List')}} // Empty function placeholder
         />
         <NavItem
-          icon="/add.svg"
+          icon={editIcon}
           label="Add/Edit Rooms"
           // badgeCount={4}
           link="" // Placeholder value
@@ -135,16 +149,23 @@ const Navbar: React.FC = () => {
 
       
       <footer className={styles.outPassFooter}>
+      
       <FabButton
-        iconSrc="/add.svg"
-        iconAlt="Action icon"
+        iconSrc={profileIcon}
+        iconAlt="Profile"
         onClick={() => {}}
       />
       <FabButton
-        iconSrc="https://cdn.builder.io/api/v1/image/assets/d6efea5f7c3649c8b97e0c2c59aefd56/48ffa0f155057dbb615739a024a4781d51840d631c6830f27270f0a60b5b595a?apiKey=d6efea5f7c3649c8b97e0c2c59aefd56&"
-        iconAlt="Action icon"
+        iconSrc={notificationIcon}
+        iconAlt="Notification"
         onClick={() => {}}
-      /></footer>
+      />
+      <FabButton
+        iconSrc={logoutIcon}
+        iconAlt="Logout"
+        onClick={() => {}}
+      />
+      </footer>
       
     </nav>
   );
