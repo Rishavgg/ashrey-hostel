@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuth } from "../Context/UseAuth.tsx"; // Assuming registerUser is imported from a service
+import { useAuth } from "../Context/UseAuth.tsx";
 import styles from './Css/Popup.module.css';
 
 type RegisterUserProfile = {
@@ -23,8 +23,9 @@ const validationSchema = Yup.object().shape({
 
 const Popup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
   const { registerUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -34,7 +35,15 @@ const Popup: React.FC = () => {
   });
 
   const handleSave = async (form: RegisterUserProfile) => {
-    await registerUser(form.name, form.email, form.rollNumber, form.contact);
+    setIsLoading(true); // Show loading spinner
+    try {
+      const res = await registerUser(form.name, form.email, form.rollNumber, form.contact);
+      if (res?.message === "Student added successfully") {
+        setIsVisible(false);
+      }
+    }  finally {
+      setIsLoading(false); // Hide loading spinner
+    }
   };
 
   // Function to close the popup
@@ -112,19 +121,27 @@ const Popup: React.FC = () => {
             <button
                 type="submit"
                 className={`${styles.actionButton} ${styles.success}`}
+                disabled={isLoading} // Disable the button while loading
             >
-              <span className={styles.buttonText}>Save</span>
-              <img
-                  src="/add.svg"
-                  alt=""
-                  className={styles.buttonIcon}
-                  loading="lazy"
-              />
+              {isLoading ? (
+                  <span className={styles.buttonText}>Saving...</span>
+              ) : (
+                  <>
+                    <span className={styles.buttonText}>Save</span>
+                    <img
+                        src="/add.svg"
+                        alt=""
+                        className={styles.buttonIcon}
+                        loading="lazy"
+                    />
+                  </>
+              )}
             </button>
             <button
                 type="button"
                 className={`${styles.actionButton} ${styles.danger}`}
                 onClick={handleCancel}
+                disabled={isLoading}
             >
               <span className={styles.buttonText}>Cancel</span>
               <img

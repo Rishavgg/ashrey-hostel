@@ -51,21 +51,25 @@ public class StudentAuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping(value = "/addStudent")
-    public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) throws BadRequestException {
-        if (studentRepository.existsByRollNumber(student.getRollNumber())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ResponseDTO("Roll number already exists"));
+    public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) {
+        try {
+            if (studentRepository.existsByRollNumber(student.getRollNumber())) {
+                return ResponseEntity.ok(new ResponseDTO("Roll number already exists"));
+            }
+
+            String tempPassword = generateTemporaryPassword();
+            student.setTemporaryPassword(passwordEncoder.encode(tempPassword));
+            student.setPasswordChanged(false);
+
+            String msg = studentAuthService.addStudent(student);
+
+            sendEmailWithCredentials(student.getEmail(), student.getRollNumber(), tempPassword);
+            ResponseDTO response = new ResponseDTO(msg);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ResponseDTO("Error in adding student!"));
         }
 
-        String tempPassword = generateTemporaryPassword();
-        student.setTemporaryPassword(passwordEncoder.encode(tempPassword));
-        student.setPasswordChanged(false);
-
-        String msg = studentAuthService.addStudent(student);
-
-        sendEmailWithCredentials(student.getEmail(), student.getRollNumber(), tempPassword);
-        ResponseDTO response = new ResponseDTO(msg);
-        return ResponseEntity.ok(response);
     }
 
 
@@ -74,7 +78,7 @@ public class StudentAuthController {
         try {
             Student student = studentRepository.findByRollNumber(userDto.getRollNumber());
             if (student == null) {
-                throw new RuntimeException("Student not found");
+                return ResponseEntity.ok(new ResponseDTO("Student not found"));
             }
             if (!passwordEncoder.matches(userDto.getPassword(), student.getTemporaryPassword())) {
                 return ResponseEntity.ok(new ResponseDTO("Wrong Credential"));
