@@ -36,6 +36,34 @@ def login_view(request):
     auth_url = keycloak_openid.auth_url(redirect_uri=settings.KEYCLOAK_REDIRECT_URI)
     return redirect(auth_url)
 
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from jose import jwt
+from django.conf import settings
+import requests
+
+@login_required
+def get_roles(request):
+    print("//////////////////////////inside roles///////////////////////////////////////")
+    token = request.headers.get('Authorization', None)
+    print("///////////////////////////////inside roles /////////////////////////////")
+    print(token)
+    if token is None:
+        return JsonResponse({'error': 'No token provided'}, status=400)
+
+    token = token.split(' ')[1]  # Extract the token from 'Bearer <token>'
+    print("Token received:", token)  # Debugging line
+
+    try:
+        decoded_token = decode_token_without_verification(token)
+        roles = decoded_token.get("realm_access", {}).get("roles", [])
+        return JsonResponse({'roles': roles})
+    except jwt.ExpiredSignatureError:
+        return JsonResponse({'error': 'Token has expired'}, status=401)
+    except jwt.JWTError:
+        return JsonResponse({'error': 'Invalid token'}, status=401)
+
+
 def logout_view(request):
     auth_logout(request)
     
@@ -95,6 +123,7 @@ def callback_view(request):
             client_id=settings.KEYCLOAK_CLIENT_ID,
             client_secret=settings.KEYCLOAK_CLIENT_SECRET
         )
+        print(f"Full token response: {token_response}")
         access_token = token_response.get('access_token')
         decoded_token = decode_token_without_verification(access_token)
     except Exception as e:
@@ -129,7 +158,64 @@ def callback_view(request):
 
     # Log the user in
     login(request, user)
-    return redirect('auth_service:dashboard')
+
+    # Encode roles and token as query parameters
+    roles_param = ",".join(user_roles)  # Join roles into a comma-separated string
+    return redirect(f'http://localhost:5173/warden-dashboard?token={access_token}&roles={roles_param}')
+
+
+# def callback_view(request):
+#     # Retrieve and decode the token
+#     code = request.GET.get('code')
+#     if not code:
+#         return HttpResponse("Authorization code missing", status=400)
+
+#     try:
+#         # Exchange authorization code for token
+#         token_response = keycloak_openid.token(
+#             grant_type='authorization_code',
+#             code=code,
+#             redirect_uri=settings.KEYCLOAK_REDIRECT_URI,
+#             client_id=settings.KEYCLOAK_CLIENT_ID,
+#             client_secret=settings.KEYCLOAK_CLIENT_SECRET
+#         )
+#         print(f"Full token response: {token_response}")
+#         access_token = token_response.get('access_token')
+#         decoded_token = decode_token_without_verification(access_token)
+#     except Exception as e:
+#         return HttpResponse(f"Token exchange or decoding failed: {e}", status=400)
+
+#     # Extract roles
+#     roles = decoded_token.get("realm_access", {}).get("roles", [])
+
+#     # Check if the user has the required roles
+#     allowed_roles = {"warden", "chief_warden", "admin", "caretaker"}
+#     user_roles = set(roles).intersection(allowed_roles)
+#     if not user_roles:
+#         return HttpResponseForbidden("You do not have the required roles to access this system.")
+
+#     # Map Keycloak roles to Django groups
+#     user_info = {
+#         'username': decoded_token.get('preferred_username'),
+#         'email': decoded_token.get('email'),
+#         'roles': roles,
+#     }
+#     user, created = CustomUser.objects.get_or_create(
+#         username=user_info['username'],
+#         defaults={'email': user_info['email']}
+#     )
+#     user.first_name = decoded_token.get('given_name', '')
+#     user.last_name = decoded_token.get('family_name', '')
+#     user.save()
+
+#     for role in user_roles:
+#         group, _ = Group.objects.get_or_create(name=role)
+#         user.groups.add(group)
+
+#     # Log the user in
+#     login(request, user)
+#     # Redirect to React app with the token as a query parameter
+#     return redirect(f'http://localhost:5173/warden-dashboard?token={access_token}')
 
 
 # def callback_view(request):

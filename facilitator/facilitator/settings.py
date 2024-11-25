@@ -38,6 +38,7 @@ CwIDAQAB
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'auth_service.CustomUser'
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'auth_service',
     'chatbot_service',
     'notify_service',
+    'corsheaders',
     # 'django_keycloak.apps.KeycloakAppConfig'
 ]
 
@@ -67,6 +69,7 @@ MIDDLEWARE = [
     # 'django_keycloak.middleware.KeycloakMiddleware',  # Keycloak Middleware
     # 'django_keycloak.middleware.BaseKeycloakMiddleware',
     'auth_service.middleware.KeycloakTokenMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 # Keycloak settings for Django
@@ -86,7 +89,14 @@ LOGOUT_REDIRECT_URL = 'http://localhost:8081/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'http://localhost:8081/home/' 
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+#     "http://localhost:3000",  # React app URL
+# ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 # PASSWORD_HASHERS = [
 #     'django_keycloak.hashers.PBKDF2SHA512PasswordHasher',
