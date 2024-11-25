@@ -1,4 +1,4 @@
-import {UserProfile} from "../Models/User.ts";
+import {RegisterUser, UserProfile} from "../Models/User.ts";
 import React, {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
@@ -9,7 +9,7 @@ import axios from "axios";
 type UserContextType = {
     user: UserProfile | null;
     token: string | null;
-    registerUser: (name: string, email: string, userName: string, contact: string) => Promise<void>;
+    registerUser: (name: string, email: string, userName: string, contact: string) =>  Promise<RegisterUser | undefined>
     loginUser: (userName: string, password: string) => Promise<void>;
     logoutUser: () => void;
     isLoggedIn: () => boolean;
@@ -45,6 +45,7 @@ export const UserProvider = ({ children }: Props) => {
             } else {
                 toast.warning(res?.message);
             }
+            return res;
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.warning("Server error occurred");
