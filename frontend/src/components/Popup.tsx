@@ -35,6 +35,7 @@ const Popup: React.FC = () => {
 
   const handleSave = async (form: RegisterUserProfile) => {
     await registerUser(form.name, form.email, form.rollNumber, form.contact);
+    setIsVisible(false);
   };
 
   // Function to close the popup
