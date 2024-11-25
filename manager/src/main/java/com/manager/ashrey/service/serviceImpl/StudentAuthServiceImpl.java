@@ -17,11 +17,11 @@ public class StudentAuthServiceImpl implements StudentAuthService {
 
 
     @Override
-    public String addStudent(Student student) throws BadRequestException {
+    public String addStudent(Student student) {
         // Check if student already exists by roll number using Optional
         Student existingStudent = studentRepository.findByRollNumber(student.getRollNumber());
         if (existingStudent != null) {
-            throw new BadRequestException("Student already exists");
+            return "Student already exists";
         }
 
         // Save the new student to the database
