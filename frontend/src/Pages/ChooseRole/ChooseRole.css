@@ -1,5 +1,5 @@
 /* LoginPage.css */
-.login-container {
+.choose-role-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,7 +10,7 @@
     padding: 20px; /* Added padding for better spacing */
 }
 
-.login-wrapper {
+.choose-role-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-end; /* Align text to the bottom */
@@ -26,7 +26,7 @@
     transition: transform 0.2s ease, background-color 0.3s ease; /* Smooth hover animation */
 }
 
-.login-wrapper:hover {
+.choose-role-wrapper:hover {
     background-color: #e3c2f2; /* Highlight on hover */
     transform: scale(1.05); /* Slightly enlarge the card */
 }
@@ -55,11 +55,11 @@ h2 {
     margin: 0;
 }
 
-.login-wrapper {
+.choose-role-wrapper {
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.3s ease; /* Smooth hover effect */
 }
 
-.login-wrapper:hover {
+.choose-role-wrapper:hover {
     transform: scale(1.05); /* Slight zoom effect on hover */
 }
