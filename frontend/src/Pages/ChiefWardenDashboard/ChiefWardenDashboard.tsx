@@ -88,7 +88,7 @@ const ChiefWardenDashboard = () => {
           }}
         >
           <AddUser
-            title="Add Student"
+            title="Add User"
             fields={[
               {
                 label: 'Name',
@@ -105,7 +105,7 @@ const ChiefWardenDashboard = () => {
                   .required('Email is required'),
               },
               {
-                label: 'Roll No.',
+                label: 'Roles',
                 name: 'rollNumber',
                 type: 'text',
                 validation: Yup.string().required('Roll number is required'),

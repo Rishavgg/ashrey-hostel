@@ -1,7 +1,7 @@
 import Navbar from '../../components/NavbarStudent.tsx';
 import FilterBar from '../../components/FilterBar.tsx';
 import NameCard from '../../components/NameCard.tsx';
-import Popup from '../../components/Popup.tsx';
+import Popup from '../../components/AddUser.tsx';
 import FabButton from '../../components/Fab.tsx';
 import {useState} from "react";
 
