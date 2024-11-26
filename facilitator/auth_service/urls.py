@@ -7,6 +7,6 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('api/roles', get_roles, name='get_roles'),
     path('employee-login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
+    path('employee-logout/', logout_view, name='logout'),
     path('callback/', callback_view, name='callback'),  # this is where Keycloak will redirect after login
-]   
+]
