@@ -30,5 +30,13 @@ export const useAuth = () => {
     return roles ? roles.split(",") : [];
   };
 
-  return { isLoggedIn, getUserRoles };
+  const logout = () => {
+    console.log("Logging out...");
+    localStorage.removeItem("token");
+    localStorage.removeItem("roles");
+    // Redirect to the Django logout endpoint
+    window.location.href = "http://localhost:8081/employee-logout";
+  };
+
+  return { isLoggedIn, getUserRoles, logout };
 };

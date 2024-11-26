@@ -19,6 +19,7 @@ import notificationIcon from '../Assets/icon/notification.svg';
 import massAlocationIcon from '../Assets/icon/community.svg';
 import findIcon from '../Assets/icon/community.svg';
 import historyIcon from '../Assets/icon/history.svg';
+import { useAuth } from "../services/adminservice.tsx";
 
 
 const Navbar: React.FC = () => {
@@ -28,6 +29,7 @@ const Navbar: React.FC = () => {
   const handleClick= (label:string)=>{
     setActiveElement(label);
   }
+  const { logout } = useAuth();
 
   return (
     <nav className={styles.outPassNav}>
@@ -160,11 +162,16 @@ const Navbar: React.FC = () => {
         iconAlt="Notification"
         onClick={() => {}}
       />
-      <FabButton
-        iconSrc={logoutIcon}
-        iconAlt="Logout"
-        onClick={() => {}}
-      />
+          <FabButton
+          iconSrc={logoutIcon}
+          iconAlt="Logout"
+          onClick={() => {
+            if (window.confirm("Are you sure you want to log out?")) {
+              logout(); // Call the logout method
+            }
+          }}
+        />
+
       </footer>
       
     </nav>
