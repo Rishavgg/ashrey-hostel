@@ -48,7 +48,7 @@ const WardenProtectedRoute = ({ children }: Props) => {
 
   if (!isLoggedIn()) {
     // Redirect to Django login if no token is found
-    window.location.href = "http://localhost:8081/login/";
+    window.location.href = "http://localhost:8081/employee-login/";
     return null;
   }
 

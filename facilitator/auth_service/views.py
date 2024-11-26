@@ -75,7 +75,7 @@ def logout_view(request):
 
 def decode_access_token(token):
     # keycloak's public key URL
-    public_key_url = "http://localhost:8080/realms/myrealm/protocol/openid-connect/certs"
+    public_key_url = "http://localhost:8080/realms/Ashrey/protocol/openid-connect/certs"
     public_key = get_keycloak_public_key(public_key_url)
 
     # Decode the token
