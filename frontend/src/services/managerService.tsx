@@ -92,3 +92,27 @@ export const searchStudents = async (
     return [];
   }
 };
+
+export const uploadExcel = async (file: File) => {
+  const formData = new FormData();
+  console.log("here before file append");
+  formData.append("file", file);
+  console.log("here after file append");
+
+  try {
+    console.log("here after file upload");
+    const response = await axios.post(
+      `${API_BASE_URL}/api/hostel-management/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data; // Return response data
+  } catch (error) {
+    console.error("Error uploading Excel file:", error);
+    throw error; // Throw error for better error handling
+  }
+};
