@@ -41,22 +41,16 @@ public class Student {
     @Column(nullable = false)
     private Boolean passwordChanged = false;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "year_id")
     private Year year;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id", unique = true)
     private Room room;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-//    private List<Outpass> outpasses;
-//
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-//    private List<Complaint> complaints;
 }
 
 

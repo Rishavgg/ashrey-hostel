@@ -21,7 +21,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE LOWER(s.rollNumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
             "OR LOWER(s.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")   
     Page<Student> findByRollNumberOrName(String searchTerm, Pageable pageable);
-//
-//    @Query("SELECT s FROM Student s WHERE s.room.hostel.hostelName = :hostelName")
-//    Page<Student> findByHostel(String hostelName, Pageable pageable);
+
 }
