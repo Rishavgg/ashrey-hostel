@@ -45,12 +45,10 @@ def login_view(request):
 @login_required
 def get_roles(request):
     token = request.headers.get('Authorization', None)
-    print(token)
     if token is None:
         return JsonResponse({'error': 'No token provided'}, status=400)
 
     token = token.split(' ')[1]  # Extract the token from 'Bearer <token>'
-    print("Token received:", token)  # Debugging line
 
     try:
         decoded_token = decode_token_without_verification(token)
@@ -114,7 +112,6 @@ def callback_view(request):
             client_id=settings.KEYCLOAK_CLIENT_ID,
             client_secret=settings.KEYCLOAK_CLIENT_SECRET
         )
-        print(f"Full token response: {token_response}")
         access_token = token_response.get('access_token')
         decoded_token = decode_token_without_verification(access_token)
     except Exception as e:
@@ -149,6 +146,12 @@ def callback_view(request):
 
     # Log the user in
     login(request, user)
+    # Set cookies
+    # response = redirect("http://localhost:5173/warden-dashboard")
+    # response.set_cookie("token", access_token, httponly=True, secure=True)  # Set secure=True in production
+    # response.set_cookie("roles", ",".join(user_roles), httponly=True, secure=False)
+
+    # return response
 
     # Encode roles and token as query parameters
     roles_param = ",".join(user_roles)  # Join roles into a comma-separated string

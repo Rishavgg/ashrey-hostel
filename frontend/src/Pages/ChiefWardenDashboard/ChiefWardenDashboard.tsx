@@ -1,30 +1,91 @@
+import { fetchStudentData, searchStudents } from "../../services/managerService.tsx"
 import Navbar from '../../components/NavbarWarden.tsx';
 import FilterBar from '../../components/FilterBar.tsx';
+import Dropdown from '../../components/Dropdown.tsx';
 import NameCard from '../../components/NameCard.tsx';
 import AddUser from '../../components/AddUser.tsx';
 import FabButton from '../../components/Fab.tsx';
 import { useState } from 'react';
 import * as Yup from 'yup';
+import { useAuth } from "../../Context/UseAuth.tsx";
+
+// Define your custom Field type here
+type Field = {
+  label: string;
+  name: string;
+  type: string; // Use 'custom' for custom components like Dropdown
+  validation: Yup.AnySchema;
+  component?: JSX.Element; // Optional component for custom fields
+};
 
 const ChiefWardenDashboard = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isPopupLoading, setIsPopupLoading] = useState(false);
+  const [students, setStudents] = useState<any[]>([]);
+  const hostelOptions = ['H1', 'H2', 'H3']; // Options for the dropdown
+  const [selectedHostel, setSelectedHostel] = useState('');
+  const { registerUser } = useAuth();
 
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
   };
 
-  const handlePopupSubmit = async (data: Record<string, string>) => {
-    setIsPopupLoading(true);
+  const handleSearch = async (searchTerm: string) => {
+    if (!searchTerm) {
+      // If search term is empty, reload all students
+      const data = await fetchStudentData(0, 10);
+      setStudents(data);
+    } else {
+      const data = await searchStudents(searchTerm, 0, 5); // Search for students
+      setStudents(data);
+    }
+  };
+
+  const fields: Field[] = [
+    {
+      label: 'Name',
+      name: 'name',
+      type: 'text',
+      validation: Yup.string().required('Name is required'),
+    },
+    {
+      label: 'Email',
+      name: 'email',
+      type: 'email',
+      validation: Yup.string().email('Invalid email').required('Email is required'),
+    },
+    {
+      label: 'Hostel',
+      name: 'hostel',
+      type: 'custom', // Custom type for dropdown
+      component: (
+        <Dropdown
+          label="Hostel"
+          options={hostelOptions}
+          defaultSelected={selectedHostel}
+          onOptionSelect={setSelectedHostel}
+        />
+      ),
+      validation: Yup.string().required('Hostel is required'), // Validation for the dropdown
+    },
+    {
+      label: 'Phone No.',
+      name: 'contact',
+      type: 'text',
+      validation: Yup.string()
+        .matches(/^\d{10}$/, 'Phone number must be a 10-digit number')
+        .required('Phone number is required'),
+    },
+  ];
+
+  const handlePopupSubmit = async (formData: Record<string, string>) => {
     try {
-      console.log('Form Submitted:', data);
-      // Add your API call here
-      // await apiCallToAddUser(data);
-      setIsPopupVisible(false);
-    } catch (error) {
-      console.error('Error submitting form:', error);
+      const res = await registerUser(formData.name, formData.email, formData.rollNumber, formData.contact);
+      if (res?.message === "User added successfully") {
+        setIsPopupVisible(false);
+      }
     } finally {
-      setIsPopupLoading(false);
+      setIsPopupLoading(false); // Hide loading spinner
     }
   };
 
@@ -52,7 +113,7 @@ const ChiefWardenDashboard = () => {
           }}
         >
           {/* Filter Bar */}
-          <FilterBar title="Page Title" />
+          <FilterBar title="Chief-Warden Dashboard" onSearch={handleSearch} />
 
           {/* Rest of Content */}
           <div
@@ -71,6 +132,15 @@ const ChiefWardenDashboard = () => {
               status="H 15 B9"
               year="2nd"
             />
+            {students.map((student, index) => (
+              <NameCard
+                key={index}
+                name={student.name}
+                id={student.id}
+                status={student.status}
+                year={student.year}
+              />
+            ))}
             {/* Add more NameCard components as needed */}
           </div>
         </div>
@@ -88,42 +158,14 @@ const ChiefWardenDashboard = () => {
           }}
         >
           <AddUser
-            title="Add User"
-            fields={[
-              {
-                label: 'Name',
-                name: 'name',
-                type: 'text',
-                validation: Yup.string().required('Name is required'),
-              },
-              {
-                label: 'Email',
-                name: 'email',
-                type: 'email',
-                validation: Yup.string()
-                  .email('Invalid email')
-                  .required('Email is required'),
-              },
-              {
-                label: 'Roles',
-                name: 'rollNumber',
-                type: 'text',
-                validation: Yup.string().required('Roll number is required'),
-              },
-              {
-                label: 'Phone No.',
-                name: 'contact',
-                type: 'text',
-                validation: Yup.string()
-                  .matches(/^\d{10}$/, 'Phone number must be a 10-digit number')
-                  .required('Phone number is required'),
-              },
-            ]}
+            title="Add Warden"
+            fields={fields} // Pass the fields array here
             onSubmit={handlePopupSubmit}
             onCancel={togglePopup}
             isLoading={isPopupLoading}
           />
         </div>
+        
       )}
 
       {/* Fab Button */}
