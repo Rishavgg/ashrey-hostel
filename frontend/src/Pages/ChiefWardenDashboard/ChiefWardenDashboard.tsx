@@ -113,7 +113,7 @@ const ChiefWardenDashboard = () => {
           }}
         >
           {/* Filter Bar */}
-          <FilterBar title="Student Dashboard" onSearch={handleSearch} />
+          <FilterBar title="Chief-Warden Dashboard" onSearch={handleSearch} />
 
           {/* Rest of Content */}
           <div

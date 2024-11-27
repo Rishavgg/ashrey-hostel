@@ -123,7 +123,7 @@ return (
           }}
         >
           {/* Filter Bar */}
-          <FilterBar title="Student Dashboard" onSearch={handleSearch} />
+          <FilterBar title="Warden Dashboard" onSearch={handleSearch} />
 
           {/* Rest of Content */}
           <div
