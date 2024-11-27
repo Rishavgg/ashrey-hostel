@@ -9,7 +9,7 @@ public class Year {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer YearId;
+    private Integer yearId;
 
     private String yearName;
 }

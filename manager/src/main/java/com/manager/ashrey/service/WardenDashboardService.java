@@ -9,6 +9,6 @@ public interface WardenDashboardService {
 
     Page<Student> searchStudents(String searchTerm, int page, int size);
 
-    Page<Student> filterStudents(String hostelName, int page, int size);
+//    Page<Student> filterStudents(String hostelName, int page, int size);
 
 }

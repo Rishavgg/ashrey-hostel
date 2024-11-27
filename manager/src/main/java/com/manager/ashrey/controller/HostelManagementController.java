@@ -4,6 +4,7 @@ import com.manager.ashrey.dto.BlockDto;
 import com.manager.ashrey.dto.HostelDto;
 import com.manager.ashrey.dto.RoomDto;
 import com.manager.ashrey.entity.RoomType;
+import com.manager.ashrey.response.ResponseDTO;
 import com.manager.ashrey.service.BlockService;
 import com.manager.ashrey.service.HostelService;
 import com.manager.ashrey.service.RoomService;
@@ -12,7 +13,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +33,7 @@ public class HostelManagementController {
     private RoomService roomService;
 
     @PostMapping(value = "/upload")
-    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ResponseDTO> uploadExcelFile(@RequestParam("file") MultipartFile file) {
         try {
             Workbook workbook = new XSSFWorkbook(file.getInputStream());
             Sheet sheet = workbook.getSheetAt(0);
@@ -74,14 +74,14 @@ public class HostelManagementController {
             }
 
             workbook.close();
-            return ResponseEntity.ok("File uploaded and data processed successfully.");
+            return ResponseEntity.ok(new ResponseDTO("File uploaded and data processed successfully."));
 
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process file.");
+            return ResponseEntity.ok(new ResponseDTO("Failed to process file."));
         } catch (Exception ex) {
             ex.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data format in Excel file.");
+            return ResponseEntity.ok(new ResponseDTO("Invalid data format in Excel file."));
         }
     }
 

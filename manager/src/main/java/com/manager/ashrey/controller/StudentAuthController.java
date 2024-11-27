@@ -51,9 +51,9 @@ public class StudentAuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping(value = "/addStudent")
-    public ResponseEntity<ResponseDTO> addStudent(@RequestBody AddStudentDto studentDTO) {
+    public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) {
         try {
-            String msg = studentAuthService.addStudent(studentDTO);
+            String msg = studentAuthService.addStudent(student);
             return ResponseEntity.ok(new ResponseDTO(msg));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseDTO("Error in adding student: " + e.getMessage()));

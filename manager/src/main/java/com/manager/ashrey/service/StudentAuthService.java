@@ -5,5 +5,5 @@ import com.manager.ashrey.entity.Student;
 import org.apache.coyote.BadRequestException;
 
 public interface StudentAuthService {
-    String addStudent(AddStudentDto addStudentDTO);
+    String addStudent(Student student);
 }

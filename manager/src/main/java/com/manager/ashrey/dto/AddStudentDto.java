@@ -15,4 +15,5 @@ public class AddStudentDto {
     private Long hostelId;    // Selected hostel
     private Long blockId;     // Selected block
     private Long roomId;    // Selected available room
+    private Integer yearId;
 }

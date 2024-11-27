@@ -54,7 +54,7 @@ public class WardenController {
         return ResponseEntity.ok(wardenDashboardService.getAllStudents(page, size));
     }
 
-    @GetMapping("/dashboard/search")
+    @GetMapping(value = "/dashboard/search")
     public ResponseEntity<Page<Student>> searchStudents(
             @RequestParam String searchTerm,
             @RequestParam(defaultValue = "0") int page,
@@ -62,13 +62,7 @@ public class WardenController {
         return ResponseEntity.ok(wardenDashboardService.searchStudents(searchTerm, page, size));
     }
 
-    @GetMapping(value = "/dashboard/filter")
-    public ResponseEntity<Page<Student>> filterStudents(
-            @RequestParam String hostelName,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return ResponseEntity.ok(wardenDashboardService.filterStudents(hostelName, page, size));
-    }
+
 
 
 }
