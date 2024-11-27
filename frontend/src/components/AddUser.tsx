@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import styles from './Css/Popup.module.css';
+import styles from './Css/AddUser.module.css';
 
 type Field = {
   label: string;

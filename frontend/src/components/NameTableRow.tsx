@@ -18,11 +18,11 @@ const StudentTable: React.FC<StudentTableProps> = ({ stud }) => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th></th>
+            <th className={styles.left}></th>
             <th>Name</th>
             <th>Enroll No</th>
             <th>Year</th>
-            <th>Hostel Room</th>
+            <th className={styles.right}>Hostel Room</th>
           </tr>
         </thead>
         <tbody>

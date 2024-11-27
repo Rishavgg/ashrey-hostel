@@ -11,6 +11,7 @@
 
 thead {
   background-color: #e8def8;
+  position: sticky;
 }
 
 th {
@@ -18,16 +19,25 @@ th {
   text-align: left;
   font-weight: 600;
   color: #000000;
+  
+}
+
+th.left{
+  border-radius: 8px 0px 0px 0px;
+}
+
+th.right{
+  border-radius: 0px 8px 0px 0px;
 }
 
 td {
-  padding: 12px;
+  padding: 10px;
   font-size: 1rem;
   color: #000000;
 }
 
 tr:hover {
-  background: var(--Schemes-Secondary-Container, #E8DEF8);
+  background: var(--Schemes-Secondary-Container, #dcdcdc);
 }
 tr:focus-visible { /* Focus only for keyboard navigation */
   outline: none; /* Disable outline to avoid affecting dimensions */
