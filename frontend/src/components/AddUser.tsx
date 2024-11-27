@@ -7,8 +7,9 @@ import styles from './Css/Popup.module.css';
 type Field = {
   label: string;
   name: string;
-  type: string;
+  type: string; // Use 'custom' for custom fields like dropdown
   validation: Yup.AnySchema;
+  component?: JSX.Element; // Optional component for rendering custom fields
 };
 
 type PopupProps = {
@@ -61,12 +62,19 @@ const AddUser: React.FC<PopupProps> = ({ title, fields, onSubmit, onCancel, isLo
               <label className={styles.fieldLabel} htmlFor={field.name}>
                 {field.label}
               </label>
-              <input
-                type={field.type}
-                id={field.name}
-                {...register(field.name)}
-                className={styles.fieldInput}
-              />
+
+              {/* Render custom field if type is 'custom' */}
+              {field.type === 'custom' && field.component ? (
+                field.component
+              ) : (
+                <input
+                  type={field.type}
+                  id={field.name}
+                  {...register(field.name)}
+                  className={styles.fieldInput}
+                />
+              )}
+
               {errors[field.name] && (
                 <span className={styles.error}>
                   {(errors[field.name] as any).message}

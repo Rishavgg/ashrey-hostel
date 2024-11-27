@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import styles from './Css/Navbar.module.css';
-
 import SectionHeader from './SectionHeader.tsx';
 import NavItem from './NavItem.tsx';
 // import Divider from './Divider';
 import FabButton from './Fab.tsx';
+import Profile from '../components/Profile.tsx';
+
 
 // icons
 import logoutIcon from '../Assets/icon/out.svg';
@@ -30,6 +31,17 @@ const Navbar: React.FC = () => {
     setActiveElement(label);
   }
   const { logout } = useAuth();
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
+  const toggleProfilePopup = () => {
+    setIsProfileVisible(!isProfileVisible);
+  };
+
+  const handleViewFullProfile = () => {
+    // Navigate to the full profile view (e.g., a separate page or route)
+    console.log('Redirecting to full profile...');
+    // Example: Use a router to navigate
+    // navigate(`/profile/full`);
+  };
 
   return (
     <nav className={styles.outPassNav}>
@@ -155,8 +167,30 @@ const Navbar: React.FC = () => {
       <FabButton
         iconSrc={profileIcon}
         iconAlt="Profile"
-        onClick={() => {}}
+        onClick={toggleProfilePopup}
       />
+      {/* Profile Popup */}
+            {isProfileVisible && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1000,
+          }}
+        >
+          <Profile
+            name="John Doe"
+            email="johndoe@example.com"
+            contact="9876543210"
+            hostel="Shastri"
+            profilePic="./add.svg"
+            onViewFullProfile={handleViewFullProfile}
+            onClose={toggleProfilePopup}
+          />
+        </div>
+      )}
       <FabButton
         iconSrc={notificationIcon}
         iconAlt="Notification"
