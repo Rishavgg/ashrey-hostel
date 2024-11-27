@@ -1,6 +1,22 @@
 // import OutpassCard from '../../components/OutpassCard.tsx'
 import Navbar from '../../components/NavbarStudent.tsx'
 import FilterBar from '../../components/FilterBar.tsx'
+import { fetchStudentData, searchStudents} from "../../services/managerService.tsx"
+import { useState } from "react";
+import NameCard from '../../components/NameCard.tsx';
+
+const handleSearch = async (searchTerm: string) => {
+    if (!searchTerm) {
+      // If search term is empty, reload all students
+      const data = await fetchStudentData(0, 10);
+      setStudents(data);
+    } else {
+      const data = await searchStudents(searchTerm, 0, 5); // Search for students
+      setStudents(data);
+    }
+  };
+
+  const [students, setStudents] = useState<any[]>([]);
 
 
 const HomePage = () => {
@@ -15,6 +31,7 @@ const HomePage = () => {
                 
                 </div>
         </div> */}
+        
 
         <div style={{
             display: 'flex',
@@ -34,7 +51,7 @@ const HomePage = () => {
                 minWidth: '0'
             }}>
                 {/* Filter Bar */}
-                <FilterBar title="Page Title" />
+                <FilterBar title="Warden Dashboard" onSearch={handleSearch} />
 
                 {/* Rest of Content */}
                 <div style={{
@@ -48,6 +65,33 @@ const HomePage = () => {
                     Rest of the content here
                 </div>
             </div>
+            <div
+            style={{
+              padding: '20px',
+              gap: '20px',
+              position: 'sticky',
+              width: '100%',
+              display: 'flex',
+              flexWrap: 'wrap',
+            }}
+          >
+            <NameCard
+              name="John Doe"
+              id="211478"
+              status="H 15 B9"
+              year="2nd"
+            />
+            {students.map((student, index) => (
+              <NameCard
+                key={index}
+                name={student.name}
+                id={student.id}
+                status={student.status}
+                year={student.year}
+              />
+            ))}
+            {/* Add more NameCard components as needed */}
+          </div>
         </div>
 
 
