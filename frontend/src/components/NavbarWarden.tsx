@@ -181,7 +181,7 @@ const Navbar: React.FC = () => {
           }}
         >
           <Profile
-            name="John Doe"
+            name="John Singh"
             email="johndoe@example.com"
             contact="9876543210"
             hostel="Shastri"

@@ -1,23 +1,6 @@
 // import OutpassCard from '../../components/OutpassCard.tsx'
 import Navbar from '../../components/NavbarStudent.tsx'
-import FilterBar from '../../components/FilterBar.tsx'
-import { fetchStudentData, searchStudents} from "../../services/managerService.tsx"
-import { useState } from "react";
 import NameCard from '../../components/NameCard.tsx';
-
-const handleSearch = async (searchTerm: string) => {
-    if (!searchTerm) {
-      // If search term is empty, reload all students
-      const data = await fetchStudentData(0, 10);
-      setStudents(data);
-    } else {
-      const data = await searchStudents(searchTerm, 0, 5); // Search for students
-      setStudents(data);
-    }
-  };
-
-  const [students, setStudents] = useState<any[]>([]);
-
 
 const HomePage = () => {
     return (
@@ -51,7 +34,7 @@ const HomePage = () => {
                 minWidth: '0'
             }}>
                 {/* Filter Bar */}
-                <FilterBar title="Warden Dashboard" onSearch={handleSearch} />
+                {/* <FilterBar title="Warden Dashboard" onSearch={handleSearch} /> */}
 
                 {/* Rest of Content */}
                 <div style={{
@@ -81,15 +64,6 @@ const HomePage = () => {
               status="H 15 B9"
               year="2nd"
             />
-            {students.map((student, index) => (
-              <NameCard
-                key={index}
-                name={student.name}
-                id={student.id}
-                status={student.status}
-                year={student.year}
-              />
-            ))}
             {/* Add more NameCard components as needed */}
           </div>
         </div>
