@@ -46,7 +46,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/student/auth/**", "/warden/**").permitAll()
+                        .requestMatchers("/student/auth/**", "/warden/**", "**").permitAll()
                         .requestMatchers("/student/dashboard", "/students/room-application", "/students/complaints").authenticated()
 //                        .anyRequest().denyAll()
                 )

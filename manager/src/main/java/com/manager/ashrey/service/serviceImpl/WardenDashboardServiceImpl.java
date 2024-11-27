@@ -27,6 +27,16 @@ public class WardenDashboardServiceImpl implements WardenDashboardService {
 
     @Override
     public Page<Student> filterStudents(String hostelName, int page, int size) {
-        return studentRepository.findByHostel(hostelName, PageRequest.of(page, size));
+        return null;
     }
+
+//    @Override
+//    public Page<Student> searchStudents(String searchTerm, int page, int size) {
+//        return studentRepository.findByRollNumberOrName(searchTerm ,PageRequest.of(page, size));
+//    }
+//
+//    @Override
+//    public Page<Student> filterStudents(String hostelName, int page, int size) {
+//        return studentRepository.findByHostel(hostelName, PageRequest.of(page, size));
+//    }
 }

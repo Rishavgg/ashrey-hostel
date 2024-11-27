@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -17,21 +18,11 @@ public class Hostel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hostelId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private HostelNameEnum hostelName;
-
-    @Column
-    private int numberOfBlocks;
-
-    @Column
-    private int totalRooms;
+//    @Enumerated(EnumType.STRING)
+    private String hostelName;
 
     @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL)
-    private List<Room> rooms;
-
-    @ManyToMany(mappedBy = "hostels")
-    private List<Warden> wardens;
+    private Set<Block> blocks;
 
 }
 
