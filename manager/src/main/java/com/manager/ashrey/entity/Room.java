@@ -5,46 +5,55 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "rooms")
+@Table(name = "room")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    private Long RoomId;
 
-    @Column(unique = true, nullable = false)
     private String roomNumber;
 
-    @Column(nullable = false)
-    private int floor;
+    @Enumerated(EnumType.STRING)
+    private RoomType type;
 
-    @Column
-    private int level;
-
-    @Column
-    private Boolean isAllocated = false;
-
-    @Column
-    private Boolean sunlight;
-
-    @Column
-    private Boolean balcony;
+    private boolean empty = true;
 
     @ManyToOne
-    @JoinColumn(name = "hostel_id")
-    private Hostel hostel;
+    @JoinColumn(name = "block_id")
+    private Block block;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BlockNameEnum blockName;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private List<Student> students;
+
+//    @Column(nullable = false)
+//    private int floor;
+//
+//    @Column
+//    private int level;
+//
+//    @Column
+//    private Boolean isAllocated = false;
+//
+//    @Column
+//    private Boolean sunlight;
+//
+//    @Column
+//    private Boolean balcony;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "hostel_id")
+//    private Hostel hostel;
+//
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private BlockNameEnum blockName;
+//
+//    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+//    private List<Student> students;
 
 }
 
