@@ -7,7 +7,7 @@ type ProfileProps = {
   email: string;
   contact: string;
   hostel: string;
-  onViewFullProfile: () => void; // Callback for "View Full Profile" button
+  // onViewFullProfile: () => void; // Callback for "View Full Profile" button
   onClose: () => void; // Callback for closing the profile pop-up
 };
 
@@ -16,7 +16,7 @@ const Profile: React.FC<ProfileProps> = ({
   email,
   contact,
   hostel,
-  onViewFullProfile,
+  // onViewFullProfile,
   onClose,
 }) => {
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -63,7 +63,7 @@ const Profile: React.FC<ProfileProps> = ({
         <footer className={styles.actions}>
           <button
             className={`${styles.actionButton} ${styles.success}`}
-            onClick={onViewFullProfile}
+            // onClick={onViewFullProfile}
           >
             View Full Profile
           </button>
