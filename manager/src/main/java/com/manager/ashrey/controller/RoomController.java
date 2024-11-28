@@ -1,14 +1,9 @@
 package com.manager.ashrey.controller;
 
-import com.manager.ashrey.dto.RoomDto;
-import com.manager.ashrey.entity.Room;
-import com.manager.ashrey.entity.RoomType;
 import com.manager.ashrey.repository.RoomRepository;
 import com.manager.ashrey.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/room")
@@ -20,10 +15,10 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
-    @PostMapping(value = "/addRoom")
-    public Room createRoom(@RequestBody RoomDto roomDto) {
-        return roomService.createRoom(roomDto);
-    }
+//    @PostMapping(value = "/addRoom")
+//    public Room createRoom(@RequestBody RoomDto roomDto) {
+//        return roomService.createRoom(roomDto);
+//    }
 
 //    @GetMapping("/availableRooms")
 //    public List<Room> getAvailableRooms(

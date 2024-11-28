@@ -1,9 +1,9 @@
 package com.manager.ashrey.service.serviceImpl;
 
-import com.manager.ashrey.dto.RoomDto;
-import com.manager.ashrey.entity.Block;
+import com.manager.ashrey.dto.RoomDTO;
+import com.manager.ashrey.entity.Hostel;
 import com.manager.ashrey.entity.Room;
-import com.manager.ashrey.repository.BlockRepository;
+import com.manager.ashrey.repository.HostelRepository;
 import com.manager.ashrey.repository.RoomRepository;
 import com.manager.ashrey.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +16,27 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private BlockRepository blockRepository;
+    private HostelRepository hostelRepository;
 
-    public Room createRoom(RoomDto roomDto) {
+    @Override
+    public boolean isRoomExists(String roomNumber, Long hostelId) {
+        return roomRepository.existsByRoomNumberAndHostel_HostelId(roomNumber, hostelId);
+    }
+
+    @Override
+    public Room createRoom(RoomDTO roomDto) {
+        Hostel hostel = hostelRepository.findById(roomDto.getHostelId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid hostel ID: " + roomDto.getHostelId()));
+
         Room room = new Room();
         room.setRoomNumber(roomDto.getRoomNumber());
-        room.setType(roomDto.getType());
-        room.setEmpty(true);
-
-        Block block = blockRepository.findById(roomDto.getBlockId())
-                .orElseThrow(() -> new RuntimeException("Block not found"));
-        room.setBlock(block);
+        room.setCapacity(roomDto.getCapacity());
+        room.setCurrentOccupancy(roomDto.getCurrentOccupancy());
+        room.setFloor(roomDto.getFloor());
+        room.setLevel(roomDto.getLevel());
+        room.setSunlight(roomDto.isSunlight());
+        room.setBalcony(roomDto.isBalcony());
+        room.setHostel(hostel);
 
         return roomRepository.save(room);
     }

@@ -90,9 +90,9 @@ public class StudentAuthController {
             if (student == null) {
                 return ResponseEntity.ok(new ResponseDTO("Student not found!"));
             }
-            if (student.getPasswordChanged()) {
-                return ResponseEntity.ok(new ResponseDTO("You have already Changed you password once, contact warden"));
-            }
+//            if (student.getPasswordChanged()) {
+//                return ResponseEntity.ok(new ResponseDTO("You have already Changed you password once, contact warden"));
+//            }
             String oldEncodedPassword = passwordEncoder.encode(resetPasswordDto.getOldPassword());
             if (!passwordEncoder.matches(resetPasswordDto.getOldPassword(), student.getTemporaryPassword())) {
                 return ResponseEntity.ok(new ResponseDTO("Wrong Temporary Password!"));

@@ -5,55 +5,48 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
 @Table(name = "room")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long RoomId;
+    private Long roomId;
 
     private String roomNumber;
 
-    @Enumerated(EnumType.STRING)
-    private RoomType type;
+    private int capacity;
 
-    private boolean empty = true;
+    private int currentOccupancy = 0;
+
+    public boolean hasSpace() {
+        return currentOccupancy < capacity;
+    }
+
+    @Column(nullable = false)
+    private int floor;
+
+    @Column
+    private int level;
+
+    @Column
+    private Boolean sunlight;
+
+    @Column
+    private Boolean balcony;
 
     @ManyToOne
-    @JoinColumn(name = "block_id")
-    private Block block;
+    @JoinColumn(name = "hostel_id", nullable = false)
+    private Hostel hostel;
 
 
-
-//    @Column(nullable = false)
-//    private int floor;
-//
-//    @Column
-//    private int level;
-//
-//    @Column
-//    private Boolean isAllocated = false;
-//
-//    @Column
-//    private Boolean sunlight;
-//
-//    @Column
-//    private Boolean balcony;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "hostel_id")
-//    private Hostel hostel;
-//
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private BlockNameEnum blockName;
-//
-//    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-//    private List<Student> students;
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Student> students;
 
 }
+
 

@@ -22,4 +22,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "OR LOWER(s.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")   
     Page<Student> findByRollNumberOrName(String searchTerm, Pageable pageable);
 
+    Page<Student> findByNameContaining(String searchTerm, Pageable pageable);
+
 }
