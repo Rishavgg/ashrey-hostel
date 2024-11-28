@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Css/Popup.module.css';
+import styles from './Css/ViewProfile.module.css';
 
 type ProfileProps = {
   name: string;

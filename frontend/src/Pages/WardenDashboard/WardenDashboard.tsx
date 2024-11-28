@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { fetchStudentData, fetchStudentProfile, searchStudents, uploadExcel} from "../../services/managerService.tsx"
 import * as Yup from 'yup';
 import { useAuth } from "../../Context/UseAuth.tsx";
-import Profile from '../../components/Profile.tsx';
+import Profile from '../../components/ViewProfile.tsx';
 import profileIcon from '../../Assets/icon/profile.svg';
 
 const Warden = () => {

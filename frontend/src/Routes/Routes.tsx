@@ -6,7 +6,7 @@ import Warden from "../Pages/WardenDashboard/WardenDashboard.tsx";
 import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute";
 import WardenProtectedRoute from "./AdminProtectedRoute";
-import Test from "../Pages/test/test.tsx";
+// import Test from "../Pages/test/test.tsx";
 import ChooseRole from "../Pages/ChooseRole/ChooseRole.tsx";
 import ChiefWardenDashboard from "../Pages/ChiefWardenDashboard/ChiefWardenDashboard.tsx"
 
@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
             { path: 'warden', element: <Warden/> },
             { path: 'chief-warden-dashboard', element: <ChiefWardenDashboard/>},
             { path: 'reset', element: <ResetPage/> },
-            { path: 'test' ,element:<Test/>},
+            // { path: 'test' ,element:<Test/>},
             {
                 path: 'warden-dashboard',
                 element: (
