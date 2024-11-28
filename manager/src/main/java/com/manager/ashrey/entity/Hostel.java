@@ -18,11 +18,10 @@ public class Hostel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hostelId;
 
-//    @Enumerated(EnumType.STRING)
     private String hostelName;
 
-    @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL)
-    private Set<Block> blocks;
-
+    @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Room> rooms;
 }
+
 

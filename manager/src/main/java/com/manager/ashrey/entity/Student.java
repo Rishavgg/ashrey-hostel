@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -21,7 +20,6 @@ public class Student {
 
     @Column(unique = true, nullable = false)
     private String rollNumber;
-
 
     @Column(name = "student_email", nullable = false)
     private String email;
@@ -41,17 +39,14 @@ public class Student {
     @Column(nullable = false)
     private Boolean passwordChanged = false;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "year_id")
-    private Year year;
+    private int admissionYear;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id", unique = true)
     private Room room;
-
 }
+
 
 
 

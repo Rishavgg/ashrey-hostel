@@ -1,5 +1,6 @@
 package com.manager.ashrey.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class Warden {
     private String contact;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "warden_hostel",
             joinColumns = @JoinColumn(name = "warden_id"),

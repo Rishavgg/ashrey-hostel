@@ -1,6 +1,6 @@
 package com.manager.ashrey.controller;
 
-import com.manager.ashrey.dto.HostelDto;
+import com.manager.ashrey.dto.HostelDTO;
 import com.manager.ashrey.entity.Hostel;
 import com.manager.ashrey.service.HostelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class HostelController {
     private HostelService hostelService;
 
     @PostMapping("/addHostel")
-    public Hostel createhostel(@RequestBody HostelDto hostelDto) {
+    public Hostel createhostel(@RequestBody HostelDTO hostelDto) {
         return hostelService.createHostel(hostelDto);
     }
 

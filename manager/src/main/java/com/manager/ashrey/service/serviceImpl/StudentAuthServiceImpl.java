@@ -85,6 +85,7 @@ public class StudentAuthServiceImpl implements StudentAuthService {
         student.setContact(studentDTO.getContact());
         student.setEmail(studentDTO.getEmail());
         student.setRollNumber(studentDTO.getRollNumber());
+        student.setAdmissionYear(studentDTO.getAdmissionYear());
 
         String tempPassword = generateTemporaryPassword();
         student.setTemporaryPassword(passwordEncoder.encode(tempPassword));
