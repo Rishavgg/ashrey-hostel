@@ -1,170 +1,213 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from './Css/Navbar.module.css';
 import SectionHeader from './SectionHeader.tsx';
 import NavItem from './NavItem.tsx';
+// import Divider from './Divider';
 import FabButton from './Fab.tsx';
 import Profile from '../components/Profile.tsx';
 
-// Icons
+
+// icons
 import logoutIcon from '../Assets/icon/out.svg';
 import assignIcon from '../Assets/icon/assign.svg';
 import profileIcon from '../Assets/icon/profile.svg';
 import editIcon from '../Assets/icon/edit.svg';
+// import cursorIcon from '../Assets/icon/cursor.svg';
 import listIcon from '../Assets/icon/list.svg';
 import reciptIcon from '../Assets/icon/recept.svg';
 import requestIcon from '../Assets/icon/request.svg';
 import notificationIcon from '../Assets/icon/notification.svg';
-import massAllocationIcon from '../Assets/icon/community.svg';
+import massAlocationIcon from '../Assets/icon/community.svg';
 import findIcon from '../Assets/icon/community.svg';
 import historyIcon from '../Assets/icon/history.svg';
+import { useAuth } from "../services/adminservice.tsx";
 
-import { useAuth } from '../services/adminservice.tsx';
 
-const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChange }) => {
-  const [activeElement, setActiveElement] = useState<string | null>('Find a student');
-  const [isProfileVisible, setIsProfileVisible] = useState(false);
-  const { logout } = useAuth();
+const Navbar: React.FC = () => {
 
-  // Handle active navigation item click
-  const handleClick = (label: string) => {
+  const [activeElement,setActiveElement]=useState<string |null>('Find a student');
+
+  const handleClick= (label:string)=>{
     setActiveElement(label);
-    onPageChange(label); // Notify parent of page change
-  };
-
-  // Toggle profile popup visibility
+  }
+  const { logout } = useAuth();
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
   const toggleProfilePopup = () => {
     setIsProfileVisible(!isProfileVisible);
   };
 
-  // Navigate to the full profile (placeholder for now)
   const handleViewFullProfile = () => {
+    // Navigate to the full profile view (e.g., a separate page or route)
     console.log('Redirecting to full profile...');
+    // Example: Use a router to navigate
+    // navigate(`/profile/full`);
   };
 
   return (
     <nav className={styles.outPassNav}>
-      {/* Header */}
       <header className={styles.outPassHeader}>
-        {/* Section: Student Details */}
-        <SectionHeader text="Student Details" />
+
+        <SectionHeader text="Student Details"/>
+        
         <hr className={styles.dividerLine} />
+
         <NavItem
           icon={findIcon}
           label="Find a student"
-          isActive={activeElement === 'Find a student'}
-          onClick={() => handleClick('Find a student')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Find a student'} // Static false, no active state
+          onClick={() => {handleClick('Find a student')}} // Empty function placeholder
+        />
         <NavItem
           icon={reciptIcon}
           label="Hostel fees status"
-          isActive={activeElement === 'Hostel fees status'}
-          onClick={() => handleClick('Hostel fees status')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Hostel fees status'} // Static false, no active state
+          onClick={() => {handleClick('Hostel fees status')}} // Empty function placeholder
+        />
         <NavItem
           icon={editIcon}
           label="Add/edit student details"
-          isActive={activeElement === 'Add/edit student details'}
-          onClick={() => handleClick('Add/edit student details')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Add/edit student details'} // Static false, no active state
+          onClick={() => {handleClick('Add/edit student details')}} // Empty function placeholder
+        />
 
-        {/* Section: Allocation */}
-        <SectionHeader text="Allocation" />
+        <SectionHeader text="Allocation"/>
+        
         <hr className={styles.dividerLine} />
+
         <NavItem
           icon={assignIcon}
           label="Manual Allocation"
-          isActive={activeElement === 'Manual Allocation'}
-          onClick={() => handleClick('Manual Allocation')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Manual Allocation'} // Static false, no active state
+          onClick={() => {handleClick('Manual Allocation')}} // Empty function placeholder
+        />
         <NavItem
-          icon={massAllocationIcon}
+          icon={massAlocationIcon}
           label="Mass Allocation"
-          isActive={activeElement === 'Mass Allocation'}
-          onClick={() => handleClick('Mass Allocation')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Mass Allocation'} // Static false, no active state
+          onClick={() => {handleClick('Mass Allocation')}} // Empty function placeholder
+        />
+
         <NavItem
           icon={requestIcon}
           label="Allocation Request"
-          isActive={activeElement === 'Allocation Request'}
-          onClick={() => handleClick('Allocation Request')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Allocation Request'} // Static false, no active state
+          onClick={() => {handleClick('Allocation Request')}} // Empty function placeholder
+        />
 
-        {/* Section: Outpass */}
-        <SectionHeader text="Outpass" />
+      <SectionHeader text="Outpass"/>
+        
         <hr className={styles.dividerLine} />
+
         <NavItem
           icon={assignIcon}
           label="Outpass Requests"
-          isActive={activeElement === 'Outpass Requests'}
-          onClick={() => handleClick('Outpass Requests')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Outpass Requests'} // Static false, no active state
+          onClick={() => {handleClick('Outpass Requests')}} // Empty function placeholder
+        />
         <NavItem
           icon={logoutIcon}
           label="Out of campus"
-          isActive={activeElement === 'Out of campus'}
-          onClick={() => handleClick('Out of campus')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Out of campus'} // Static false, no active state
+          onClick={() => {handleClick('Out of campus')}} // Empty function placeholder
+        />
+
         <NavItem
           icon={historyIcon}
           label="Outpass history"
-          isActive={activeElement === 'Outpass history'}
-          onClick={() => handleClick('Outpass history')} link={''}        />
-
-        {/* Section: Hostel Details */}
-        <SectionHeader text="Hostel Details" />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Outpass history'} // Static false, no active state
+          onClick={() => {handleClick('Outpass history')}} // Empty function placeholder
+        />
+        <SectionHeader text="Hostel Details"/>
+        
         <hr className={styles.dividerLine} />
+
         <NavItem
           icon={listIcon}
           label="Public Room List"
-          isActive={activeElement === 'Public Room List'}
-          onClick={() => handleClick('Public Room List')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Public Room List'} // Static false, no active state
+          onClick={() => {handleClick('Public Room List')}} // Empty function placeholder
+        />
         <NavItem
           icon={editIcon}
           label="Add/Edit Rooms"
-          isActive={activeElement === 'Add/Edit Rooms'}
-          onClick={() => handleClick('Add/Edit Rooms')} link={''}        />
+          // badgeCount={4}
+          link="" // Placeholder value
+          isActive={activeElement==='Add/Edit Rooms'} // Static false, no active state
+          onClick={() => {handleClick('Add/Edit Rooms')}} // Empty function placeholder
+        />
+
+
+        
+        {/* <Divider /> */}
       </header>
 
-      {/* Footer */}
+      
       <footer className={styles.outPassFooter}>
-        {/* Profile Button */}
-        <FabButton
-          iconSrc={profileIcon}
-          iconAlt="Profile"
-          onClick={toggleProfilePopup}
-        />
-        {isProfileVisible && (
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1000,
-            }}
-          >
-            <Profile
-              name="John Singh"
-              email="johndoe@example.com"
-              contact="9876543210"
-              hostel="Shastri"
-              profilePic="./add.svg"
-              onViewFullProfile={handleViewFullProfile}
-              onClose={toggleProfilePopup}
-            />
-          </div>
-        )}
-
-        {/* Notification Button */}
-        <FabButton
-          iconSrc={notificationIcon}
-          iconAlt="Notification"
-          onClick={() => console.log('Notifications clicked')} // Placeholder
-        />
-
-        {/* Logout Button */}
-        <FabButton
+      
+      <FabButton
+        iconSrc={profileIcon}
+        iconAlt="Profile"
+        onClick={toggleProfilePopup}
+      />
+      {/* Profile Popup */}
+            {isProfileVisible && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1000,
+          }}
+        >
+          <Profile
+            name="John Singh"
+            email="johndoe@example.com"
+            contact="9876543210"
+            hostel="Shastri"
+            profilePic="./add.svg"
+            onViewFullProfile={handleViewFullProfile}
+            onClose={toggleProfilePopup}
+          />
+        </div>
+      )}
+      <FabButton
+        iconSrc={notificationIcon}
+        iconAlt="Notification"
+        onClick={() => {}}
+      />
+          <FabButton
           iconSrc={logoutIcon}
           iconAlt="Logout"
           onClick={() => {
-            if (window.confirm('Are you sure you want to log out?')) {
-              logout();
+            if (window.confirm("Are you sure you want to log out?")) {
+              logout(); // Call the logout method
             }
           }}
         />
+
       </footer>
+      
     </nav>
   );
 };

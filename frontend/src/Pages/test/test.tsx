@@ -4,7 +4,7 @@ import NameCard from '../../components/NameCard.tsx';
 import AddUser from '../../components/AddUser.tsx';
 import FabButton from '../../components/Fab.tsx';
 import { useEffect, useState } from "react";
-import { fetchStudentData, fetchStudentProfile, searchStudents, uploadExcel} from "../../services/managerService.tsx"
+import { fetchStudentData, fetchStudentProfile, searchStudents } from "../../services/managerService.tsx"
 import * as Yup from 'yup';
 import { useAuth } from "../../Context/UseAuth.tsx";
 import Profile from '../../components/Profile.tsx';
@@ -99,18 +99,6 @@ const Warden = () => {
     setIsPopupLoading(false); // Hide loading spinner
   }
 };
-
-const handleFileUpload = async (file: File) => {
-  try {
-    const response = await uploadExcel(file); // Call the uploadExcel service function
-    alert("File uploaded successfully!"); // Show success message
-    console.log("Upload response:", response);
-  } catch (error) {
-    console.error("Error uploading file:", error); // Log error for debugging
-    alert("Error uploading file. Please try again."); // Show error message
-  }
-};
-
 return (
     <div>
       <div
@@ -258,23 +246,21 @@ return (
       )}
 
 
-    {/* Fab Button */}
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '90px',
-        right: '24px',
-        zIndex: 1000,
-      }}
-    >
-      <FabButton
-        iconSrc="/upload.svg"
-        iconAlt="Upload Excel"
-        isFileUpload={true}
-        onFileSelect={(file) => handleFileUpload(file)} // Connect handleFileUpload here
-      />
-</div>
-
+      {/* Fab Button */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '90px',
+          right: '24px',
+          zIndex: 1000,
+        }}
+      >
+        <FabButton
+          iconSrc="/add.svg"
+          iconAlt="Action icon"
+          onClick={togglePopup}
+        />
+      </div>
     </div>
   );
 };
