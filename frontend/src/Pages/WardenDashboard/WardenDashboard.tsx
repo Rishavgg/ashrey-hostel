@@ -19,6 +19,10 @@ const Warden = () => {
   const [loadingProfile, setLoadingProfile] = useState(false);
   const { registerUser } = useAuth();
 
+
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchStudentData(0, 10); // Fetch first page with size 10
@@ -199,8 +203,8 @@ return (
             email={profileData.email}
             contact={profileData.contact}
             hostel={`${profileData.hostelName} - ${profileData.blockName}`}
-            profilePic={profileData.profilePic}
-            onViewFullProfile={handleViewFullProfile}
+            // profilePic={profileData.profilePic}
+            // onViewFullProfile={handleViewFullProfile}
             onClose={toggleProfilePopup}
           />
         </div>
