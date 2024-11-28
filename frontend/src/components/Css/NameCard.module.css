@@ -86,3 +86,16 @@
 .year {
   text-align: right;
 } 
+
+
+.statusContainer div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; /* Spacing between icons */
+}
+
+.statusContainer img {
+  width: 24px; /* Icon size */
+  height: 24px;
+}
