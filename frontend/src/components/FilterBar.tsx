@@ -7,7 +7,7 @@ import PageTitle from "./PageTitle.tsx";
 
 interface FilterBarProps {
   title: string;
-  onSearch?: (query: string) => void; // Add the callback for search
+  onSearch: (query: string) => void; // Add the callback for search
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({ title, onSearch }) => {
@@ -56,7 +56,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ title, onSearch }) => {
         />
         <SearchBar
           onSearch={onSearch} // Pass the search term to the parent component
-          placeholder="Search for students"
+          placeholder="Search for students by name"
         />
       </div>
     </div>

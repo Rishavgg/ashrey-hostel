@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import styles from './Css/SearchBar.module.css';
 
 interface SearchBarProps {
-  onSearch?: (query: string) => void; // Function to handle search
+  onSearch: (query: string) => void; // Function to handle search
   placeholder?: string; // Custom placeholder text for the input
 }
 
@@ -10,8 +10,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Who are 
   const [query, setQuery] = useState<string>(''); // State to store the search query
 
   const handleSearch = () => {
-    if (onSearch) {
-      onSearch(query); // Call onSearch only if it's provided
+    if (query.trim()) {
+      onSearch(query); // Call the provided search handler
     }
   };
 

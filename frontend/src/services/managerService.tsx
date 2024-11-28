@@ -116,31 +116,3 @@ export const uploadExcel = async (file: File) => {
     throw error; // Throw error for better error handling
   }
 };
-
-// Fetch all wardens
-export const fetchWardenData = async (page: number, size: number) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/chiefwarden/dashboard/all/warden`, {
-      params: { page, size },
-    });
-    return response.data.content.map((warden: any) => ({
-      id: warden.id,
-      name: warden.name,
-      hostel: warden.hostelName || "N/A",
-      contact: warden.contact || "N/A",
-    }));
-  } catch (error) {
-    console.error("Error fetching warden data:", error);
-    return [];
-  }
-};
-
-// Register a new warden
-export const registerWarden = async (wardenDetails: { name: string; hostel: string; contact: string }) => {
-  try {
-    await axios.post(`${API_BASE_URL}/chiefwarden/dashboard/add/warden`, wardenDetails);
-  } catch (error) {
-    console.error("Error registering warden:", error);
-    throw error;
-  }
-};
