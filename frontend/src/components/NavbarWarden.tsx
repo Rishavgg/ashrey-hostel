@@ -4,7 +4,7 @@ import SectionHeader from './SectionHeader.tsx';
 import NavItem from './NavItem.tsx';
 // import Divider from './Divider';
 import FabButton from './Fab.tsx';
-import Profile from './ViewProfile.tsx';
+import Profile from './Profile.tsx';
 
 
 // icons
