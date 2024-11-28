@@ -1,0 +1,113 @@
+/* Dropdown Container */
+.custom-dropdown-container {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f7f2fa;
+  }
+  
+  /* Dropdown Header */
+  .custom-dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    cursor: pointer;
+    position: relative;
+    height: inherit;
+  }
+  
+  .custom-dropdown-header.custom-active {
+    border-radius: 8px;
+  }
+  
+  /* Selected Option Text */
+  .custom-dropdown-selected {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Dropdown Options */
+  .custom-dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+    z-index: 1000;
+    max-height: 200px; /* Maximum height to show 5 items */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  /* Scrollbar Styling */
+  .custom-dropdown-options::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar width */
+  }
+  
+  .custom-dropdown-options::-webkit-scrollbar-track {
+    background: transparent; /* Completely invisible track */
+  }
+  
+  .custom-dropdown-options::-webkit-scrollbar-thumb {
+    background: #c5a6f3; /* Purple thumb */
+    border-radius: 8px; /* Rounded corners for the thumb */
+    border: none; /* No border for seamless appearance */
+  }
+  
+  .custom-dropdown-options::-webkit-scrollbar-thumb:hover {
+    background: #b28ce4; /* Slightly darker thumb on hover */
+  }
+  
+  /* For Firefox */
+  .custom-dropdown-options {
+    scrollbar-color: #c5a6f3 transparent; /* Thumb color and invisible track */
+    scrollbar-width: thin; /* Thin scrollbar */
+  }
+  
+  /* Search Input */
+  .custom-dropdown-search {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .custom-dropdown-search-input {
+    width: calc(100%);
+    padding: 10px 6px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #f7f2fa;
+  }
+  
+  .custom-dropdown-search-input:focus {
+    background-color: white;
+  }
+  
+  /* Dropdown Option */
+  .custom-dropdown-option {
+    padding: 10px 10px;
+    cursor: pointer;
+  }
+  
+  .custom-dropdown-option:hover {
+    background-color: #e4d9fa; /* Highlighted option */
+    color: #000;
+    border-radius: 7px;
+  }
+  
+  /* No Results Found */
+  .custom-dropdown-no-results {
+    padding: 10px;
+    color: #777;
+    text-align: center;
+  }
+  
