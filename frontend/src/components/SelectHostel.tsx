@@ -64,12 +64,12 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
         {/* Display the selected room as a HostelCard */}
         {selected ? (
           <HostelCard
-            name={selected.name}
-            balcony={selected.balcony}
-            sunny={selected.sunny}
-            level={selected.level}
-            roomNo={selected.roomNo}
-          />
+          name={selected.name}
+          balcony={selected.balcony as 0 | 1} // Type assertion to 0 | 1
+          sunny={selected.sunny as 0 | 1} // Type assertion to 0 | 1
+          level={selected.level}
+          roomNo={selected.roomNo}
+        />
         ) : (
           <span className="custom-dropdown-selected">Select a room</span>
         )}
@@ -98,8 +98,8 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
             >
               <HostelCard
                 name={option.name}
-                balcony={option.balcony}
-                sunny={option.sunny}
+                balcony={option.balcony as 0 | 1}
+                sunny={option.sunny as 0 | 1}
                 level={option.level}
                 roomNo={option.roomNo}
               />
