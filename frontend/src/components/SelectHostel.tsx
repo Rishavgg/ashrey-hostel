@@ -8,6 +8,8 @@ interface Room {
   sunny: number;
   level: number;
   roomNo: string;
+  capacity: number;
+  occupancy: number;
 }
 
 interface SelectHostelDropdownProps {
@@ -101,6 +103,8 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
                 sunny={option.sunny as 0 | 1}
                 level={option.level}
                 roomNo={option.roomNo}
+                capacity={option.capacity}
+                occupant={option.occupancy}
               />
             </li>
           ))}

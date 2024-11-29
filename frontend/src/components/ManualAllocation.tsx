@@ -12,6 +12,8 @@ type Room = {
   sunny: number;
   level: number;
   roomNo: string;
+  capacity: number;
+  occupancy: number;
 };
 
 type Student = {
