@@ -1,7 +1,7 @@
 /* Parent container for the name card */
 .nameCard {
     display: flex;
-    width: fit-content;
+    width: 100%;
     height: fit-content;
     min-width: 18rem;
     padding: 18px; /* Direct value for padding */
@@ -15,9 +15,7 @@
     transition: background-color 0.3s,box-shadow 0.1s ease;
   }
   
-  .nameCard:hover {
-    background: var(--Schemes-Secondary-Container, #E8DEF8);
-  }
+
   .nameCard:focus-visible { /* Focus only for keyboard navigation */
     outline: none; /* Disable outline to avoid affecting dimensions */
     box-shadow: inset 0 0 0 3px #CEB6F5; /* Create an inner border using box-shadow */

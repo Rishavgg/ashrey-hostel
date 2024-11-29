@@ -58,18 +58,18 @@
   }
   
   .custom-dropdown-options::-webkit-scrollbar-thumb {
-    background: #c5a6f3; /* Purple thumb */
+    background: #e4d9fa; /* Purple thumb */
     border-radius: 8px; /* Rounded corners for the thumb */
     border: none; /* No border for seamless appearance */
   }
   
   .custom-dropdown-options::-webkit-scrollbar-thumb:hover {
-    background: #b28ce4; /* Slightly darker thumb on hover */
+    background: #e4d9fa; /* Slightly darker thumb on hover */
   }
   
   /* For Firefox */
   .custom-dropdown-options {
-    scrollbar-color: #c5a6f3 transparent; /* Thumb color and invisible track */
+    scrollbar-color: #e4d9fa transparent; /* Thumb color and invisible track */
     scrollbar-width: thin; /* Thin scrollbar */
   }
   

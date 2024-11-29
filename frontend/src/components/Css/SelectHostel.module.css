@@ -1,0 +1,117 @@
+unused remove this
+
+
+
+/* Container for the dropdown */
+.container {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  background-color: #f7f2fa;
+  overflow: hidden;
+}
+
+/* Dropdown Header */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.headerActive {
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown Options */
+.options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0 0 8px 8px;
+  margin-top: 0;
+  list-style: none;
+  padding: 0;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollbar Styling */
+.options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background: #c5a6f3;
+  border-radius: 8px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+  background: #b28ce4;
+}
+
+.options {
+  scrollbar-color: #c5a6f3 transparent;
+  scrollbar-width: thin;
+}
+
+/* Search Input */
+.search {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: #f7f2fa;
+}
+
+.searchInput {
+  width: calc(100% - 20px);
+  padding: 8px 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  border-radius: 4px;
+  background-color: #f7f2fa;
+}
+
+.searchInput:focus {
+  background-color: white;
+}
+
+/* Dropdown Option */
+.option {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #e4d9fa;
+  border-radius: 8px;
+}
+
+/* No Results Found */
+.noResults {
+  padding: 10px;
+  color: #777;
+  text-align: center;
+}
+
+@media (max-width:900px) {
+  .hostel-dropdown-container{
+    width: 100%;
+  }
+}
