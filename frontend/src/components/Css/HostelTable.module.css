@@ -1,0 +1,63 @@
+.tableContainer {
+    width: 100%;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+  }
+  
+  thead {
+    background-color: #e8def8;
+    position: sticky;
+  }
+  
+  th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #000000;
+  }
+  
+  th.noHeadingL {
+    width: 40px;
+    border-radius: 8px 0px 0px 0px;
+  }
+  th.noHeadingR {
+    width: 40px;
+    border-radius: 0px 8px 0px 0px;
+  }
+  
+  td {
+    padding: 10px;
+    font-size: 1rem;
+    color: #000000;
+  }
+  
+  .row {
+    border-bottom: 1px solid #dcdcdc;
+    transition: background-color 0.3s ease;
+  }
+  
+  .row:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .roomNo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+  

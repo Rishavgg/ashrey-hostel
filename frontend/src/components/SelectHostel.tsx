@@ -104,7 +104,7 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
                 level={option.level}
                 roomNo={option.roomNo}
                 capacity={option.capacity}
-                occupant={option.occupancy}
+                occupancy={option.occupancy}
               />
             </li>
           ))}
