@@ -20,7 +20,7 @@ import historyIcon from '../Assets/icon/history.svg';
 
 import { useAuth } from '../services/adminservice.tsx';
 
-const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChange }) => {
+const Navbar: React.FC<{ onPageChange?: (page: string) => void }> = ({ onPageChange }) => {
   const [activeElement, setActiveElement] = useState<string | null>('Find a student');
   const [isProfileVisible, setIsProfileVisible] = useState(false);
   const { logout } = useAuth();
@@ -28,7 +28,7 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
   // Handle active navigation item click
   const handleClick = (label: string) => {
     setActiveElement(label);
-    onPageChange(label); // Notify parent of page change
+    // onPageChange(label); // Notify parent of page change
   };
 
   // Toggle profile popup visibility

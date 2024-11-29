@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App.tsx";
 import LoginPage from "../Pages/LoginPage/LoginPage";
 import ResetPage from "../Pages/ResetPage/ResetPage.tsx";
-import Warden from "../Pages/WardenDashboard/WardenDashboard.tsx";
+import Warden from "../Pages/Dashboard/WardenDashboard.tsx";
 import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
 import ProtectedRoute from "./ProtectedRoute";
 import WardenProtectedRoute from "./AdminProtectedRoute";
@@ -22,17 +22,17 @@ export const router = createBrowserRouter([
             {
                 path: 'warden-dashboard',
                 element: (
-                    <WardenProtectedRoute>
+                    // <WardenProtectedRoute>
                         <Warden />
-                    </WardenProtectedRoute>
+                    // </WardenProtectedRoute>
                 ),
             },
             {
                 path: 'student-dashboard',
                 element: (
-                   <ProtectedRoute>
+                 //  <ProtectedRoute>
                         <Student />
-                 </ProtectedRoute>
+                // </ProtectedRoute>
                 ),
             },
         ],
