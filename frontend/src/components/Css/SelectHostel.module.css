@@ -1,3 +1,7 @@
+unused remove this
+
+
+
 /* Container for the dropdown */
 .container {
   position: relative;
@@ -104,4 +108,10 @@
   padding: 10px;
   color: #777;
   text-align: center;
+}
+
+@media (max-width:900px) {
+  .hostel-dropdown-container{
+    width: 100%;
+  }
 }

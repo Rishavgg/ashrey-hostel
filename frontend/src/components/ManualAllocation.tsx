@@ -37,7 +37,6 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
   defaultStudent1,
   defaultStudent2,
   onSubmit,
-  onCancel,
   isLoading = false,
 }) => {
   const [isInternalLoading, setIsInternalLoading] = useState(false);
@@ -79,16 +78,44 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
   const isSubmitting = isLoading || isInternalLoading;
 
   return (
-    <main className={styles.formContainer}>
-      <header className={styles.formHeader}>
-        <h1 className={styles.formTitle}>Assign Room</h1>
-      </header>
+    <main className={styles.formContainer} >
 
       <form className={styles.form} onSubmit={handleSubmit(handleSave)}>
         <section className={styles.formFields}>
+          
+          <div className={styles.hostelSelect}>
+            {/* Hostel Dropdown */}
+
+            <div className={styles.hostelSelectSingle}>
+              <div className={styles.fieldWrapper}>
+                <label className={styles.fieldLabel}>Hostel</label>
+                <Dropdown
+                  label="Hostel"
+                  options={studentOptions.map((student) => student.name)}
+                  defaultSelected={defaultStudent2?.name}
+                  onOptionSelect={(name) => {
+                    const selected = studentOptions.find((s) => s.name === name);
+                    setSelectedStudent2(selected || undefined);
+                  }}
+                />
+              </div>
+                {/* Hostel Dropdown */}
+              <div className={styles.fieldWrapper}>
+                <label className={styles.fieldLabel}>Room Type</label>
+                <Dropdown
+                  label="Hostel"
+                  options={studentOptions.map((student) => student.name)}
+                  defaultSelected={defaultStudent2?.name}
+                  onOptionSelect={(name) => {
+                    const selected = studentOptions.find((s) => s.name === name);
+                    setSelectedStudent2(selected || undefined);
+                  }}
+                />
+              </div>
+            </div>
           {/* Hostel Dropdown */}
           <div className={styles.fieldWrapper}>
-            <label className={styles.fieldLabel}>Hostel</label>
+            <label className={styles.fieldLabel}>Room</label>
             <SelectHostel
               options={hostelOptions}
               defaultSelected={selectedHostel}
@@ -96,7 +123,9 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
             />
             {errors.hostel && <span className={styles.errorMessage}>{errors.hostel.message}</span>}
           </div>
+          </div>
 
+          <div className={styles.studentSelect}>
           {/* Student 1 Dropdown */}
           <div className={styles.fieldWrapper}>
             <label className={styles.fieldLabel}>Student 1</label>
@@ -127,6 +156,7 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
               }}
             />
           </div>
+          </div>
         </section>
 
         <footer className={styles.formActions}>
@@ -148,20 +178,6 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
                 />
               </>
             )}
-          </button>
-          <button
-            type="button"
-            className={`${styles.actionButton} ${styles.cancelButton}`}
-            onClick={onCancel}
-            disabled={isSubmitting}
-          >
-            <span className={styles.buttonText}>Cancel</span>
-            <img
-              src="/cancel.svg"
-              alt=""
-              className={styles.buttonIcon}
-              loading="lazy"
-            />
           </button>
         </footer>
       </form>

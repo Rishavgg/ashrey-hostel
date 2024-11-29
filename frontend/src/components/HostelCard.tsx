@@ -28,7 +28,7 @@ const getHostelName = (name: string): string => {
 
 const HostelCard: React.FC<HostelCardProps> = ({ name, balcony, sunny, level, roomNo }) => {
   const hostelName = getHostelName(name);
-  const fullName = `${name}${roomNo}`; // Concatenating room number with name
+  const fullName = `${name} ${roomNo}`; // Concatenating room number with name
 
   return (
     <article

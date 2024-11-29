@@ -43,7 +43,10 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
   // Close dropdown if clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -55,34 +58,28 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
   }, []);
 
   return (
-    <div className="custom-dropdown-container" ref={dropdownRef}>
+    <div className="hostel-dropdown-container" ref={dropdownRef}>
       {/* Dropdown Header */}
       <div
-        className={`custom-dropdown-header ${isOpen ? "custom-active" : ""}`}
+        className={`hostel-dropdown-header ${isOpen ? "hostel-active" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {/* Display the selected room as a HostelCard */}
+        {/* Display only the room name when selected, or prompt if none */}
         {selected ? (
-          <HostelCard
-          name={selected.name}
-          balcony={selected.balcony as 0 | 1} // Type assertion to 0 | 1
-          sunny={selected.sunny as 0 | 1} // Type assertion to 0 | 1
-          level={selected.level}
-          roomNo={selected.roomNo}
-        />
+          <span className="hostel-dropdown-selected">{selected.roomNo}</span>
         ) : (
-          <span className="custom-dropdown-selected">Select a room</span>
+          <span className="hostel-dropdown-selected">Select a room</span>
         )}
       </div>
 
       {/* Dropdown Options */}
       {isOpen && (
-        <ul className="custom-dropdown-options">
+        <ul className="hostel-dropdown-options">
           {/* Search Bar */}
-          <li className="custom-dropdown-search">
+          <li className="hostel-dropdown-search">
             <input
               type="text"
-              className="custom-dropdown-search-input"
+              className="hostel-dropdown-search-input"
               placeholder="Search rooms..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -93,7 +90,9 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
           {filteredOptions.map((option, index) => (
             <li
               key={index}
-              className="custom-dropdown-option"
+              className={`hostel-dropdown-option ${
+                selected && selected.name === option.name ? "selected-option" : ""
+              }`}
               onClick={() => handleOptionClick(option)}
             >
               <HostelCard
@@ -108,7 +107,7 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
 
           {/* No Results */}
           {filteredOptions.length === 0 && (
-            <li className="custom-dropdown-no-results">No results found</li>
+            <li className="hostel-dropdown-no-results">No results found</li>
           )}
         </ul>
       )}
