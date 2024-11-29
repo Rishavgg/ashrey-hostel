@@ -105,7 +105,7 @@ interface FindWardenProps {
 const FindWardenPage: React.FC<FindWardenProps> = ({ wardens }) => {
   return (
     <div>
-      <h2></h2>
+      <h2>Warden List</h2>
       <ul>
         {wardens.length > 0 ? (
           wardens.map((warden) => (
@@ -114,7 +114,7 @@ const FindWardenPage: React.FC<FindWardenProps> = ({ wardens }) => {
             </li>
           ))
         ) : (
-          <li></li>
+          <li>No wardens found.</li>
         )}
       </ul>
     </div>

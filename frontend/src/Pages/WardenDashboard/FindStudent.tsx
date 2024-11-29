@@ -1,20 +1,4 @@
 import React from 'react';
-import Navbar from "../../components/NavbarWarden.tsx";
-import FilterBar from "../../components/FilterBar.tsx";
-import NameCard from "../../components/NameCard.tsx";
-import AddUser from "../../components/AddUser.tsx";
-import FabButton from "../../components/Fab.tsx";
-import { useEffect, useState, useRef } from "react";
-import {
-  fetchStudentData,
-  fetchStudentProfile,
-  searchStudents,
-  uploadExcel,
-} from "../../services/managerService.tsx";
-import * as Yup from "yup";
-import { useAuth } from "../../Context/UseAuth.tsx";
-import Profile from "../../components/Profile.tsx";
-import profileIcon from "../../Assets/icon/profile.svg";
 
 interface Student {
   id: number;

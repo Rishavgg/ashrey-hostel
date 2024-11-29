@@ -18,7 +18,7 @@ type Field = {
 };
 
 const ChiefWarden: React.FC = () => {
-  const [activePage, setActivePage] = useState<string>("Find a Student"); // Default page
+  const [activePage, setActivePage] = useState<string>("Find a Warden"); // Default page
   const [isAddWardenPopupVisible, setIsAddWardenPopupVisible] = useState(false); // State to toggle AddUser popup
   const [wardens, setWardens] = useState<any[]>([]); // Store wardens data
   const [isPopupLoading, setIsPopupLoading] = useState(false);
@@ -86,59 +86,45 @@ const ChiefWarden: React.FC = () => {
         .required("Phone number is required"),
     },
     {
-      label: 'Roll No.',
-      name: 'rollNumber',
-      type: 'text',
-      validation: Yup.string().required('Roll number is required'),
+      label: "Hostel",
+      name: "hostel",
+      type: "custom", // Custom type for dropdown
+      validation: Yup.string().required("Hostel is required"), // Validation for the dropdown
+      component: (
+        <select
+          style={{
+            padding: "8px",
+            fontSize: "14px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            width: "100%",
+          }}
+          defaultValue=""
+          {...{
+            name: "hostel", // Sync with react-hook-form
+            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+              const { value } = e.target;
+              if (value) setWardens((prev) => [...prev, value]);
+            },
+          }}
+        >
+          <option value="" disabled>
+            Select Hostel
+          </option>
+          {hostelOptions.map((hostel) => (
+            <option key={hostel} value={hostel}>
+              {hostel}
+            </option>
+          ))}
+        </select>
+      ),
     },
-    {
-      label: 'Adm Year',
-      name: 'contact',
-      type: 'text',
-      validation: Yup.string()
-        .matches(/^\d{10}$/, 'Phone number must be a 10-digit number')
-        .required('Phone number is required'),
-    },
-    // {
-    //   label: "Hostel",
-    //   name: "hostel",
-    //   type: "custom", // Custom type for dropdown
-    //   validation: Yup.string().required("Hostel is required"), // Validation for the dropdown
-    //   component: (
-    //     <select
-    //       style={{
-    //         padding: "8px",
-    //         fontSize: "14px",
-    //         borderRadius: "4px",
-    //         border: "1px solid #ccc",
-    //         width: "100%",
-    //       }}
-    //       defaultValue=""
-    //       {...{
-    //         name: "hostel", // Sync with react-hook-form
-    //         onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //           const { value } = e.target;
-    //           if (value) setWardens((prev) => [...prev, value]);
-    //         },
-    //       }}
-    //     >
-    //       <option value="" disabled>
-    //         Select Hostel
-    //       </option>
-    //       {hostelOptions.map((hostel) => (
-    //         <option key={hostel} value={hostel}>
-    //           {hostel}
-    //         </option>
-    //       ))}
-    //     </select>
-    //   ),
-    // },
   ];
 
   // Render dynamic content based on activePage
   const renderContent = () => {
     switch (activePage) {
-      case "Find a Student":
+      case "Find a Warden":
         return <FindWardenPage wardens={wardens} />;
       case "Mass Allocation":
         return <MassAllocationPage />;
@@ -187,7 +173,6 @@ const ChiefWarden: React.FC = () => {
               flexWrap: "wrap",
             }}
           >
-            
                   {/* Add Warden Popup */}
       {isAddWardenPopupVisible && (
         <div
@@ -200,7 +185,7 @@ const ChiefWarden: React.FC = () => {
           }}
         >
           <AddUser
-            title="Add Student"
+            title="Add Warden"
             fields={addWardenFields}
             onSubmit={handleAddWardenSubmit}
             onCancel={toggleAddWardenPopup}
