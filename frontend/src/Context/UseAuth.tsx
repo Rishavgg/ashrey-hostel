@@ -9,7 +9,7 @@ import axios from "axios";
 type UserContextType = {
     user: UserProfile | null;
     token: string | null;
-    registerUser: (name: string, email: string, userName: string, contact: string) =>  Promise<RegisterUser | undefined>
+    registerUser: (name: string, email: string, userName: string, contact: string, admissonyear: number) =>  Promise<RegisterUser | undefined>
     loginUser: (userName: string, password: string) => Promise<void>;
     logoutUser: () => void;
     isLoggedIn: () => boolean;
@@ -37,8 +37,8 @@ export const UserProvider = ({ children }: Props) => {
         setIsReady(true);
     }, [])
 
-    const registerUser = async (name: string, userName: string, email: string, contact: string) => {
-        const res = await registerAPI(name, email, userName, contact);
+    const registerUser = async (name: string, userName: string, email: string, contact: string, admissonyear: number) => {
+        const res = await registerAPI(name, email, userName, contact, admissonyear);
         try {
             if (res?.message === "Student added successfully") {
                 toast.success("Email sent successfully");
@@ -92,7 +92,7 @@ export const UserProvider = ({ children }: Props) => {
                     setToken(null);
                     delete axios.defaults.headers.common.Authorization;
                     toast.success("Logout successful.");
-                    navigate("/student-login");
+                    navigate("/");
                 }
             }
         } catch (error) {
