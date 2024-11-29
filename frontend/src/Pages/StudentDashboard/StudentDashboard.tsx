@@ -1,6 +1,7 @@
 // import OutpassCard from '../../components/OutpassCard.tsx'
 import Navbar from '../../components/NavbarStudent.tsx'
-import NameCard from '../../components/NameCard.tsx';
+import FilterBar from '../../components/FilterBar.tsx'
+
 
 const HomePage = () => {
     return (
@@ -14,7 +15,6 @@ const HomePage = () => {
                 
                 </div>
         </div> */}
-        
 
         <div style={{
             display: 'flex',
@@ -34,7 +34,7 @@ const HomePage = () => {
                 minWidth: '0'
             }}>
                 {/* Filter Bar */}
-                {/* <FilterBar title="Warden Dashboard" onSearch={handleSearch} /> */}
+                <FilterBar title="Page Title" />
 
                 {/* Rest of Content */}
                 <div style={{
@@ -48,24 +48,6 @@ const HomePage = () => {
                     Rest of the content here
                 </div>
             </div>
-            <div
-            style={{
-              padding: '20px',
-              gap: '20px',
-              position: 'sticky',
-              width: '100%',
-              display: 'flex',
-              flexWrap: 'wrap',
-            }}
-          >
-            <NameCard
-              name="John Doe"
-              id="211478"
-              status="H 15 B9"
-              year="2nd"
-            />
-            {/* Add more NameCard components as needed */}
-          </div>
         </div>
 
 

@@ -50,12 +50,12 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
         <hr className={styles.dividerLine} />
         <NavItem
           icon={findIcon}
-          label="Find a student"
+          label="Find a Student"
           isActive={activeElement === 'Find a student'}
           onClick={() => handleClick('Find a student')} link={''}        />
         <NavItem
           icon={reciptIcon}
-          label="Hostel fees status"
+          label="Manage Warden"
           isActive={activeElement === 'Hostel fees status'}
           onClick={() => handleClick('Hostel fees status')} link={''}        />
         <NavItem
