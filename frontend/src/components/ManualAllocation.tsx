@@ -25,7 +25,7 @@ type AssignRoomFormProps = {
   defaultHostel?: Room;
   defaultStudent1?: Student;
   defaultStudent2?: Student;
-  onSubmit: (data: { hostel: Room; student1: Student; student2: Student }) => Promise<void>;
+  onSubmit: (data: { hostel: Room; student1: Student; student2?: Student }) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
 };
@@ -45,9 +45,12 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
   const [selectedStudent1, setSelectedStudent1] = useState<Student | undefined>(defaultStudent1);
   const [selectedStudent2, setSelectedStudent2] = useState<Student | undefined>(defaultStudent2);
 
+  // Validation schema
   const validationSchema = Yup.object().shape({
     hostel: Yup.object().required("Hostel is required"),
-    student1: Yup.object().required("Student 1 is required"),
+    student1: Yup.object()
+      .nullable()
+      .required("Student 1 is required"), // Allow nullable but still enforce required
     student2: Yup.object().nullable(), // Optional field
   });
 
@@ -65,7 +68,7 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
         await onSubmit({
           hostel: selectedHostel,
           student1: selectedStudent1,
-          student2: selectedStudent2 || null,
+          student2: selectedStudent2,
         });
       } finally {
         setIsInternalLoading(false);
@@ -103,7 +106,7 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
               defaultSelected={defaultStudent1?.name}
               onOptionSelect={(name) => {
                 const selected = studentOptions.find((s) => s.name === name);
-                setSelectedStudent1(selected);
+                setSelectedStudent1(selected || undefined);
               }}
             />
             {errors.student1 && (
@@ -120,7 +123,7 @@ const AssignRoomForm: React.FC<AssignRoomFormProps> = ({
               defaultSelected={defaultStudent2?.name}
               onOptionSelect={(name) => {
                 const selected = studentOptions.find((s) => s.name === name);
-                setSelectedStudent2(selected);
+                setSelectedStudent2(selected || undefined);
               }}
             />
           </div>
