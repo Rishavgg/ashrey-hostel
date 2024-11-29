@@ -1,0 +1,28 @@
+services:
+  database:
+    image: postgres
+    restart: always
+    container_name: database
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ashreyHostel
+    networks:
+      - ashrey_network
+  server:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: maven_app
+      ports:
+        - "9090:9090"
+      depends_on:
+        - database
+      networks:
+        - ashrey_network
+
+networks:
+  ashrey_network:
+    driver: bridge
