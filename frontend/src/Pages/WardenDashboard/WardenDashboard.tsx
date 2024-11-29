@@ -1,6 +1,4 @@
 import Navbar from '../../components/NavbarWarden.tsx';
-import FilterBar from '../../components/FilterBar.tsx';
-import { fetchStudentData, searchStudents } from "../../services/managerService.tsx"
 import FindStudent from "./FindStudent.tsx"; 
 import HostelFees from './HostelFees.tsx'; 
 import ManualAllocation from './ManualAllocation.tsx';
@@ -16,7 +14,6 @@ import { useState } from "react";
 // Define Warden Component
 const Warden = () => {
   const [activePage, setActivePage] = useState<string>('Find a student'); // Default page
-  const [students, setStudents] = useState<any[]>([]);
   // Callback for changing the active page
   const handlePageChange = (page: string) => {
     setActivePage(page);

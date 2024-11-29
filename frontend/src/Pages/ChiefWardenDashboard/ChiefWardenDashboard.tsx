@@ -24,7 +24,7 @@ const ChiefWarden: React.FC = () => {
   const [isPopupLoading, setIsPopupLoading] = useState(false);
 
   // Dropdown options for hostel selection
-  const hostelOptions = ["H1", "H2", "H3"];
+  // const hostelOptions = ["H1", "H2", "H3"];
 
   // Handle page navigation
   const handlePageChange = (page: string) => {
