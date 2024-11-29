@@ -7,13 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "students")
+@Table(name = "student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +21,16 @@ public class Student {
     @Column(unique = true, nullable = false)
     private String rollNumber;
 
-
-    @Column(name = "email", nullable = false)
+    @Column(name = "student_email", nullable = false)
     private String email;
 
-    @Column(name = "Student_name")
+    @Column(name = "student_name")
     private String name;
 
-    @Column
+    @Column(name = "student_contact")
     private String contact;
 
-    @Column
+    @Column(name = "created_at")
     private Date createdAt = new Date();
 
     @Column(nullable = false)
@@ -41,19 +39,14 @@ public class Student {
     @Column(nullable = false)
     private Boolean passwordChanged = false;
 
+    private int admissionYear;
+
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", unique = true)
     private Room room;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Outpass> outpasses;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Complaint> complaints;
 }
+
 
 
 

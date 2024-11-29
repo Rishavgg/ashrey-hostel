@@ -1,40 +1,45 @@
 package com.manager.ashrey.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "wardens")
+@Table(name = "warden")
 public class Warden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wardenId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "warden_name")
+    private String name;
 
-    @Column
-    private Timestamp createdAt;
+    @Column(name = "warden_email")
+    private String email;
+
+    @Column(name = "created_at")
+    private Date createdAt = new Date();
+
+    @Column(name = "warden_contact")
+    private String contact;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "warden_hostel",
             joinColumns = @JoinColumn(name = "warden_id"),
             inverseJoinColumns = @JoinColumn(name = "hostel_id")
     )
-    private List<Hostel> hostels;
-
-    @OneToMany(mappedBy = "warden", cascade = CascadeType.ALL)
-    private List<Outpass> outpasses;
+    private Set<Hostel> hostels;
 
 }
 

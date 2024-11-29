@@ -2,6 +2,7 @@ package com.manager.ashrey.controller;
 
 import com.manager.ashrey.config.JwtBlacklist;
 import com.manager.ashrey.config.JwtUtil;
+import com.manager.ashrey.dto.AddStudentDto;
 import com.manager.ashrey.dto.ResetPasswordDto;
 import com.manager.ashrey.dto.UserDto;
 import com.manager.ashrey.entity.Student;
@@ -11,7 +12,6 @@ import com.manager.ashrey.service.EmailService;
 import com.manager.ashrey.service.StudentAuthService;
 import com.manager.ashrey.service.StudentDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,23 +53,11 @@ public class StudentAuthController {
     @PostMapping(value = "/addStudent")
     public ResponseEntity<ResponseDTO> addStudent(@RequestBody Student student) {
         try {
-            if (studentRepository.existsByRollNumber(student.getRollNumber())) {
-                return ResponseEntity.ok(new ResponseDTO("Roll number already exists"));
-            }
-
-            String tempPassword = generateTemporaryPassword();
-            student.setTemporaryPassword(passwordEncoder.encode(tempPassword));
-            student.setPasswordChanged(false);
-
             String msg = studentAuthService.addStudent(student);
-
-            sendEmailWithCredentials(student.getEmail(), student.getRollNumber(), tempPassword);
-            ResponseDTO response = new ResponseDTO(msg);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(new ResponseDTO(msg));
         } catch (Exception e) {
-            return ResponseEntity.ok(new ResponseDTO("Error in adding student!"));
+            return ResponseEntity.badRequest().body(new ResponseDTO("Error in adding student: " + e.getMessage()));
         }
-
     }
 
 
@@ -102,9 +90,9 @@ public class StudentAuthController {
             if (student == null) {
                 return ResponseEntity.ok(new ResponseDTO("Student not found!"));
             }
-            if (student.getPasswordChanged()) {
-                return ResponseEntity.ok(new ResponseDTO("You have already Changed you password once, contact warden"));
-            }
+//            if (student.getPasswordChanged()) {
+//                return ResponseEntity.ok(new ResponseDTO("You have already Changed you password once, contact warden"));
+//            }
             String oldEncodedPassword = passwordEncoder.encode(resetPasswordDto.getOldPassword());
             if (!passwordEncoder.matches(resetPasswordDto.getOldPassword(), student.getTemporaryPassword())) {
                 return ResponseEntity.ok(new ResponseDTO("Wrong Temporary Password!"));
