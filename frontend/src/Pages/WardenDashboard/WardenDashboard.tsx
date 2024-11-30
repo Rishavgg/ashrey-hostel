@@ -1,6 +1,4 @@
 import Navbar from '../../components/NavbarWarden.tsx';
-import FilterBar from '../../components/FilterBar.tsx';
-import { fetchStudentData, searchStudents } from "../../services/managerService.tsx"
 import FindStudent from "./FindStudent.tsx"; 
 import HostelFees from './HostelFees.tsx'; 
 import ManualAllocation from './ManualAllocation.tsx';
@@ -16,28 +14,27 @@ import { useState } from "react";
 // Define Warden Component
 const Warden = () => {
   const [activePage, setActivePage] = useState<string>('Find a student'); // Default page
-  const [students, setStudents] = useState<any[]>([]);
   // Callback for changing the active page
   const handlePageChange = (page: string) => {
     setActivePage(page);
   };
 
-  const handleSearch = async (searchTerm: string) => {
-    if (!searchTerm) {
-      // If search term is empty, reload all students
-      const data = await fetchStudentData(0, 10);
-      setStudents(data);
-    } else {
-      const data = await searchStudents(searchTerm, 0, 5); // Search for students
-      setStudents(data);
-    }
-  };
+  // const handleSearch = async (searchTerm: string) => {
+  //   if (!searchTerm) {
+  //     // If search term is empty, reload all students
+  //     const data = await fetchStudentData(0, 10);
+  //     setStudents(data);
+  //   } else {
+  //     const data = await searchStudents(searchTerm, 0, 5); // Search for students
+  //     setStudents(data);
+  //   }
+  // };
 
   // Render content dynamically based on activePage
   const renderContent = () => {
     switch (activePage) {
       case 'Find a student':
-        return <FindStudent students={students}/>;
+        return <FindStudent />;
       case 'Hostel fees status':
         return <HostelFees />;
       case 'Manual Allocation':
@@ -57,7 +54,7 @@ const Warden = () => {
       case 'Add/Edit student details':
           return <AddEditStudent />;
       default:
-        return <FindStudent students={students}/>;
+        return <FindStudent/>;
     }
   };
 
@@ -85,7 +82,7 @@ const Warden = () => {
           }}
         >
           {/* Filter Bar */}
-          <FilterBar title={activePage} onSearch={handleSearch} />
+          {/* <FilterBar title={activePage} onSearch={handleSearch} /> */}
           {/* Dynamic Content Area */}
           <div
             style={{

@@ -5,32 +5,38 @@ const API_BASE_URL = "http://localhost:9090";
 export const fetchStudentData = async (page: number, size: number) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/warden/dashboard/all/student`,
-      { params: { page, size } }
+        `${API_BASE_URL}/warden/dashboard/all/student`,
+        { params: { page, size } }
     );
-
+ 
+ 
     const students = response.data.content.map((student: any) => {
-      const { name, rollNumber, room, year } = student;
-
-      const blockName = room?.block?.blockName || "N/A";
-      const hostelName = room?.block?.hostel?.hostelName || "N/A";
-      const roomNumber = room?.roomNumber || "N/A";
-      const status = `H ${hostelName} ${blockName} ${roomNumber}`;
-
-      return {
+      const {
         name,
-        id: rollNumber,
-        status,
+        rollNumber,
+        hostelName,
+        roomNumber,
+        year
+      } = student;
+ 
+ 
+      return {
+        name: name || "N/A",
+        rollNumber: rollNumber || "N/A",
+        hostelName: hostelName || "N/A",
+        roomNumber: roomNumber || "N/A",
         year: year ? `${year} Year` : "N/A",
       };
     });
-
+ 
+ 
     return students;
   } catch (error) {
     console.error("Error fetching student data:", error);
     return [];
   }
-};
+ };
+ 
 
 export const fetchStudentProfile = async () => {
   try {

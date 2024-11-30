@@ -186,7 +186,7 @@
 //           }}
 //         >
 //           <AddUser
-//             title="Add Warden"
+//             title="Add Student"
 //             fields={fields} // Pass the fields array here
 //             onSubmit={handlePopupSubmit}
 //             onCancel={togglePopup}
