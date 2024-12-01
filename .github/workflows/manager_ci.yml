@@ -40,10 +40,10 @@ jobs:
           mvn clean install
 
       # Step 5: Run tests
-      - name: Run tests
-        run: |
-          cd manager
-          mvn test
+      # - name: Run tests
+      #   run: |
+      #     cd manager
+      #     mvn test
 
   deploy:
     runs-on: ubuntu-latest
