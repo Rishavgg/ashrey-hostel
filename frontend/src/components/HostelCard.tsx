@@ -14,8 +14,8 @@ interface HostelCardProps {
     sunny: 0 | 1; // Binary value for sunny (0: no, 1: yes)
     level: number; // Integer level value
     roomNo: string; // Room number to concatenate with name
-    // capacity:;
-    // floor:;
+    capacity: number;
+    occupancy: number;
     // id:;
 }
 
@@ -25,15 +25,18 @@ const getHostelName = (name: string): string => {
   if (name.startsWith('H13')) return 'Geeta Bhavan';
   return 'Shastri Bhavan';
 };
-
-const HostelCard: React.FC<HostelCardProps> = ({ name, balcony, sunny, level, roomNo }) => {
+const HostelCard: React.FC<HostelCardProps> = ({ name, balcony, sunny, level, roomNo, capacity, occupancy }) => {
   const hostelName = getHostelName(name);
-  const fullName = `${name}${roomNo}`; // Concatenating room number with name
+  const fullName = `${name} ${roomNo}`; // Concatenating room number with name
+
+  // Determine background color based on capacity and occupancy
+  const cardBackgroundColor = capacity === occupancy ? '#d7d7d7' : '#ffffff';
 
   return (
     <article
       className={styles.nameCard}
       style={{
+        backgroundColor: cardBackgroundColor, // Conditional background color
         transition: 'background-color 0.3s',
       }}
     >
@@ -61,5 +64,6 @@ const HostelCard: React.FC<HostelCardProps> = ({ name, balcony, sunny, level, ro
     </article>
   );
 };
+
 
 export default HostelCard;

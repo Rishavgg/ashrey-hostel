@@ -1,0 +1,117 @@
+/* Dropdown Container */
+.hostel-dropdown-container {
+  position: relative;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  background-color: #f7f2fa;
+  box-sizing: border-box; /* Ensure padding is included in width/height */
+}
+
+/* Dropdown Header */
+.hostel-dropdown-header {
+  display: flex;
+  align-items: center;
+  padding: 0 10px; /* Match the top container's padding */
+  cursor: pointer;
+  height: 40px; /* Set height to match the desired size */
+  font-size: 14px; /* Ensure consistent font size */
+  color: #333;
+}
+
+.hostel-dropdown-header.hostel-active {
+  border-radius: 8px;
+  background-color: #e4d9fa; /* Optional: add a slight highlight */
+}
+
+/* Selected Option Text */
+.hostel-dropdown-selected {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflow */
+}
+
+/* Dropdown Options */
+.hostel-dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%; /* Ensure full width */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  list-style: none;
+  padding: 0;
+  z-index: 1000;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+.hostel-dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hostel-dropdown-options::-webkit-scrollbar-thumb {
+  background: #e4d9fa;
+  border-radius: 8px;
+}
+
+.hostel-dropdown-options {
+  scrollbar-color: #e4d9fa transparent;
+  scrollbar-width: thin;
+}
+
+/* Search Input */
+.hostel-dropdown-search {
+  border-bottom: 1px solid #ccc;
+}
+
+.hostel-dropdown-search-input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  border-radius: 4px;
+  background-color: #f7f2fa;
+}
+
+.hostel-dropdown-search-input:focus {
+  background-color: white;
+}
+
+/* Dropdown Option */
+.hostel-dropdown-option {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.hostel-dropdown-option:hover {
+  background-color: #ececec;
+  color: #000;
+  border-radius: 7px;
+}
+
+.hostel-dropdown-option.selected-option {
+  /* border: 2px solid #252525;
+  border-radius: 4px; */
+  background-color: #e4d9fa;
+}
+
+/* No Results Found */
+.hostel-dropdown-no-results {
+  padding: 10px;
+  color: #777;
+  text-align: center;
+}
+
+
+
+
