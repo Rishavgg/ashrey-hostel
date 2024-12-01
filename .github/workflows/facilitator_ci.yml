@@ -39,33 +39,33 @@ jobs:
       #     source venv/bin/activate
       #     python manage.py test
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: github.ref == 'refs/heads/main'
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          cd facilitator
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r auth_service/requirements.txt
+  #     - name: Install dependencies
+  #       run: |
+  #         cd facilitator
+  #         python -m venv venv
+  #         source venv/bin/activate
+  #         pip install --upgrade pip
+  #         pip install -r auth_service/requirements.txt
 
-      - name: Collect static files (if required)
-        run: |
-          cd facilitator
-          source venv/bin/activate
-          python manage.py collectstatic --noinput
+  #     - name: Collect static files (if required)
+  #       run: |
+  #         cd facilitator
+  #         source venv/bin/activate
+  #         python manage.py collectstatic --noinput
 
     #   - name: Deploy application
     #     run: |
