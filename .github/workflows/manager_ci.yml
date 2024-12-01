@@ -37,7 +37,7 @@ jobs:
       - name: Build with Maven
         run: |
           cd manager
-          ./mvn clean install -Dmaven.test.skip
+          mvn clean install -DskipTests
 
       # Step 5: Run tests
       # - name: Run tests
