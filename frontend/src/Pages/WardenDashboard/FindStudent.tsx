@@ -11,7 +11,6 @@ import {
   searchStudents,
   uploadExcel,
 } from "../../services/managerService.tsx";
-import profileIcon from "../../Assets/icon/profile.svg";
 import { useAuth } from "../../Context/UseAuth.tsx";
 
 const FindStudent = () => {
@@ -72,12 +71,21 @@ const FindStudent = () => {
 
   const handlePopupSubmit = async (formData: Record<string, string>) => {
     try {
+      console.log("Form data received:", formData); // Logs the entire formData object
+  
+      // Log each field with its type and value
+      console.log("Name:", formData.name, "| Type:", typeof formData.name);
+      console.log("Email:", formData.email, "| Type:", typeof formData.email);
+      console.log("Roll Number:", formData.rollNumber, "| Type:", typeof formData.rollNumber);
+      console.log("Contact:", formData.contact, "| Type:", typeof formData.contact);
+      console.log("Admission Year (string):", formData.admissonyear, "| Type:", typeof formData.admissonyear);
+  
       setIsPopupLoading(true);
   
-      // Convert admissonyear to a number before passing to registerUser
+      // Convert admissonyear to a number
       const admissonyear = parseInt(formData.admissonyear, 10);
       if (isNaN(admissonyear)) {
-        throw new Error("Admisson year must be a valid number.");
+        throw new Error("Admission year must be a valid number.");
       }
   
       const res = await registerUser(
@@ -85,14 +93,16 @@ const FindStudent = () => {
         formData.email,
         formData.rollNumber,
         formData.contact,
-        admissonyear // Now it's a number
+        admissonyear
       );
+  
+      console.log("Response from registerUser:", res);
   
       if (res?.message === "User added successfully") {
         setIsPopupVisible(false);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error occurred in handlePopupSubmit:", error);
     } finally {
       setIsPopupLoading(false);
     }
@@ -162,22 +172,6 @@ const FindStudent = () => {
         </div>
       )}
       {loadingProfile && <div>Loading Profile...</div>}
-
-      {/* Popup for Adding Users */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "200px",
-          right: "24px",
-          zIndex: 1000,
-        }}
-      >
-        <FabButton
-          iconSrc={profileIcon}
-          iconAlt="Profile"
-          onClick={toggleProfilePopup}
-        />
-      </div>
       
       {isPopupVisible && (
         <div
@@ -255,13 +249,13 @@ const FindStudent = () => {
         style={{
           position: "fixed",
           bottom: "90px",
-          right: "24px",
+          right: "28px",
           zIndex: 1000,
         }}
       >
         <FabButton
-          iconSrc="/upload.svg"
-          iconAlt="Upload Excel"
+          iconSrc="Assests/upload.svg"
+          iconAlt="Upload"
           isFileUpload={true}
           onFileSelect={(file) => handleFileUpload(file)}
         />

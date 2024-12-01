@@ -1,5 +1,6 @@
 venv/
-db.sqlite3/
+facilitator/db.sqlite3
 __pycache__/
 **/__pycache__/
 .vscode/
+.env
