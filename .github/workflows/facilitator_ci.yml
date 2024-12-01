@@ -30,7 +30,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip install -r auth_service/requirements.txt
+          pip install -r requirements.txt
 
       # Step 4: Run Django tests
       - name: Run tests
