@@ -1,7 +1,7 @@
 import Navbar from '../../components/NavbarWarden.tsx';
 import FindStudent from "./FindStudent.tsx"; 
 import HostelFees from './HostelFees.tsx'; 
-import ManualAllocation from './ManualAllocation.tsx';
+// import ManualAllocation from './ManualAllocation.tsx';
 import MassAllocation from './MassAllocation.tsx';
 import AddEditStudent from './AddEditStudent.tsx';
 import AddEditRooms from './AddEditRooms.tsx';
@@ -37,8 +37,8 @@ const Warden = () => {
         return <FindStudent />;
       case 'Hostel fees status':
         return <HostelFees />;
-      case 'Manual Allocation':
-        return <ManualAllocation />;
+      // case 'Manual Allocation':
+      //   return <ManualAllocation />;
       case 'Mass Allocation':
         return <MassAllocation />;
       case 'Allocation Request':

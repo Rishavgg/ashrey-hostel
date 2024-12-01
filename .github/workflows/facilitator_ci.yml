@@ -1,0 +1,73 @@
+name: Django Facilitator CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9' # Use the Python version your Django app requires
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          cd facilitator
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r auth_service/requirements.txt
+
+      # Step 4: Run Django tests
+      - name: Run tests
+        run: |
+          cd facilitator
+          source venv/bin/activate
+          python manage.py test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          cd facilitator
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r auth_service/requirements.txt
+
+      - name: Collect static files (if required)
+        run: |
+          cd facilitator
+          source venv/bin/activate
+          python manage.py collectstatic --noinput
+
+    #   - name: Deploy application
+    #     run: |
+    #       echo "Deployment steps go here"
+    #       # Add deployment commands, e.g., SCP, Docker, or Kubernetes
