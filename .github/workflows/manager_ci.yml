@@ -37,7 +37,7 @@ jobs:
       - name: Build with Maven
         run: |
           cd manager
-          ./mvnw clean install javadoc:javadoc -B -q -Pall -Dmaven.test.skip
+          ./mvn clean install -Dmaven.test.skip
 
       # Step 5: Run tests
       # - name: Run tests
