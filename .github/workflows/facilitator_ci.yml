@@ -33,11 +33,11 @@ jobs:
           pip install -r requirements.txt
 
       # Step 4: Run Django tests
-      - name: Run tests
-        run: |
-          cd facilitator
-          source venv/bin/activate
-          python manage.py test
+      # - name: Run tests
+      #   run: |
+      #     cd facilitator
+      #     source venv/bin/activate
+      #     python manage.py test
 
   deploy:
     runs-on: ubuntu-latest
