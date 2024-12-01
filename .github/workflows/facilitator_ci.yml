@@ -21,7 +21,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9' # Use the Python version your Django app requires
+          python-version: ' 3.11'
 
       # Step 3: Install dependencies
       - name: Install dependencies
