@@ -9,6 +9,7 @@ import AllocationReq from './AllocationReq.tsx';
 import OutofCampus from './OutofCampus.tsx';
 import OutpassHistory from './OutpassHistory.tsx';
 import OutpassReq from './OutpassReq.tsx';
+import PublicRoom from './PublicRoomList.tsx';
 import { useState } from "react";
 
 // Define Warden Component
@@ -18,17 +19,6 @@ const Warden = () => {
   const handlePageChange = (page: string) => {
     setActivePage(page);
   };
-
-  // const handleSearch = async (searchTerm: string) => {
-  //   if (!searchTerm) {
-  //     // If search term is empty, reload all students
-  //     const data = await fetchStudentData(0, 10);
-  //     setStudents(data);
-  //   } else {
-  //     const data = await searchStudents(searchTerm, 0, 5); // Search for students
-  //     setStudents(data);
-  //   }
-  // };
 
   // Render content dynamically based on activePage
   const renderContent = () => {
@@ -53,6 +43,8 @@ const Warden = () => {
         return <OutpassReq />;
       case 'Add/Edit student details':
           return <AddEditStudent />;
+      case 'Public Room List':
+          return <PublicRoom/>;
       default:
         return <FindStudent/>;
     }
@@ -81,8 +73,6 @@ const Warden = () => {
             minWidth: '0'
           }}
         >
-          {/* Filter Bar */}
-          {/* <FilterBar title={activePage} onSearch={handleSearch} /> */}
           {/* Dynamic Content Area */}
           <div
             style={{

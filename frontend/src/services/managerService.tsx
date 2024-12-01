@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios,{ AxiosResponse } from "axios";
 
 const API_BASE_URL = "http://localhost:9090";
 
@@ -147,6 +147,31 @@ export const registerWarden = async (wardenDetails: { name: string; hostel: stri
     await axios.post(`${API_BASE_URL}/chiefwarden/dashboard/add/warden`, wardenDetails);
   } catch (error) {
     console.error("Error registering warden:", error);
+    throw error;
+  }
+};
+
+interface Room {
+  roomId: number;
+  roomNumber: string;
+  capacity: number;
+  currentOccupancy: number;
+  floor: number;
+  level: number;
+  sunlight: boolean;
+  balcony: boolean;
+  hostelId: number | null;
+}
+
+// Fetch rooms data from the API
+export const fetchPublicRooms = async (): Promise<Room[]> => {
+  try {
+    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/hostels/10/rooms`, 
+      // {params: { page, size }} // Pass pagination parameters
+  );
+    return response.data.content; // Assuming the rooms are in the "content" field
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
     throw error;
   }
 };

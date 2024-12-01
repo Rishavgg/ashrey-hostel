@@ -35,20 +35,29 @@ const FindStudent = () => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
-
+  
     if (!searchTerm.trim()) {
-      return; // Don't trigger search if the term is empty
+      // If the search term is empty, fetch all students
+      try {
+        const data = await fetchStudentData(0, 10); // Adjust pagination as needed
+        setStudents(data);
+      } catch (error) {
+        console.error("Failed to fetch all students:", error);
+      }
+      return;
     }
-
+  
+    // Perform search with debounce
     searchTimeoutRef.current = setTimeout(async () => {
       try {
-        const data = await searchStudents(searchTerm, 0, 5);
+        const data = await searchStudents(searchTerm, 0, 5); // Adjust pagination as needed
         setStudents(data);
       } catch (error) {
         console.error("Search failed:", error);
       }
     }, 300); // Debounce delay of 300ms
   };
+  
 
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
@@ -136,7 +145,7 @@ const FindStudent = () => {
           flexWrap: "wrap",
         }}
       >
-        <FilterBar title="" onSearch={handleSearch} />
+        <FilterBar title="Find a Student" onSearch={handleSearch} />
         {students.length === 0 && <p>No students found.</p>}
         {students.map((student, index) => (
           <NameCard
