@@ -4,6 +4,7 @@ import AddUser from "../../components/AddUser.tsx";
 import FabButton from "../../components/Fab.tsx";
 import Profile from "../../components/Profile.tsx";
 import FilterBar from "../../components/FilterBar.tsx";
+import StudntTable from "../../components/NameTableRow.tsx"
 import * as Yup from "yup";
 import {
   fetchStudentData,
@@ -12,6 +13,7 @@ import {
   uploadExcel,
 } from "../../services/managerService.tsx";
 import { useAuth } from "../../Context/UseAuth.tsx";
+import styles from '../../components/Css/TileView.module.css'
 
 const FindStudent = () => {
   const [students, setStudents] = useState<any[]>([]);
@@ -21,15 +23,21 @@ const FindStudent = () => {
   const [profileData, setProfileData] = useState<any>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const searchTimeoutRef = useRef<any>(null);
+  const [view, setView] = useState("Tile");
   const { registerUser } = useAuth();
+  const [page, setPage] = useState(0)
+  const [size] = useState(5);
+  const handleNextPage = () => setPage((prev) => prev + 1);
+  const handlePrevPage = () => setPage((prev) => (prev > 0 ? prev - 1 : 0));
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchStudentData(0, 10); // Fetch first page with size 10
+      const data = await fetchStudentData(page,size); // Fetch first page with size 10
       setStudents(data);
     };
     fetchData();
-  }, []);
+  }, [page, size]);
 
   const handleSearch = async (searchTerm: string) => {
     if (searchTimeoutRef.current) {
@@ -132,6 +140,10 @@ const FindStudent = () => {
   function handleViewFullProfile(): void {
     throw new Error("Function not implemented.");
   }
+  
+  const handleToggleView = (selectedView: string) => {
+    setView(selectedView); // Update view to either "Tile" or "Table"
+  };
 
   return (
     <div>
@@ -145,7 +157,9 @@ const FindStudent = () => {
           flexWrap: "wrap",
         }}
       >
-        <FilterBar title="Find a Student" onSearch={handleSearch} />
+        <FilterBar title="Find a Student" onSearch={handleSearch} onToggle={handleToggleView} />
+        {view === "Tile" ? (
+        <div className={styles.tileView}>
         {students.length === 0 && <p>No students found.</p>}
         {students.map((student, index) => (
           <NameCard
@@ -156,6 +170,10 @@ const FindStudent = () => {
             year={student.year}
           />
         ))}
+        </div>
+        ): (
+          <StudntTable student={students} />
+        )}
       </div>
 
       {/* Profile Popup */}
@@ -268,6 +286,10 @@ const FindStudent = () => {
           isFileUpload={true}
           onFileSelect={(file) => handleFileUpload(file)}
         />
+      </div>
+      <div>
+        <button onClick={handlePrevPage}>Prev |</button>
+        <button onClick={handleNextPage}>| Next</button>
       </div>
     </div>
   );

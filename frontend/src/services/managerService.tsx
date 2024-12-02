@@ -164,10 +164,10 @@ interface Room {
 }
 
 // Fetch rooms data from the API
-export const fetchPublicRooms = async (): Promise<Room[]> => {
+export const fetchPublicRooms = async (page:number, size:number): Promise<Room[]> => {
   try {
     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/hostels/10/rooms`, 
-      // {params: { page, size }} // Pass pagination parameters
+      {params: { page, size }} // Pass pagination parameters
   );
     return response.data.content; // Assuming the rooms are in the "content" field
   } catch (error) {

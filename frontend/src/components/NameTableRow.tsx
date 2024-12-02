@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Css/NameTableRow.module.css';
 
 interface StudentTableProps {
-  stud: {
+  student: {
     id: string; // Unique identifier for the student
     name: string;
     enrollNo: string;
@@ -12,7 +12,7 @@ interface StudentTableProps {
   }[];
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({ stud }) => {
+const StudentTable: React.FC<StudentTableProps> = ({ student }) => {
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
@@ -26,27 +26,27 @@ const StudentTable: React.FC<StudentTableProps> = ({ stud }) => {
           </tr>
         </thead>
         <tbody>
-          {stud.map((stud) => {
-            const avatarLetter = stud.name.charAt(0).toUpperCase();
+          {student.map((student, index) => {
+            const avatarLetter = student.name.charAt(0).toUpperCase();
 
             // Conditional styling based on feesStatus
             const backgroundColor =
-              stud.feesStatus === 'u'
+              student.feesStatus === 'u'
                 ? '#F7F8CC'
-                : stud.feesStatus === 'p'
+                : student.feesStatus === 'p'
                 ? '#D7F7D2'
                 : '';
 
             const hoverBackgroundColor =
-              stud.feesStatus === 'u'
+              student.feesStatus === 'u'
                 ? '#F1F3A8'
-                : stud.feesStatus === 'p'
+                : student.feesStatus === 'p'
                 ? '#BBF1B2'
                 : '';
 
             return (
               <tr
-                key={stud.id}
+                key={index}
                 className={styles.row}
                 style={{ backgroundColor }}
                 onMouseEnter={(e) => {
@@ -65,10 +65,10 @@ const StudentTable: React.FC<StudentTableProps> = ({ stud }) => {
                     <div className={styles.letter}>{avatarLetter}</div>
                   </div>
                 </td>
-                <td>{stud.name}</td>
-                <td>{stud.enrollNo}</td>
-                <td>{stud.year}</td>
-                <td>{stud.room}</td>
+                <td>{student.name}</td>
+                <td>{student.enrollNo}</td>
+                <td>{student.year}</td>
+                <td>{student.room}</td>
               </tr>
             );
           })}
