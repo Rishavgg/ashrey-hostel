@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../components/NavbarChief.tsx";
-import FilterBar from "../../components/FilterBar.tsx";
-import { fetchWardenData } from "../../services/managerService.tsx";
+// import { fetchWardenData } from "../../services/managerService.tsx";
 import FindWardenPage from "../../Pages/ChiefWardenDashboard/FindWarden.tsx";
 import MassAllocationPage from "../../Pages/ChiefWardenDashboard/MassAllocation.tsx";
 import ManualAllocationPage from "../../Pages/ChiefWardenDashboard/ManualAllocation";
@@ -20,7 +19,7 @@ type Field = {
 const ChiefWarden: React.FC = () => {
   const [activePage, setActivePage] = useState<string>("Find a Student"); // Default page
   const [isAddWardenPopupVisible, setIsAddWardenPopupVisible] = useState(false); // State to toggle AddUser popup
-  const [wardens, setWardens] = useState<any[]>([]); // Store wardens data
+  const [wardens] = useState<any[]>([]); // Store wardens data
   const [isPopupLoading, setIsPopupLoading] = useState(false);
 
   // Dropdown options for hostel selection
@@ -37,15 +36,15 @@ const ChiefWarden: React.FC = () => {
   };
 
   // Handle Search Functionality
-  const handleSearch = async (searchTerm: string) => {
-    if (!searchTerm) {
-      const data = await fetchWardenData(0, 10); // Fetch all wardens if no search term
-      setWardens(data);
-    } else {
-      const data = await fetchWardenData(0, 10); // Placeholder: Use backend search if available
-      setWardens(data);
-    }
-  };
+  // const handleSearch = async (searchTerm: string) => {
+  //   if (!searchTerm) {
+  //     const data = await fetchWardenData(0, 10); // Fetch all wardens if no search term
+  //     setWardens(data);
+  //   } else {
+  //     const data = await fetchWardenData(0, 10); // Placeholder: Use backend search if available
+  //     setWardens(data);
+  //   }
+  // };
 
   // Handle Popup Submission for Adding Warden
   const handleAddWardenSubmit = async (data: Record<string, string>) => {
@@ -175,7 +174,7 @@ const ChiefWarden: React.FC = () => {
           }}
         >
           {/* Filter Bar */}
-          <FilterBar title={activePage} onSearch={handleSearch} />
+          {/* <FilterBar title={activePage} onSearch={handleSearch} /> */}
 
           {/* Dynamic Content */}
           <div

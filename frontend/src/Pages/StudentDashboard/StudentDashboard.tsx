@@ -1,6 +1,6 @@
 // import OutpassCard from '../../components/OutpassCard.tsx'
 import Navbar from '../../components/NavbarStudent.tsx'
-import FilterBar from '../../components/FilterBar.tsx'
+// import FilterBar from '../../components/FilterBar.tsx'
 
 
 const HomePage = () => {
@@ -34,7 +34,7 @@ const HomePage = () => {
                 minWidth: '0'
             }}>
                 {/* Filter Bar */}
-                <FilterBar title="Page Title" />
+               
 
                 {/* Rest of Content */}
                 <div style={{

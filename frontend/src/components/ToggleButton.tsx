@@ -1,21 +1,30 @@
 import React, { useState } from "react";
 import "./Css/ToggleButton.css";
 
-const ToggleButton: React.FC = () => {
-  const [selected, setSelected] = useState<string>("Table");
+interface ToggleButtonProps {
+  onToggle: (selectedView: string) => void; // Callback to parent
+}
+
+const ToggleButton: React.FC<ToggleButtonProps> = ({ onToggle }) => {
+  const [selected, setSelected] = useState<string>("Tile");
+
+  const handleToggle = (view: string) => {
+    setSelected(view);
+    onToggle(view); // Notify parent
+  };
 
   return (
     <div className="toggle-container">
       <div
         className={`toggle-option ${selected === "Table" ? "selected" : ""}`}
-        onClick={() => setSelected("Table")}
+        onClick={() => handleToggle("Table")}
       >
         Table
       </div>
       <div className="separator"></div>
       <div
         className={`toggle-option ${selected === "Tile" ? "selected" : ""}`}
-        onClick={() => setSelected("Tile")}
+        onClick={() => handleToggle("Tile")}
       >
         Tile
       </div>

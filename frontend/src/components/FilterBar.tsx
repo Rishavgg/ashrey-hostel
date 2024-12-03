@@ -8,9 +8,10 @@ import PageTitle from "./PageTitle.tsx";
 interface FilterBarProps {
   title: string;
   onSearch?: (query: string) => void; // Add the callback for search
+  onToggle: (selectedView: string) => void;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({ title, onSearch }) => {
+const FilterBar: React.FC<FilterBarProps> = ({ title, onSearch, onToggle }) => {
   return (
     <div
       style={{
@@ -37,7 +38,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ title, onSearch }) => {
           width: "100%",
         }}
       >
-        <ToggleButton />
+        <ToggleButton onToggle={onToggle} />
         <Dropdown
           label="Year"
           options={["Any", "1st", "2nd", "3rd", "4th"]}

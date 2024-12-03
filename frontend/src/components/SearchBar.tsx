@@ -9,15 +9,11 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Who are you looking for?" }) => {
   const [query, setQuery] = useState<string>(''); // State to store the search query
 
-  const handleSearch = () => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value); // Update the query state
     if (onSearch) {
-      onSearch(query); // Call onSearch only if it's provided
-    }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch();
+      onSearch(value); // Trigger onSearch callback on every change
     }
   };
 
@@ -27,16 +23,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Who are 
         type="text"
         placeholder={placeholder} // Use the custom placeholder
         value={query}
-        onChange={(e) => setQuery(e.target.value)} // Update query state
-        onKeyPress={handleKeyPress} // Trigger search on Enter
+        onChange={handleInputChange} // Trigger search on change
         className={styles.searchInput} // Add CSS for styling the input
       />
       <div
         className={styles.searchIcon}
-        onClick={handleSearch} // Trigger search on click
         role="button" // Makes it accessible
         tabIndex={0} // Allow keyboard focus
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()} // Trigger on Enter key for accessibility
+        onKeyDown={(e) => e.key === 'Enter' && onSearch && onSearch(query)} // Trigger on Enter key for accessibility
       >
         <div className={styles.iconWrapper}>
           <div className={styles.iconContainer}>
