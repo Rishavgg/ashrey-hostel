@@ -38,5 +38,14 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
                                            @Param("floor") int floor,
                                            Pageable pageable);
 
+    // Fetch rooms by capacity across all hostels
+    @Query("SELECT r FROM Room r WHERE r.capacity = :capacity AND r.currentOccupancy < r.capacity")
+    Page<Room> findAvailableRoomsByCapacity(@Param("capacity") int capacity, Pageable pageable);
+
+    // Fetch all available rooms across all hostels
+    @Query("SELECT r FROM Room r WHERE r.currentOccupancy < r.capacity")
+    Page<Room> findAllAvailableRooms(Pageable pageable);
+
+
 
 }
