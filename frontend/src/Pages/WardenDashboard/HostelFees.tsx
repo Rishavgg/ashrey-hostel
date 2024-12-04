@@ -10,7 +10,7 @@ import {
   fetchStudentData,
   fetchStudentProfile,
   searchStudents,
-  uploadExcel,
+  // uploadExcel,
 } from "../../services/managerService.tsx";
 import { useAuth } from "../../Context/UseAuth.tsx";
 import styles from '../../components/Css/TileView.module.css'
