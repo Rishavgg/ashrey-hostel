@@ -9,8 +9,9 @@
     left: 0;
     /* overflow: hidden; */
     width: -moz-fit-content;
-    width: 20rem;
-    min-width: fit-content;
+    /* width: 20rem; */
+    /* min-width: fit-content; */
+    width: 21%;
 }
 
 

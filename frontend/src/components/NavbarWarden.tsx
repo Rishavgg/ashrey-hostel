@@ -58,11 +58,11 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
           label="Hostel fees status"
           isActive={activeElement === 'Hostel fees status'}
           onClick={() => handleClick('Hostel fees status')} link={''}        />
-        <NavItem
+        {/* <NavItem
           icon={editIcon}
           label="Add/edit student details"
           isActive={activeElement === 'Add/edit student details'}
-          onClick={() => handleClick('Add/edit student details')} link={''}        />
+          onClick={() => handleClick('Add/edit student details')} link={''}        /> */}
 
         {/* Section: Allocation */}
         <SectionHeader text="Allocation" />

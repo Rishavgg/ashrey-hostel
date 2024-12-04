@@ -1,5 +1,6 @@
 .tableContainer {
     width: 100%;
+    padding: 0px 20px;
   }
   
   .table {
@@ -19,6 +20,7 @@
     text-align: left;
     font-weight: 600;
     color: #000000;
+    width: 20%;
   }
   
   th.noHeadingL {

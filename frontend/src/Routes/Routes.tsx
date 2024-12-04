@@ -19,18 +19,19 @@ export const router = createBrowserRouter([
             { path: 'warden', element: <Warden/> },
             { path: 'chief-warden-dashboard', element: <ChiefWardenDashboard/>},
             { path: 'reset', element: <ResetPage/> },
+            { path: 'student', element: <Student/> },
             {
                 path: 'warden-dashboard',
                 element: (
-                    // <WardenProtectedRoute>
+                //    <WardenProtectedRoute>
                         <Warden />
-                    // </WardenProtectedRoute>
+                //    </WardenProtectedRoute>
                 ),
             },
             {
                 path: 'student-dashboard',
                 element: (
-                 //  <ProtectedRoute>
+                //  <ProtectedRoute>
                         <Student />
                 // </ProtectedRoute>
                 ),

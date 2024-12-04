@@ -11,6 +11,7 @@ import OutpassHistory from './OutpassHistory.tsx';
 import OutpassReq from './OutpassReq.tsx';
 import PublicRoom from './PublicRoomList.tsx';
 import { useState } from "react";
+import AssignRoomForm from '../../components/ManualAllocation.tsx';
 
 // Define Warden Component
 const Warden = () => {
@@ -27,19 +28,39 @@ const Warden = () => {
         return <FindStudent />;
       case 'Hostel fees status':
         return <HostelFees />;
-      // case 'Manual Allocation':
-      //   return <ManualAllocation />;
+      case 'Manual Allocation':
+        return (
+          <AssignRoomForm
+            hostelOptions={[
+              { name: 'Room A1', balcony: 1, sunny: 1, level: 2, roomNo: '101', capacity: 3, occupancy: 1 },
+              { name: 'Room B2', balcony: 0, sunny: 0, level: 1, roomNo: '102', capacity: 2, occupancy: 1 },
+            ]} // Example hostel options
+            studentOptions={[
+              { id: 'S001', name: 'John Doe' },
+              { id: 'S002', name: 'Jane Smith' },
+            ]} // Example student options
+            defaultHostel={undefined}
+            defaultStudent1={undefined}
+            defaultStudent2={undefined}
+            onSubmit={async (data) => {
+              console.log('Assigned Data:', data);
+              alert(`Room assigned successfully!\nHostel: ${data.hostel.name}\nStudent 1: ${data.student1.name}`);
+            }}
+            onCancel={() => console.log('Manual allocation cancelled')}
+            isLoading={false}
+          />
+        );
       case 'Mass Allocation':
         return <MassAllocation />;
       case 'Allocation Request':
         return <AllocationReq />;
-      case 'Add/edit Room details':
+      case 'Add/Edit Rooms':
         return <AddEditRooms />;
-      case 'Out of Campus':
+      case 'Out of campus':
         return <OutofCampus />;
-      case 'Outpass History':
+      case 'Outpass history':
         return <OutpassHistory />;
-      case 'Outpass Request':
+      case 'Outpass Requests':
         return <OutpassReq />;
       case 'Add/Edit student details':
           return <AddEditStudent />;
@@ -69,18 +90,14 @@ const Warden = () => {
             display: 'flex',
             flexDirection: 'column',
             flexGrow: 1,
-            maxWidth: '79vw',
+            maxWidth: '79%',
             minWidth: '0'
           }}
         >
           {/* Dynamic Content Area */}
           <div
             style={{
-              padding: '20px',
-              gap: '20px',
               width: '100%',
-              display: 'flex',
-              flexWrap: 'wrap',
             }}
           >
             {renderContent()} {/* Render the content based on activePage */}

@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import HostelCard from "../../components/HostelCard.tsx";
-import HostelTable from "../../components/HostelTable.tsx";
 import FilterBar from "../../components/FilterBar.tsx";
 import { fetchPublicRooms } from "../../services/managerService.tsx";
-import styles from '../../components/Css/TileView.module.css'
+// import styles from '../../components/Css/TileView.module.css'
 
 interface HostelCardProps {
   name: string;
@@ -20,7 +18,7 @@ const PublicRoom = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [size] = useState(10);
-  const [view, setView] = useState("Tile");
+//   const [view, setView] = useState("Tile");
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -50,9 +48,11 @@ const PublicRoom = () => {
   const handleNextPage = () => setPage((prev) => prev + 1);
   const handlePrevPage = () => setPage((prev) => (prev > 0 ? prev - 1 : 0));
 
-  const handleToggleView = (selectedView: string) => {
-    setView(selectedView); // Update view to either "Tile" or "Table"
-  };
+//   const handleToggleView = (selectedView: string) => {
+//     setView(selectedView); // Update view to either "Tile" or "Table"
+//   };
+
+const handleToggleView = () => { };
 
   return (
     <div style={{height:'100vh'}}>
@@ -65,11 +65,11 @@ const PublicRoom = () => {
           flexDirection: "column",
         }}
       >
-        <FilterBar title="Public Room List" onSearch={undefined} onToggle={handleToggleView} />
-        {loading && <p>Loading rooms...</p>}
-        {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>No rooms found.</p>}
+        <FilterBar title="Inventory Form" onSearch={undefined} onToggle={handleToggleView} />
+        {loading && <p>Loading...</p>}
+        {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>Page under construction</p>}
 
-        {view === "Tile" ? (
+        {/* {view === "Tile" ? (
         <div className={styles.tileView} >
             {rooms.map((room, index) => (
               <HostelCard
@@ -87,11 +87,12 @@ const PublicRoom = () => {
         ) : (
           <HostelTable rooms={rooms} />
         )}
-      </div>
+      </div> */}
       <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px', bottom:'20px'}} >
         <button onClick={handlePrevPage}>Prev</button>
         <button onClick={handleNextPage}>Next</button>
       </div>
+    </div>
     </div>
   );
 };

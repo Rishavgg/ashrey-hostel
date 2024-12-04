@@ -65,7 +65,7 @@ const PublicRoom = () => {
           flexDirection: "column",
         }}
       >
-        <FilterBar title="Public Room List" onSearch={undefined} onToggle={handleToggleView} />
+        <FilterBar title="List of Avalable Rooms" onSearch={undefined} onToggle={handleToggleView} />
         {loading && <p>Loading rooms...</p>}
         {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>No rooms found.</p>}
 
