@@ -1,7 +1,7 @@
 import Navbar from '../../components/NavbarWarden.tsx';
 import FindStudent from "./FindStudent.tsx"; 
 import HostelFees from './HostelFees.tsx'; 
-import ManualAllocation from './ManualAllocation.tsx';
+// import ManualAllocation from './ManualAllocation.tsx';
 import MassAllocation from './MassAllocation.tsx';
 import AddEditStudent from './AddEditStudent.tsx';
 import AddEditRooms from './AddEditRooms.tsx';

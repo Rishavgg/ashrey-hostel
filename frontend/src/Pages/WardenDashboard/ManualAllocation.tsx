@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import SelectHostel from "../../components/SelectHostel"; // Hostel dropdown
+// import SelectHostel from "../../components/SelectHostel"; // Hostel dropdown
 import Dropdown from "../../components/DropdownNames"; // Existing Dropdown component
 import styles from "../../components/Css/ManualAllocation.module.css";
 import FilterBar from "../../components/FilterBar";
@@ -12,15 +12,15 @@ import {
   assignRoomToStudent,
 } from "../../services/managerService";
 
-type Room = {
-  name: string;
-  balcony: number;
-  sunny: number;
-  level: number;
-  roomNo: string;
-  capacity: number;
-  occupancy: number;
-};
+// type Room = {
+//   name: string;
+//   balcony: number;
+//   sunny: number;
+//   level: number;
+//   roomNo: string;
+//   capacity: number;
+//   occupancy: number;
+// };
 
 type Student = {
   studentId: number;
