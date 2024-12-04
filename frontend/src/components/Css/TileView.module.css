@@ -15,4 +15,17 @@
     flex: 0 1 calc(33.33% - 20px); /* Adjusts width of tiles to fit 3 in a row with 20px gap */ 
 }
 
+
+button{
+  padding: 8px 22px;
+  background-color: #e4d9fa;
+  /* color: white; */
+  border-radius: 8px;
+}
+button:hover{
+  background-color: rgb(221, 189, 250);
+}
   
+button.disable{
+  background-color: gray;
+}

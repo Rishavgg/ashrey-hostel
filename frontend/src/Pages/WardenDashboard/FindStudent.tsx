@@ -286,9 +286,9 @@ const FindStudent = () => {
           onFileSelect={(file) => handleFileUpload(file)}
         />
       </div>
-      <div>
-        <button onClick={handlePrevPage}>Prev |</button>
-        <button onClick={handleNextPage}>| Next</button>
+      <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px'}} >
+        <button onClick={handlePrevPage}>Prev</button>
+        <button onClick={handleNextPage}>Next</button>
       </div>
     </div>
   );

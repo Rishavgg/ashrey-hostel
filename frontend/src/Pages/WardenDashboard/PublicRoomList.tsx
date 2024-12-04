@@ -55,7 +55,7 @@ const PublicRoom = () => {
   };
 
   return (
-    <div>
+    <div style={{height:'100vh'}}>
       <div
         style={{
           gap: "20px",
@@ -67,7 +67,7 @@ const PublicRoom = () => {
       >
         <FilterBar title="Public Room List" onSearch={undefined} onToggle={handleToggleView} />
         {loading && <p>Loading rooms...</p>}
-        {rooms.length === 0 && !loading && <p>No rooms found.</p>}
+        {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>No rooms found.</p>}
 
         {view === "Tile" ? (
         <div className={styles.tileView} >
@@ -88,9 +88,9 @@ const PublicRoom = () => {
           <HostelTable rooms={rooms} />
         )}
       </div>
-      <div>
-        <button onClick={handlePrevPage}>Prev |</button>
-        <button onClick={handleNextPage}>| Next</button>
+      <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px', bottom:'20px'}} >
+        <button onClick={handlePrevPage}>Prev</button>
+        <button onClick={handleNextPage}>Next</button>
       </div>
     </div>
   );
