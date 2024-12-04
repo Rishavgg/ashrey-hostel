@@ -18,7 +18,7 @@ const PublicRoom = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [size] = useState(10);
-  const [view, setView] = useState("Tile");
+//   const [view, setView] = useState("Tile");
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -48,8 +48,12 @@ const PublicRoom = () => {
   const handleNextPage = () => setPage((prev) => prev + 1);
   const handlePrevPage = () => setPage((prev) => (prev > 0 ? prev - 1 : 0));
 
-  const handleToggleView = (selectedView: string) => {
-    setView(selectedView); // Update view to either "Tile" or "Table"
+//   const handleToggleView = (selectedView: string) => {
+//     setView(selectedView); // Update view to either "Tile" or "Table"
+//   };
+
+  const handleToggleView = () => {
+ // Update view to either "Tile" or "Table"
   };
 
   return (
