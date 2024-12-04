@@ -1,57 +1,76 @@
 // import OutpassCard from '../../components/OutpassCard.tsx'
 import Navbar from '../../components/NavbarStudent.tsx'
+import { useState } from "react";
+
+// pages
+import ListOfRooms from "./ListOfRooms.tsx"
+import InventoryForm from "./InventoryForm.tsx"
+import ParticipateInMassAllocation from "./ParticipateInMassAllocation.tsx"
+import RegisterComplaint from "./RegisterComplaint.tsx"
+import RequestRoomChange from "./RequestRoomChange.tsx"
+
 // import FilterBar from '../../components/FilterBar.tsx'
 
 
 const HomePage = () => {
+
+    const [activePage, setActivePage] = useState<string>('List of Rooms'); // Default page
+    // Callback for changing the active page
+    const handlePageChange = (page: string) => {
+      setActivePage(page);
+    };
+
+    const renderContent = () => {
+        switch (activePage) {
+          case 'List of Rooms':
+            return <ListOfRooms />;
+          case 'Inventory Form':
+            return <InventoryForm/>;
+          case 'Participate in Mass Allocation':
+            return <ParticipateInMassAllocation />;
+          case 'Regsiter A Complaint':
+            return <RegisterComplaint/>;
+          case 'Request Room change':
+            return <RequestRoomChange/>;
+          default:
+            return <ListOfRooms />;
+        }
+      };
+
+
     return (
         <div>
-
-        {/* <div style={{display:'flex',flexDirection:'row'}}>
-            <Navbar/>
-            <div style={{display:'flex',flexDirection:'column',maxWidth:'79vw',width:'100%',minWidth:'fit-content'}} >
-                <FilterBar title='page title' />
-                <div style={{padding:'20px', gap:'20px',position:'sticky',width:'100%'}}>rest of the content here</div>
-                
-                </div>
-        </div> */}
-
-        <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            height: '100vh',
-            overflow: 'hidden'
-        }}>
-            {/* Navbar */}
-            <Navbar/>
-
-            {/* Main Content */}
-            <div style={{
+            <div
+                style={{
                 display: 'flex',
-                flexDirection: 'column',
-                flexGrow: 1,
-                maxWidth: '79vw',
-                minWidth: '0'
-            }}>
-                {/* Filter Bar */}
-               
+                flexDirection: 'row',
+                height: '100vh',
+                overflow: 'hidden',
+                }}
+            >
+                {/* Navbar */}
+                <Navbar onPageChange={handlePageChange} /> {/* Pass callback to Navbar */}
 
-                {/* Rest of Content */}
-                <div style={{
+                {/* Main Content */}
+                <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
                     flexGrow: 1,
-                    padding: '20px',
-                    gap: '20px',
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    width: '100%'
-                }}>
-                    Rest of the content here
+                    maxWidth: '79%',
+                    minWidth: '0'
+                }}
+                >
+                {/* Dynamic Content Area */}
+                <div
+                    style={{
+                    width: '100%',
+                    }}
+                >
+                    {renderContent()} {/* Render the content based on activePage */}
+                </div>
                 </div>
             </div>
-        </div>
-
-
-
         </div>
     );
 };
