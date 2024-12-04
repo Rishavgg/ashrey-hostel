@@ -54,13 +54,13 @@ const Warden = () => {
         return <MassAllocation />;
       case 'Allocation Request':
         return <AllocationReq />;
-      case 'Add/edit Room details':
+      case 'Add/Edit Rooms':
         return <AddEditRooms />;
-      case 'Out of Campus':
+      case 'Out of campus':
         return <OutofCampus />;
-      case 'Outpass History':
+      case 'Outpass history':
         return <OutpassHistory />;
-      case 'Outpass Request':
+      case 'Outpass Requests':
         return <OutpassReq />;
       case 'Add/Edit student details':
           return <AddEditStudent />;

@@ -156,7 +156,7 @@ const FindStudent = () => {
           flexDirection: "column",
         }}
       >
-        <FilterBar title="Find a Student" onSearch={handleSearch} onToggle={handleToggleView} />
+        <FilterBar title="Hostel Fees Status" onSearch={handleSearch} onToggle={handleToggleView} />
         {view === "Tile" ? (
         <div className={styles.tileView}>
         {students.length === 0 && <p>No students found.</p>}
@@ -265,11 +265,11 @@ const FindStudent = () => {
           zIndex: 1000,
         }}
       >
-        <FabButton
+        {/* <FabButton
           iconSrc="/add.svg"
           iconAlt="Action icon"
           onClick={togglePopup}
-        />
+        /> */}
       </div>
       {/* FAB for Uploading Excel */}
       <div
@@ -280,12 +280,12 @@ const FindStudent = () => {
           zIndex: 1000,
         }}
       >
-        <FabButton
+        {/* <FabButton
           iconSrc="Assests/upload.svg"
           iconAlt="Upload"
           isFileUpload={true}
           onFileSelect={(file) => handleFileUpload(file)}
-        />
+        /> */}
       </div>
       <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px'}} >
         <button onClick={handlePrevPage}>Prev</button>
