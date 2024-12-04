@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import NameCard from "../../components/NameCard.tsx";
 import AddUser from "../../components/AddUser.tsx";
-import FabButton from "../../components/Fab.tsx";
+// import FabButton from "../../components/Fab.tsx";
 import Profile from "../../components/Profile.tsx";
 import FilterBar from "../../components/FilterBar.tsx";
 import StudntTable from "../../components/NameTableRow.tsx"
@@ -126,16 +126,16 @@ const FindStudent = () => {
   };
   
 
-  const handleFileUpload = async (file: File) => {
-    try {
-      const response = await uploadExcel(file);
-      alert("File uploaded successfully!");
-      console.log("Upload response:", response);
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("Error uploading file. Please try again.");
-    }
-  };
+  // const handleFileUpload = async (file: File) => {
+  //   try {
+  //     const response = await uploadExcel(file);
+  //     alert("File uploaded successfully!");
+  //     console.log("Upload response:", response);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     alert("Error uploading file. Please try again.");
+  //   }
+  // };
 
   function handleViewFullProfile(): void {
     throw new Error("Function not implemented.");

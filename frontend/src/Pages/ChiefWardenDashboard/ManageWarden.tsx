@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddUser from "../../components/AddUser.tsx";
 import * as Yup from "yup";
 import FabButton from "../../components/Fab.tsx";
-import FilterBar from "../../components/FilterBar.tsx";
+// import FilterBar from "../../components/FilterBar.tsx";
 import PageTitle from "../../components/PageTitle.tsx"
 
 type Field = {
@@ -14,19 +14,17 @@ type Field = {
 };
 
 const ManageWarden: React.FC = () => {
-  const [activePage, setActivePage] = useState<string>("Find a Student"); // Default page
+//   const [activePage, setActivePage] = useState<string>("Find a Student"); // Default page
   const [isAddWardenPopupVisible, setIsAddWardenPopupVisible] = useState(false); // State to toggle AddUser popup
-  const [wardens] = useState<any[]>([]); // Store wardens data
+//   const [wardens] = useState<any[]>([]); // Store wardens data
   const [isPopupLoading, setIsPopupLoading] = useState(false);
 
   // Dropdown options for hostel selection
   // const hostelOptions = ["H1", "H2", "H3"];
 
   // Handle page navigation
-  const handlePageChange = (page: string) => {
-    setActivePage(page);
-  };
 
+ 
   
 
   // Handle AddUser popup visibility
