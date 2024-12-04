@@ -22,15 +22,15 @@ export const router = createBrowserRouter([
             {
                 path: 'warden-dashboard',
                 element: (
-                    // <WardenProtectedRoute>
+                //    <WardenProtectedRoute>
                         <Warden />
-                    // </WardenProtectedRoute>
+                //    </WardenProtectedRoute>
                 ),
             },
             {
                 path: 'student-dashboard',
                 element: (
-                 //  <ProtectedRoute>
+                //  <ProtectedRoute>
                         <Student />
                 // </ProtectedRoute>
                 ),

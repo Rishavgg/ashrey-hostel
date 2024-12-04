@@ -26,7 +26,7 @@ const FindStudent = () => {
   const [view, setView] = useState("Tile");
   const { registerUser } = useAuth();
   const [page, setPage] = useState(0)
-  const [size] = useState(5);
+  const [size] = useState(9);
   const handleNextPage = () => setPage((prev) => prev + 1);
   const handlePrevPage = () => setPage((prev) => (prev > 0 ? prev - 1 : 0));
 
@@ -149,12 +149,11 @@ const FindStudent = () => {
     <div>
       <div
         style={{
-          padding: "20px",
           gap: "20px",
           position: "sticky",
           width: "100%",
           display: "flex",
-          flexWrap: "wrap",
+          flexDirection: "column",
         }}
       >
         <FilterBar title="Find a Student" onSearch={handleSearch} onToggle={handleToggleView} />
