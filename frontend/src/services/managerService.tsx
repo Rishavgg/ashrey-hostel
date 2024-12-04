@@ -175,3 +175,23 @@ export const fetchPublicRooms = async (page:number, size:number): Promise<Room[]
     throw error;
   }
 };
+
+// Fetch all students
+export const fetchStudents = async () => {
+  const response = await axios.get(`${API_BASE_URL}/warden/dashboard/all/student`);
+  return response.data.content; // Returns the "content" array
+};
+
+// Fetch all hostels
+export const fetchHostels = async () => {
+  const response = await axios.get(`${API_BASE_URL}/warden/hostels`);
+  return response.data; // Returns the array of hostels
+};
+
+// Assign a room to a student
+export const assignRoomToStudent = async (studentId: number, roomId: number) => {
+  const response = await axios.post(
+    `${API_BASE_URL}/warden/students/${studentId}/assign-room/${roomId}`
+  );
+  return response.data; // Returns the response from the server
+};

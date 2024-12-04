@@ -6,8 +6,13 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between; /* Ensures even spacing between tiles */
+    justify-content: flex-start; /* Align all items to the left */
     align-content: flex-start; /* Keeps rows aligned to the top */
     box-sizing: border-box; /* Ensures padding is included in total width */
-  }
+}
+
+.tileView > * {
+    flex: 0 1 calc(33.33% - 20px); /* Adjusts width of tiles to fit 3 in a row with 20px gap */ 
+}
+
   

@@ -58,15 +58,14 @@ const PublicRoom = () => {
     <div>
       <div
         style={{
-          padding: "20px",
           gap: "20px",
           position: "sticky",
           width: "100%",
           display: "flex",
-          flexWrap: "wrap",
+          flexDirection: "column",
         }}
       >
-        <FilterBar title="Find a Public Room" onSearch={undefined} onToggle={handleToggleView} />
+        <FilterBar title="Public Room List" onSearch={undefined} onToggle={handleToggleView} />
         {loading && <p>Loading rooms...</p>}
         {rooms.length === 0 && !loading && <p>No rooms found.</p>}
 
