@@ -46,6 +46,13 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
       {/* Header */}
       <header className={styles.outPassHeader}>
         {/* Section: Student Details */}
+        <SectionHeader text="Warden Details" />
+        <hr className={styles.dividerLine} />
+        <NavItem
+          icon={findIcon}
+          label="Manage Warden"
+          isActive={activeElement === 'Manage Warden'}
+          onClick={() => handleClick('Manage Warden')} link={''}        />
         <SectionHeader text="Student Details" />
         <hr className={styles.dividerLine} />
         <NavItem
@@ -55,14 +62,14 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
           onClick={() => handleClick('Find a student')} link={''}        />
         <NavItem
           icon={reciptIcon}
-          label="Manage Warden"
+          label="Hostel fees status"
           isActive={activeElement === 'Hostel fees status'}
           onClick={() => handleClick('Hostel fees status')} link={''}        />
-        <NavItem
+        {/* <NavItem
           icon={editIcon}
           label="Add/edit student details"
           isActive={activeElement === 'Add/edit student details'}
-          onClick={() => handleClick('Add/edit student details')} link={''}        />
+          onClick={() => handleClick('Add/edit student details')} link={''}        /> */}
 
         {/* Section: Allocation */}
         <SectionHeader text="Allocation" />
