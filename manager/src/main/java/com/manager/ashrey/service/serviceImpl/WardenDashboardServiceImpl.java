@@ -145,6 +145,54 @@ public class WardenDashboardServiceImpl implements WardenDashboardService {
         return new PageImpl<>(roomDTOs, pageable, rooms.getTotalElements());
     }
 
+    @Override
+    public Page<RoomDTO> getFilteredRoomsAcrossHostels(Boolean singleRoom, Boolean sunlight, Boolean balcony, int level, int floor, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Room> rooms;
+
+        if (singleRoom != null) {
+            int capacity = singleRoom ? 1 : 2;
+            rooms = roomRepository.findAvailableRoomsByCapacity(capacity, pageable);
+        } else {
+            rooms = roomRepository.findAllAvailableRooms(pageable);
+        }
+
+        // Get the list of rooms
+        List<Room> roomList = rooms.getContent();
+
+        // Apply additional filters manually
+        if (sunlight != null) {
+            roomList = roomList.stream().filter(room -> room.getSunlight().equals(sunlight)).collect(Collectors.toList());
+        }
+        if (balcony != null) {
+            roomList = roomList.stream().filter(room -> room.getBalcony().equals(balcony)).collect(Collectors.toList());
+        }
+        if (level > 0) {
+            roomList = roomList.stream().filter(room -> room.getLevel() == level).collect(Collectors.toList());
+        }
+        if (floor > 0) {
+            roomList = roomList.stream().filter(room -> room.getFloor() == floor).collect(Collectors.toList());
+        }
+
+        // Convert Room entities to RoomDTOs
+        List<RoomDTO> roomDTOs = roomList.stream()
+                .map(room -> new RoomDTO(
+                        room.getRoomId(),
+                        room.getRoomNumber(),
+                        room.getCapacity(),
+                        room.getCurrentOccupancy(),
+                        room.getSunlight(),
+                        room.getBalcony(),
+                        room.getLevel(),
+                        room.getFloor()
+                ))
+                .collect(Collectors.toList());
+
+        // Return the filtered list wrapped as a Page
+        return new PageImpl<>(roomDTOs, pageable, rooms.getTotalElements());
+    }
+
+
 
 
     @Override

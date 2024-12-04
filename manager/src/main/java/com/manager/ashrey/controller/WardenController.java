@@ -105,6 +105,22 @@ public class WardenController {
         return ResponseEntity.ok(rooms);
     }
 
+    @GetMapping(value = "/rooms")
+    public ResponseEntity<Page<RoomDTO>> getAllAvailableRooms(
+            @RequestParam(required = false) Boolean singleRoom,  // true for single, false for double, null for both
+            @RequestParam(required = false) Boolean sunlight,  // true for rooms with sunlight, false for those without
+            @RequestParam(required = false) Boolean balcony,  // true for rooms with a balcony, false for those without
+            @RequestParam(defaultValue = "0") int level,  // Filter by level
+            @RequestParam(defaultValue = "0") int floor,  // Filter by floor
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        // Call service to filter rooms based on the provided parameters
+        Page<RoomDTO> rooms = wardenDashboardService.getFilteredRoomsAcrossHostels(singleRoom, sunlight, balcony, level, floor, page, size);
+        return ResponseEntity.ok(rooms);
+    }
+
+
 
     @PostMapping(value = "/students/{studentId}/assign-room/{roomId}")
     public ResponseEntity<ResponseDTO> assignRoomToStudent(

@@ -24,6 +24,8 @@ public interface WardenDashboardService {
 
     Page<RoomDTO> getFilteredRooms(Long hostelId, Boolean singleRoom, Boolean sunlight, Boolean balcony, int level, int floor, int page, int size);
 
+    Page<RoomDTO> getFilteredRoomsAcrossHostels(Boolean singleRoom, Boolean sunlight, Boolean balcony, int level, int floor, int page, int size);
+
     boolean assignRoomToStudent(Long studentId, Long roomId);
 
 
