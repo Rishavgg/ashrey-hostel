@@ -22,6 +22,6 @@ export type RegisterUser = {
     email: string;
     contact: string;
     rollNumber: string;
-    admissonYear: number;
+    admissonYear: string;
     message: string;
 };

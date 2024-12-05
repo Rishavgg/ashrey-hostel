@@ -82,9 +82,9 @@ AUTHENTICATION_BACKENDS = [
 # LOGIN_URL = 'keycloak_login'
 
 KEYCLOAK_SERVER_URL = 'http://localhost:8080/'
-KEYCLOAK_REALM = 'myrealm'
+KEYCLOAK_REALM = 'Ashrey'
 KEYCLOAK_CLIENT_ID = 'ashrey-manager-client'
-KEYCLOAK_CLIENT_SECRET = "rH9avNUwiZXL29ysjewpAXmgwzXc4HzY"
+KEYCLOAK_CLIENT_SECRET = "zn2bjfBgLrqKDj9D5RoBZ3aTUTljn2Qc"
 KEYCLOAK_REDIRECT_URI = 'http://localhost:8081/callback/'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 LOGIN_URL = '/login/'

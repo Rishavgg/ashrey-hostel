@@ -6,7 +6,7 @@ import { fetchPublicRooms } from "../../services/managerService.tsx";
 import styles from '../../components/Css/TileView.module.css'
 
 interface HostelCardProps {
-  name: string;
+  hotelName: string;
   balcony: 0 | 1;
   sunny: 0 | 1;
   level: number;
@@ -28,7 +28,7 @@ const PublicRoom = () => {
         setLoading(true);
         const roomsData = await fetchPublicRooms(page,size);
         const transformedRooms: HostelCardProps[] = roomsData.map((room) => ({
-          name: `H${room.level}`,
+          hotelName: room.hostelName, // Use hostelName directly from API response
           balcony: room.balcony ? 1 : 0,
           sunny: room.sunlight ? 1 : 0,
           level: room.level,
@@ -74,7 +74,7 @@ const PublicRoom = () => {
             {rooms.map((room, index) => (
               <HostelCard
                 key={index}
-                name={room.name}
+                hotelName={room.hotelName}
                 balcony={room.balcony}
                 sunny={room.sunny}
                 level={room.level}

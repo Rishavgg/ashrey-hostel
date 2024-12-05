@@ -5,9 +5,10 @@ interface StudentTableProps {
   student: {
     id: string; // Unique identifier for the student
     name: string;
-    enrollNo: string;
+    rollNumber: string;
     year: string;
-    room: string;
+    hostelName: string;
+    roomNumber: string;
     feesStatus?: 'u' | 'p'; // Optional prop: unpaid (u) or paid (p)
   }[];
 }
@@ -66,9 +67,12 @@ const StudentTable: React.FC<StudentTableProps> = ({ student }) => {
                   </div>
                 </td>
                 <td>{student.name}</td>
-                <td>{student.enrollNo}</td>
+                <td>{student.rollNumber}</td>
                 <td>{student.year}</td>
-                <td>{student.room}</td>
+                <td>{student.hostelName === "N/A" && student.roomNumber === "N/A"
+                    ? "Not Allotted"
+                    : `${student.hostelName} - ${student.roomNumber}`}
+                </td>
               </tr>
             );
           })}
