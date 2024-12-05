@@ -155,6 +155,7 @@ export const registerWarden = async (wardenDetails: { name: string; hostel: stri
 };
 
 interface Room {
+  name: string;
   roomId: number;
   roomNumber: string;
   capacity: number;
