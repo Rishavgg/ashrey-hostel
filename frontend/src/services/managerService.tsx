@@ -166,7 +166,7 @@ interface Room {
 // Fetch rooms data from the API
 export const fetchPublicRooms = async (page:number, size:number): Promise<Room[]> => {
   try {
-    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/hostels/10/rooms`, 
+    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/hostels/3/rooms`, 
       {params: { page, size }} // Pass pagination parameters
   );
     return response.data.content; // Assuming the rooms are in the "content" field
@@ -189,24 +189,31 @@ export const fetchHostels = async () => {
 };
 
 // Fetch all rooms for a specific hostel, even if hostelId is null
+// Fetch rooms for a specific hostel by its ID
+// Fetch rooms for a specific hostel by its ID
 export const fetchRooms = async (hostelId: number) => {
-  const rooms: any[] = [];
-  let currentHostelId = hostelId;
-
-  while (true) {
-    const response = await axios.get(`${API_BASE_URL}/warden/hostels/${currentHostelId}/rooms`);
-    const data = response.data?.content;
+  try {
+    const response = await axios.get(`${API_BASE_URL}/warden/hostels/${hostelId}/rooms`);
+    const data = response.data?.content; // Assuming response contains a 'content' field with the rooms
 
     if (!data || data.length === 0) {
-      break; // Stop if no more rooms are returned
+      console.warn(`No rooms found for hostel ID: ${hostelId}`);
+      return []; // Return an empty array if no rooms are found
     }
 
-    rooms.push(...data); // Append all rooms regardless of hostelId
-    currentHostelId++;
-  }
+    // Filter rooms based on the given conditions
+    const filteredRooms = data.filter((room: any) => {
+      return room.capacity > room.currentOccupancy; // Only show rooms where capacity is greater than current occupancy
+    });
 
-  return rooms; // Return the complete list of rooms
+    return filteredRooms; // Return only the rooms meeting the conditions
+  } catch (error) {
+    console.error(`Error fetching rooms for hostel ID ${hostelId}:`, error);
+    return []; // Return an empty array in case of an error
+  }
 };
+
+
 
 // Assign a room to a student
 export const assignRoomToStudent = async (studentId: number, roomId: number) => {
