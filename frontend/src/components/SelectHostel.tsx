@@ -98,7 +98,7 @@ const SelectHostelDropdown: React.FC<SelectHostelDropdownProps> = ({
               onClick={() => handleOptionClick(option)}
             >
               <HostelCard
-                name={option.name}
+                hotelName={option.name}
                 balcony={option.balcony as 0 | 1}
                 sunny={option.sunny as 0 | 1}
                 level={option.level}

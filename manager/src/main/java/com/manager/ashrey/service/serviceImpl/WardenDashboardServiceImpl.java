@@ -137,7 +137,9 @@ public class WardenDashboardServiceImpl implements WardenDashboardService {
                         room.getSunlight(),
                         room.getBalcony(),
                         room.getLevel(),
-                        room.getFloor()
+                        room.getFloor(),
+                        room.getHostel().getHostelId(),
+                        room.getHostel().getHostelName()
                 ))
                 .collect(Collectors.toList());
 
@@ -184,7 +186,9 @@ public class WardenDashboardServiceImpl implements WardenDashboardService {
                         room.getSunlight(),
                         room.getBalcony(),
                         room.getLevel(),
-                        room.getFloor()
+                        room.getFloor(),
+                        room.getHostel().getHostelId(),
+                        room.getHostel().getHostelName()
                 ))
                 .collect(Collectors.toList());
 

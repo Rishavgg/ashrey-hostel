@@ -9,7 +9,7 @@ import axios from "axios";
 type UserContextType = {
     user: UserProfile | null;
     token: string | null;
-    registerUser: (name: string, email: string, userName: string, contact: string, admissonyear: number) =>  Promise<RegisterUser | undefined>
+    registerUser: (name: string, email: string, userName: string, contact: string, admissionyear: string) =>  Promise<RegisterUser | undefined>
     loginUser: (userName: string, password: string) => Promise<void>;
     logoutUser: () => void;
     isLoggedIn: () => boolean;
@@ -37,8 +37,8 @@ export const UserProvider = ({ children }: Props) => {
         setIsReady(true);
     }, [])
 
-    const registerUser = async (name: string, userName: string, email: string, contact: string, admissonyear: number) => {
-        const res = await registerAPI(name, email, userName, contact, admissonyear);
+    const registerUser = async (name: string, userName: string, email: string, contact: string, admissionyear: string) => {
+        const res = await registerAPI(name, email, userName, contact, admissionyear);
         try {
             if (res?.message === "Student added successfully") {
                 toast.success("Email sent successfully");
@@ -46,7 +46,6 @@ export const UserProvider = ({ children }: Props) => {
                 toast.warning(res?.message);
             }
             return res;
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.warning("Server error occurred");
         }
@@ -69,7 +68,6 @@ export const UserProvider = ({ children }: Props) => {
             } else {
                 toast.warning(res?.message);
             }
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             toast.warning("Server error occurred");
         }

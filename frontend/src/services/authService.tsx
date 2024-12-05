@@ -16,22 +16,22 @@ export const loginAPI = async (userName: string, password: string) => {
     }
 };
 
-export const registerAPI = async (name: string, userName: string, email: string, contact: string, admissonyear: number) => {
+export const registerAPI = async (name: string, userName: string, email: string, contact: string, admissionYear: string) => {
     try {
-        const response = await axios.post<RegisterUser>(api+"/student/auth/addStudent", {
+        const response = await axios.post<RegisterUser>(`${api}/student/auth/addStudent`, {
             name: name,
             rollNumber: userName,
             email: email,
             contact: contact,
-            admissonYear: admissonyear,
+            admissionYear: admissionYear, // Corrected key
         });
-        console.log(response.data);
         return response.data;
 
     } catch (error) {
-        handleError(error)
+        handleError(error);
     }
 };
+
 
 export const logoutAPI = async (token: string) => {
     try {

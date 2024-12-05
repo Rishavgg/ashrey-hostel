@@ -9,7 +9,7 @@ import sunnyIcon from '../Assets/icon/sunny.svg';
 import shadyIcon from '../Assets/icon/shade.svg';
 
 interface HostelCardProps {
-    name: string; // Original name (e.g., "H15 B")
+    hotelName: string; // Original name (e.g., "H15 B")
     balcony: 0 | 1; // Binary value for balcony (0: no, 1: yes)
     sunny: 0 | 1; // Binary value for sunny (0: no, 1: yes)
     level: number; // Integer level value
@@ -25,9 +25,9 @@ const getHostelName = (name: string): string => {
   if (name.startsWith('H13')) return 'Geeta Bhavan';
   return 'Shastri Bhavan';
 };
-const HostelCard: React.FC<HostelCardProps> = ({ name, balcony, sunny, level, roomNo, capacity, occupancy }) => {
-  const hostelName = getHostelName(name);
-  const fullName = `${name} ${roomNo}`; // Concatenating room number with name
+const HostelCard: React.FC<HostelCardProps> = ({ hotelName, balcony, sunny, level, roomNo, capacity, occupancy }) => {
+  const hostelName = getHostelName(hotelName);
+  const fullName = `${hotelName} ${roomNo}`; // Concatenating room number with name
 
   // Determine background color based on capacity and occupancy
   const cardBackgroundColor = capacity === occupancy ? '#d7d7d7' : '#ffffff';

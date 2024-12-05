@@ -56,7 +56,7 @@ public class StudentAuthController {
             String msg = studentAuthService.addStudent(student);
             return ResponseEntity.ok(new ResponseDTO(msg));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDTO("Error in adding student: " + e.getMessage()));
+            return ResponseEntity.ok().body(new ResponseDTO("Error in adding student: " + e.getMessage()));
         }
     }
 

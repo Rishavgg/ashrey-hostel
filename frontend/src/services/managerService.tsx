@@ -89,6 +89,9 @@ export const searchStudents = async (
         id: rollNumber,
         status,
         year: year ? `${year} Year` : "N/A",
+        rollNumber: rollNumber || "N/A",
+        hostelName: hostelName || "N/A",
+        roomNumber: roomNumber,
       };
     });
 
@@ -152,6 +155,7 @@ export const registerWarden = async (wardenDetails: { name: string; hostel: stri
 };
 
 interface Room {
+  name: string;
   roomId: number;
   roomNumber: string;
   capacity: number;
@@ -161,12 +165,13 @@ interface Room {
   sunlight: boolean;
   balcony: boolean;
   hostelId: number | null;
+  hostelName: string;
 }
 
 // Fetch rooms data from the API
 export const fetchPublicRooms = async (page:number, size:number): Promise<Room[]> => {
   try {
-    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/hostels/10/rooms`, 
+    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/rooms`,
       {params: { page, size }} // Pass pagination parameters
   );
     return response.data.content; // Assuming the rooms are in the "content" field
