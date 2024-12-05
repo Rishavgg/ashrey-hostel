@@ -3,7 +3,7 @@ import App from "../App.tsx";
 import LoginPage from "../Pages/LoginPage/LoginPage";
 import ResetPage from "../Pages/ResetPage/ResetPage.tsx";
 import Warden from "../Pages/WardenDashboard/WardenDashboard.tsx";
-import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
+// import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
 // import ProtectedRoute from "./ProtectedRoute";
 // import WardenProtectedRoute from "./AdminProtectedRoute";
 import ChooseRole from "../Pages/ChooseRole/ChooseRole.tsx";
@@ -28,12 +28,12 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'student-dashboard',
-                element: (
-                //  <ProtectedRoute>
-                        <Student />
-                // </ProtectedRoute>
-                ),
+                // path: 'student-dashboard',
+                // element: (
+                // //  <ProtectedRoute>
+                //         // <Student />
+                // // </ProtectedRoute>
+                // ),
             },
         ],
     },

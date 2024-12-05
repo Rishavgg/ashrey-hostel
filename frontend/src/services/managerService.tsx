@@ -188,6 +188,26 @@ export const fetchHostels = async () => {
   return response.data; // Returns the array of hostels
 };
 
+// Fetch all rooms for a specific hostel, even if hostelId is null
+export const fetchRooms = async (hostelId: number) => {
+  const rooms: any[] = [];
+  let currentHostelId = hostelId;
+
+  while (true) {
+    const response = await axios.get(`${API_BASE_URL}/warden/hostels/${currentHostelId}/rooms`);
+    const data = response.data?.content;
+
+    if (!data || data.length === 0) {
+      break; // Stop if no more rooms are returned
+    }
+
+    rooms.push(...data); // Append all rooms regardless of hostelId
+    currentHostelId++;
+  }
+
+  return rooms; // Return the complete list of rooms
+};
+
 // Assign a room to a student
 export const assignRoomToStudent = async (studentId: number, roomId: number) => {
   const response = await axios.post(
