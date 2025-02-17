@@ -93,17 +93,25 @@ cd ashrey-hostel/frontend/ashrey-front
 ```bash
 npm install
 ```
+#### 2.1 If dependencies problem occur:
+```bash
+npm install --legacy-peer-deps
+```
 
 ### 3. Install Vite
 
 ```bash
-npm install -g vite
+npm install -g vite --legacy-peer-deps
 ```
 
 ### 4. If Vite is missing from the devDependencies, install it as a devDependency:
 
 ```bash
-npm install vite --save-dev
+npm install vite --save-dev --legacy-peer-deps 
+```
+#### 4.1 Tailwind update
+```bash
+npm install tailwindcss @tailwindcss/vite --legacy-peer-deps
 ```
 
 ### 5. To start the development server:
