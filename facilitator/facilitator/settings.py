@@ -84,7 +84,7 @@ KEYCLOAK_CLIENT_SECRET = "aoE2Ck0WvoL2wceisM5c5MtYab8KMM6H"
 KEYCLOAK_REDIRECT_URI = 'http://localhost:8081/callback/'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = 'http://localhost:8081/home/' 
+LOGIN_REDIRECT_URL = 'http://localhost:8081/home/'
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",

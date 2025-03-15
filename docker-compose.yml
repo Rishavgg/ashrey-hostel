@@ -1,0 +1,101 @@
+services:
+  # Database for facilitator and manager
+  database:
+    image: postgres
+    restart: always
+    container_name: database
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ashreyHostel
+    networks:
+      - ashrey_network
+  
+  # Manager service (Spring Boot)
+  manager:
+    build:
+      context: ./manager
+      dockerfile: Dockerfile
+    container_name: manager_app
+    ports:
+      - "9090:9090"
+    depends_on:
+      - database
+    networks:
+      - ashrey_network
+
+  # Facilitator service (Django)
+  facilitator:
+    build:
+      context: ./facilitator
+      dockerfile: Dockerfile
+    container_name: facilitator_app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - database
+    networks:
+      - ashrey_network
+
+  # Frontend service (React)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    ports:
+      - "5173:5173"
+    networks:
+      - ashrey_network
+
+  # Keycloak service
+  keycloak:
+    build:
+      context: ./infrastructure/keycloak
+      dockerfile: Dockerfile
+    container_name: keycloak_app
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://database:5432/ashreyHostel
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - ashrey_network
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ./infrastructure/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+
+   
+  # keycloak:
+  #   build:
+  #     context: ./infrastructure/keycloak
+  #     dockerfile: Dockerfile
+  #   container_name: keycloak_app
+  #   environment:
+  #     - KEYCLOAK_ADMIN=admin
+  #     - KEYCLOAK_ADMIN_PASSWORD=admin
+  #     - KC_DB=postgres
+  #     - KC_DB_URL=jdbc:postgresql://database:5432/ashreyHostel
+  #     - KC_DB_USERNAME=postgres
+  #     - KC_DB_PASSWORD=postgres
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - database
+  #   networks:
+  #     - ashrey_network
+
+networks:
+  ashrey_network:
+    driver: bridge
+
+volumes:
+  keycloak_data:

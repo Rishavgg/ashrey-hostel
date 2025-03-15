@@ -1,4 +1,5 @@
 services:
+  # Database for facilitator and manager
   database:
     image: postgres
     restart: always
