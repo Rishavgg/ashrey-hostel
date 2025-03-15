@@ -38,9 +38,9 @@ const OutOfCampusTable: React.FC<OutOfCampusTabProps> = ({ requests }) => {
         <tbody>
           {requests.map((r, index) => {
             const avatarLetter = r.name.charAt(0).toUpperCase();
-            const start = new Date(r.leaveDate);
-            const end = new Date(r.returnDate);
-            const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+            // const start = new Date(r.leaveDate);
+            // const end = new Date(r.returnDate);
+            // const diffDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 
             return (
               <tr key={index} className={styles.row}>
