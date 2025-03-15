@@ -1,31 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Css/OutpassCard.module.css';
 
-interface EnhancedNameCardProps {
+interface OutpassCardProps {
   name: string;
-  id: string; // Unique identifier for the card
-  status: string;
+  id: string;
+  hostel: string;
   year: string;
   placeOfVisit: string;
   reasonForVisit: string;
-  leaveDate: string; // Format: YYYY-MM-DD
-  returnDate: string; // Format: YYYY-MM-DD
+  leaveDate: string;
+  returnDate: string;
   daysDifference: number;
+  wardencheck: boolean;
+  outyet: boolean;
+  approvedby: string;
 }
 
-const EnhancedNameCard: React.FC<EnhancedNameCardProps> = ({
+const OutpassCard: React.FC<OutpassCardProps> = ({
   name,
   id,
-  status,
+  hostel,
   year,
   placeOfVisit,
   reasonForVisit,
   leaveDate,
   returnDate,
   daysDifference,
+  wardencheck,
+  // outyet,
+  approvedby,
 }) => {
-  // Extract the first letter from the name
   const avatarLetter = name.charAt(0).toUpperCase();
+  const [approver, setApprover] = useState(approvedby);
+  const [rejected, setRejected] = useState(false);
 
   const handleCardClick = async (id: string) => {
     try {
@@ -38,7 +45,8 @@ const EnhancedNameCard: React.FC<EnhancedNameCardProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! 
+          : ${response.status}`);
       }
 
       const data = await response.json();
@@ -48,19 +56,61 @@ const EnhancedNameCard: React.FC<EnhancedNameCardProps> = ({
     }
   };
 
+  const handleApprove = async () => {
+    const approverName = 'Warden John';
+    setApprover(approverName);
+    setRejected(false);
+
+    try {
+      await fetch('https://your-backend-endpoint.com/approve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, approvedby: approverName }),
+      });
+    } catch (error) {
+      console.error('Error approving outpass:', error);
+    }
+  };
+
+  const handleReject = async () => {
+    setRejected(true);
+    setApprover('');
+
+    try {
+      await fetch('https://your-backend-endpoint.com/reject', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, rejected: true }),
+      });
+    } catch (error) {
+      console.error('Error rejecting outpass:', error);
+    }
+  };
+
+  // const cardClassName = `${styles.OutpassCard} ${approver && !rejected ? styles.approved : ''}`;
+  const cardClassName = `${styles.OutpassCard} ${approver && !rejected ? styles.approved : ''} ${rejected ? styles.rejected : ''}`;
+
+
   return (
-    <article
-      className={styles.enhancedNameCard}
-      onClick={() => handleCardClick(id)}
-    >
-      <div className={styles.avatarBlock}>
-        <div className={styles.avatar}>
-          <div className={styles.letter}>{avatarLetter}</div>
+    <article className={cardClassName} onClick={() => handleCardClick(id)}>
+      <div className={styles.avatBlock}>
+        <div className={styles.avatarBlock}>
+          <div className={styles.avatar}>
+            <div className={styles.letter}>{avatarLetter}</div>
+          </div>
+          <div className={styles.info}>
+            <h2 className={styles.name}>{name}</h2>
+            <p className={styles.id}>{id}</p>
+          </div>
         </div>
-        <div className={styles.info}>
-          <h2 className={styles.name}>{name}</h2>
-          <p className={styles.id}>{id}</p>
-        </div>
+        <div className={styles.statContainer}>
+            <p className={styles.status}>{hostel}</p>
+            <p className={styles.year}>{year}</p>
+          </div>
       </div>
 
       <div className={styles.detailsBlock}>
@@ -69,17 +119,50 @@ const EnhancedNameCard: React.FC<EnhancedNameCardProps> = ({
           <p className={styles.reasonForVisit}>{reasonForVisit}</p>
         </div>
         <div className={styles.dateInfo}>
-          <p className={styles.date}>{leaveDate} | {returnDate}</p>
+          <p className={styles.date}>
+            {leaveDate} | {returnDate}
+          </p>
           <div className={styles.daysDifference}>{daysDifference}</div>
         </div>
       </div>
 
       <div className={styles.statusContainer}>
-        <p className={styles.status}>{status}</p>
-        <p className={styles.year}>{year}</p>
+        {wardencheck ? (
+          !approver && !rejected ? (
+            <div className={styles.buttonRow}>
+              <button
+                className={styles.approveButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApprove();
+                }}
+              >
+                Approve
+              </button>
+              <button
+                className={styles.rejectButton}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleReject();
+                }}
+              >
+                Reject
+              </button>
+            </div>
+
+          ) : rejected ? (
+            <p className={styles.status}>Rejected</p>
+          ) : (
+            <p className={styles.status}>Approved by {approver}</p>
+          )
+        ) : (
+          <p className={styles.status}>
+            {rejected ? 'Rejected' : `Approved by ${approver}`}
+          </p>
+        )}
       </div>
     </article>
   );
 };
 
-export default EnhancedNameCard;
+export default OutpassCard;
