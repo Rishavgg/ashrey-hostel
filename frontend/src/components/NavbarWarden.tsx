@@ -50,14 +50,14 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
         <hr className={styles.dividerLine} />
         <NavItem
           icon={findIcon}
-          label="Find a student"
+          label="Manage students"
           isActive={activeElement === 'Find a student'}
           onClick={() => handleClick('Find a student')} link={''}        />
-        <NavItem
+        {/* <NavItem
           icon={reciptIcon}
           label="Hostel fees status"
           isActive={activeElement === 'Hostel fees status'}
-          onClick={() => handleClick('Hostel fees status')} link={''}        />
+          onClick={() => handleClick('Hostel fees status')} link={''}        /> */}
         {/* <NavItem
           icon={editIcon}
           label="Add/edit student details"
@@ -107,14 +107,14 @@ const Navbar: React.FC<{ onPageChange: (page: string) => void }> = ({ onPageChan
         <hr className={styles.dividerLine} />
         <NavItem
           icon={listIcon}
-          label="Public Room List"
+          label="Manage rooms"
           isActive={activeElement === 'Public Room List'}
           onClick={() => handleClick('Public Room List')} link={''}        />
-        <NavItem
+        {/* <NavItem
           icon={editIcon}
           label="Add/Edit Rooms"
           isActive={activeElement === 'Add/Edit Rooms'}
-          onClick={() => handleClick('Add/Edit Rooms')} link={''}        />
+          onClick={() => handleClick('Add/Edit Rooms')} link={''}        /> */}
       </header>
 
       {/* Footer */}
