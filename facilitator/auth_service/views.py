@@ -109,8 +109,6 @@ def callback_view(request):
             grant_type='authorization_code',
             code=code,
             redirect_uri=settings.KEYCLOAK_REDIRECT_URI,
-            client_id=settings.KEYCLOAK_CLIENT_ID,
-            client_secret=settings.KEYCLOAK_CLIENT_SECRET
         )
         access_token = token_response.get('access_token')
         decoded_token = decode_token_without_verification(access_token)
@@ -146,16 +144,22 @@ def callback_view(request):
 
     # Log the user in
     login(request, user)
-    # Set cookies
-    # response = redirect("http://localhost:5173/warden-dashboard")
-    # response.set_cookie("token", access_token, httponly=True, secure=True)  # Set secure=True in production
-    # response.set_cookie("roles", ",".join(user_roles), httponly=True, secure=False)
-
-    # return response
 
     # Encode roles and token as query parameters
     roles_param = ",".join(user_roles)  # Join roles into a comma-separated string
     return redirect(f'http://localhost:5173/warden-dashboard?token={access_token}&roles={roles_param}')
+    # Role-based redirection
+    if "admin" in roles_param:
+        return redirect(f"http://localhost:5173/admin-dashboard?token={access_token}&roles={roles_param}")
+    elif "caretaker" in roles_param:
+        return redirect(f"http://localhost:5173/caretaker-dashboard?token={access_token}&roles={roles_param}")
+    elif "chief_warden" in roles_param:
+        return redirect(f"http://localhost:5173/chief-warden-dashboard?token={access_token}&roles={roles_param}")
+    elif "warden" in roles_param:
+        return redirect(f"http://localhost:5173/warden-dashboard?token={access_token}&roles={roles_param}")
+    
+    # Default fallback redirection
+    return redirect("http://localhost:5173/unauthorized")
 
 # Utility function to handle Keycloak user authentication
 def authenticate_user_from_keycloak(userinfo):

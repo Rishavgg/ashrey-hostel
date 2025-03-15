@@ -88,43 +88,27 @@ const FindStudent = () => {
 
   const handlePopupSubmit = async (formData: Record<string, string>) => {
     try {
-      console.log("Form data received:", formData); // Logs the entire formData object
-  
-      // Log each field with its type and value
-      console.log("Name:", formData.name, "| Type:", typeof formData.name);
-      console.log("Email:", formData.email, "| Type:", typeof formData.email);
-      console.log("Roll Number:", formData.rollNumber, "| Type:", typeof formData.rollNumber);
-      console.log("Contact:", formData.contact, "| Type:", typeof formData.contact);
-      console.log("Admission Year (string):", formData.admissonyear, "| Type:", typeof formData.admissonyear);
-  
-      setIsPopupLoading(true);
-  
-      // Convert admissonyear to a number
-      const admissonyear = parseInt(formData.admissonyear, 10);
-      if (isNaN(admissonyear)) {
-        throw new Error("Admission year must be a valid number.");
-      }
-  
       const res = await registerUser(
-        formData.name,
-        formData.email,
-        formData.rollNumber,
-        formData.contact,
-        admissonyear
+          formData.name,
+          formData.email,
+          formData.rollNumber,
+          formData.contact,
+          formData.admissionYear
       );
-  
-      console.log("Response from registerUser:", res);
-  
-      if (res?.message === "User added successfully") {
+      setIsPopupLoading(true);
+
+      if (res?.message === "Student added successfully") {
         setIsPopupVisible(false);
       }
+
     } catch (error) {
       console.error("Error occurred in handlePopupSubmit:", error);
     } finally {
       setIsPopupLoading(false);
     }
   };
-  
+
+
 
   const handleFileUpload = async (file: File) => {
     try {
@@ -234,10 +218,10 @@ const FindStudent = () => {
               },
               {
                 label: "Admission Year",
-                name: "admissonyear",
+                name: "admissionYear",
                 type: "integer",
-                validation: Yup.number()
-                  .required("Phone number is required"),
+                validation: Yup.string()
+                  .required("Admission Year is required"),
               },
               {
                 label: "Phone No.",

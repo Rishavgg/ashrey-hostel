@@ -15,7 +15,7 @@ jobs:
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # Update to latest version
 
       # Step 2: Set up JDK
       - name: Set up JDK
@@ -24,9 +24,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Step 3: Cache Maven dependencies
+      # Step 3: Cache Maven dependencies (Updated to v3)
       - name: Cache Maven dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -38,34 +38,3 @@ jobs:
         run: |
           cd manager
           mvn clean install -DskipTests
-
-      # Step 5: Run tests
-      # - name: Run tests
-      #   run: |
-      #     cd manager
-      #     mvn test
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: github.ref == 'refs/heads/main'
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
-
-  #     - name: Set up JDK
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         java-version: '17'
-  #         distribution: 'temurin'
-
-  #     - name: Build the Spring Boot application
-  #       run: |
-  #         cd manager
-  #         mvn clean package -DskipTests
-
-    #   - name: Deploy application
-    #     run: |
-    #       echo "Deployment steps go here"
-    #       # Add deployment commands, e.g., SCP or Docker

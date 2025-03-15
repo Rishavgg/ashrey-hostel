@@ -110,7 +110,7 @@ const FindStudent = () => {
         formData.email,
         formData.rollNumber,
         formData.contact,
-        admissonyear
+        formData.admissonyear
       );
   
       console.log("Response from registerUser:", res);

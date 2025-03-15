@@ -4,8 +4,8 @@ import LoginPage from "../Pages/LoginPage/LoginPage";
 import ResetPage from "../Pages/ResetPage/ResetPage.tsx";
 import Warden from "../Pages/WardenDashboard/WardenDashboard.tsx";
 import Student from "../Pages/StudentDashboard/StudentDashboard.tsx";
-// import ProtectedRoute from "./ProtectedRoute";
-// import WardenProtectedRoute from "./AdminProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
+import AdminProtectedRoute from "./AdminProtectedRoute";
 import ChooseRole from "../Pages/ChooseRole/ChooseRole.tsx";
 import ChiefWardenDashboard from "../Pages/ChiefWardenDashboard/ChiefWardenDashboard.tsx"
 
@@ -17,23 +17,30 @@ export const router = createBrowserRouter([
             { path: "/", element: <ChooseRole /> },
             { path: "student-login", element: <LoginPage /> },
             { path: 'warden', element: <Warden/> },
-            { path: 'chief-warden-dashboard', element: <ChiefWardenDashboard/>},
+            { 
+                path: 'chief-warden-dashboard', 
+                element:( 
+                    <AdminProtectedRoute>
+                    <ChiefWardenDashboard/>
+                    </AdminProtectedRoute>
+                ),
+            },
             { path: 'reset', element: <ResetPage/> },
             { path: 'student', element: <Student/> },
             {
                 path: 'warden-dashboard',
                 element: (
-                //    <WardenProtectedRoute>
+                   <AdminProtectedRoute>
                         <Warden />
-                //    </WardenProtectedRoute>
+                   </AdminProtectedRoute>
                 ),
             },
             {
                 path: 'student-dashboard',
                 element: (
-                //  <ProtectedRoute>
+                 <ProtectedRoute>
                         <Student />
-                // </ProtectedRoute>
+                </ProtectedRoute>
                 ),
             },
         ],

@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'chatbot_service',
     'notify_service',
     'corsheaders',
-    # 'django_keycloak.apps.KeycloakAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -67,15 +66,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django_keycloak.middleware.KeycloakMiddleware',  # Keycloak Middleware
-    # 'django_keycloak.middleware.BaseKeycloakMiddleware',
     'auth_service.middleware.KeycloakTokenMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
 # Keycloak settings for Django
 AUTHENTICATION_BACKENDS = [
-    # 'django_keycloak.auth.backends.KeycloakAuthorizationCodeBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -84,7 +80,7 @@ AUTHENTICATION_BACKENDS = [
 KEYCLOAK_SERVER_URL = 'http://localhost:8080/'
 KEYCLOAK_REALM = 'myrealm'
 KEYCLOAK_CLIENT_ID = 'ashrey-manager-client'
-KEYCLOAK_CLIENT_SECRET = "rH9avNUwiZXL29ysjewpAXmgwzXc4HzY"
+KEYCLOAK_CLIENT_SECRET = "aoE2Ck0WvoL2wceisM5c5MtYab8KMM6H"
 KEYCLOAK_REDIRECT_URI = 'http://localhost:8081/callback/'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 LOGIN_URL = '/login/'
@@ -93,6 +89,7 @@ LOGIN_REDIRECT_URL = 'http://localhost:8081/home/'
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",
 #     "http://localhost:3000",  # React app URL
+#   
 # ]
 
 CORS_ALLOW_ALL_ORIGINS = True

@@ -6,7 +6,7 @@ import { fetchPublicRooms } from "../../services/managerService.tsx";
 import styles from '../../components/Css/TileView.module.css'
 
 interface HostelCardProps {
-  name: string;
+  hotelName: string;
   balcony: 0 | 1;
   sunny: 0 | 1;
   level: number;
@@ -28,7 +28,7 @@ const PublicRoom = () => {
         setLoading(true);
         const roomsData = await fetchPublicRooms(page,size);
         const transformedRooms: HostelCardProps[] = roomsData.map((room) => ({
-          name: `H${room.level}`,
+          hotelName: room.hostelName, // Use hostelName directly from API response
           balcony: room.balcony ? 1 : 0,
           sunny: room.sunlight ? 1 : 0,
           level: room.level,
@@ -55,44 +55,44 @@ const PublicRoom = () => {
   };
 
   return (
-    <div style={{height:'100vh'}}>
-      <div
-        style={{
-          gap: "20px",
-          position: "sticky",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <FilterBar title="List of Avalable Rooms" onSearch={undefined} onToggle={handleToggleView} />
-        {loading && <p>Loading rooms...</p>}
-        {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>No rooms found.</p>}
+      <div style={{height:'100vh'}}>
+        <div
+            style={{
+              gap: "20px",
+              position: "sticky",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+        >
+          <FilterBar title="Public Room List" onSearch={undefined} onToggle={handleToggleView} />
+          {loading && <p>Loading rooms...</p>}
+          {rooms.length === 0 && !loading && <p style={{padding:'0px 20px'}}>No rooms found.</p>}
 
-        {view === "Tile" ? (
-        <div className={styles.tileView} >
-            {rooms.map((room, index) => (
-              <HostelCard
-                key={index}
-                name={room.name}
-                balcony={room.balcony}
-                sunny={room.sunny}
-                level={room.level}
-                roomNo={room.roomNo}
-                capacity={room.capacity ?? 0}
-                occupancy={room.occupancy ?? 0}
-              />
-            ))}
-          </div>
-        ) : (
-          <HostelTable rooms={rooms} />
-        )}
+          {view === "Tile" ? (
+              <div className={styles.tileView} >
+                {rooms.map((room, index) => (
+                    <HostelCard
+                        key={index}
+                        hotelName={room.hotelName}
+                        balcony={room.balcony}
+                        sunny={room.sunny}
+                        level={room.level}
+                        roomNo={room.roomNo}
+                        capacity={room.capacity ?? 0}
+                        occupancy={room.occupancy ?? 0}
+                    />
+                ))}
+              </div>
+          ) : (
+              <HostelTable rooms={rooms} />
+          )}
+        </div>
+        <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px', bottom:'20px'}} >
+          <button onClick={handlePrevPage}>Prev</button>
+          <button onClick={handleNextPage}>Next</button>
+        </div>
       </div>
-      <div style={{width:'100%', display:"flex", justifyContent:"center",position:'relative', gap:'20px', bottom:'20px'}} >
-        <button onClick={handlePrevPage}>Prev</button>
-        <button onClick={handleNextPage}>Next</button>
-      </div>
-    </div>
   );
 };
 

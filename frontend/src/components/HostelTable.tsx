@@ -9,7 +9,7 @@ import shadyIcon from '../Assets/icon/shade.svg';
 
 interface RoomTableProps {
   rooms: {
-    name: string;
+    hotelName: string;
     balcony: 0 | 1;
     sunny: 0 | 1;
     level: number;
@@ -24,7 +24,7 @@ const HostelTable: React.FC<RoomTableProps> = ({ rooms }) => {
     if (name.startsWith('H15')) return 'Parmar Bhavan';
     if (name.startsWith('H14')) return 'Azad Bhavan';
     if (name.startsWith('H13')) return 'Geeta Bhavan';
-    return 'Parmar Bhavan';
+    return 'Shastri Bhavan';
   };
 
   const getRoomType = (capacity: number) => {
@@ -55,7 +55,7 @@ const HostelTable: React.FC<RoomTableProps> = ({ rooms }) => {
         </thead>
         <tbody>
           {rooms.map((room, index) => {
-            const hostelName = getHostelName(room.name);
+            const hostelName = getHostelName(room.hotelName);
             const roomType = getRoomType(room.capacity);
             return (
               <tr key={index} className={styles.row}>
@@ -63,7 +63,7 @@ const HostelTable: React.FC<RoomTableProps> = ({ rooms }) => {
                   <div className={styles.roomNo}>{room.roomNo}</div>
                 </td>
                 <td>{hostelName}</td>
-                <td>{`${room.name} ${room.roomNo}`}</td>
+                <td>{`${room.hotelName} ${room.roomNo}`}</td>
                 <td>
                   {room.sunny === 1 ? (
                     <img src={sunnyIcon} alt="Sunny Yes" />
