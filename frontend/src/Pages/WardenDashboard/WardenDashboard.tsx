@@ -1,7 +1,7 @@
 import Navbar from '../../components/NavbarWarden.tsx';
 import FindStudent from "./FindStudent.tsx"; 
 import HostelFees from './HostelFees.tsx'; 
-// import ManualAllocation from './ManualAllocation.tsx';
+import ManualAllocation from './ManualAllocation.tsx';
 import MassAllocation from './MassAllocation.tsx';
 import AddEditStudent from './AddEditStudent.tsx';
 import AddEditRooms from './AddEditRooms.tsx';
@@ -11,7 +11,7 @@ import OutpassHistory from './OutpassHistory.tsx';
 import OutpassReq from './OutpassReq.tsx';
 import PublicRoom from './PublicRoomList.tsx';
 import { useState } from "react";
-import AssignRoomForm from '../../components/ManualAllocation.tsx';
+// import AssignRoomForm from '../../components/ManualAllocation.tsx';
 
 // Define Warden Component
 const Warden = () => {
@@ -29,8 +29,8 @@ const Warden = () => {
       case 'Hostel fees status':
         return <HostelFees />;
       case 'Manual Allocation':
-        return (
-          <AssignRoomForm
+        return <ManualAllocation />
+          {/* <AssignRoomForm
             hostelOptions={[
               { name: 'Room A1', balcony: 1, sunny: 1, level: 2, roomNo: '101', capacity: 3, occupancy: 1 },
               { name: 'Room B2', balcony: 0, sunny: 0, level: 1, roomNo: '102', capacity: 2, occupancy: 1 },
@@ -48,8 +48,7 @@ const Warden = () => {
             }}
             onCancel={() => console.log('Manual allocation cancelled')}
             isLoading={false}
-          />
-        );
+          /> */}
       case 'Mass Allocation':
         return <MassAllocation />;
       case 'Allocation Request':
