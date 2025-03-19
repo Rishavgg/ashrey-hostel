@@ -4,7 +4,7 @@ import OutOfCampusTab from "../../components/OutOfCampusTab";
 import OutOfCampusTable from "../../components/OutOfCampusTable"; // Create this like StudntTable
 import styles from "../../components/Css/TileView.module.css"; // Reuse existing tile style
 
-const OutPassHistory: React.FC = () => {
+const OutofCampus: React.FC = () => {
   const [view, setView] = useState("Tile");
 
   const outCampusData = [
@@ -54,7 +54,6 @@ const OutPassHistory: React.FC = () => {
       }}
     >
       <FilterBar title="Out of Campus" onSearch={handleSearch} onToggle={handleToggleView} />
-
         <div
         style={{
           padding:"10px",
@@ -75,4 +74,4 @@ const OutPassHistory: React.FC = () => {
   );
 };
 
-export default OutPassHistory;
+export default OutofCampus;

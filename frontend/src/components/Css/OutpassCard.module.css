@@ -198,3 +198,35 @@
   justify-content: flex-end;
 
 }
+
+.rejected {
+  background-color: #FFD4D4; /* Light red background */
+  transition: background-color 0.3s ease;
+}
+
+.rejected:hover {
+  background-color: #FFD4D4;
+  transition: background-color 0.3s ease;
+}
+
+.daysDifference {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.daysApproved {
+  background-color: #a5d6a7; /* light green */
+  color: #1b5e20;
+}
+
+.daysRejected {
+  background-color: #f2969f; /* light red */
+  color: #b71c1c;
+}
+
+.daysPending {
+  background-color: #f4f4f4; /* default grey */
+  color: #6b6b6b;
+}

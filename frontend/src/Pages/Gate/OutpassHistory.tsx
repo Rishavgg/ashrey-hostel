@@ -53,8 +53,7 @@ const OutPassHistory: React.FC = () => {
         flexDirection: "column",
       }}
     >
-      <FilterBar title="Out of Campus" onSearch={handleSearch} onToggle={handleToggleView} />
-
+      <FilterBar title="Outpass History" onSearch={handleSearch} onToggle={handleToggleView} />
         <div
         style={{
           padding:"10px",

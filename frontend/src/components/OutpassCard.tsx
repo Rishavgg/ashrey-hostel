@@ -122,7 +122,19 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
           <p className={styles.date}>
             {leaveDate} | {returnDate}
           </p>
-          <div className={styles.daysDifference}>{daysDifference}</div>
+
+          {/* <div className={styles.daysDifference}>{daysDifference}</div> */}
+          <div
+            className={`${styles.daysDifference} ${
+              rejected
+                ? styles.daysRejected
+                : approver
+                ? styles.daysApproved
+                : styles.daysPending
+            }`}
+          >
+            {daysDifference}
+          </div>
         </div>
       </div>
 
