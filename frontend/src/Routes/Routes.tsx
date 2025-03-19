@@ -22,9 +22,9 @@ export const router = createBrowserRouter([
             { 
                 path: 'chief-warden-dashboard', 
                 element:( 
-                    // <AdminProtectedRoute>
+                    <AdminProtectedRoute>
                     <ChiefWardenDashboard/>
-                    // </AdminProtectedRoute>
+                    </AdminProtectedRoute>
                 ),
             },
             { path: 'reset', element: <ResetPage/> },
@@ -32,17 +32,17 @@ export const router = createBrowserRouter([
             {
                 path: 'warden-dashboard',
                 element: (
-                //    <AdminProtectedRoute>
+                   <AdminProtectedRoute>
                         <Warden />
-                //    </AdminProtectedRoute>
+                   </AdminProtectedRoute>
                 ),
             },
             {
                 path: 'gate-dashboard',
                 element: (
-                //    <AdminProtectedRoute>
+                   <AdminProtectedRoute>
                         <Gate />
-                //    </AdminProtectedRoute>
+                   </AdminProtectedRoute>
                 ),
             },
             {
