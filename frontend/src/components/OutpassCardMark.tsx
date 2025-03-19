@@ -2,23 +2,16 @@ import React, { useState } from 'react';
 import styles from './Css/OutpassCard.module.css';
 
 interface OutpassCardProps {
-  // from profile
   name: string;
   id: string;
   hostel: string;
   year: string;
-
-  // from form
   placeOfVisit: string;
   reasonForVisit: string;
   leaveDate: string;
   returnDate: string;
-
-  daysDifference: number; //can be calculated
-
-  // metadata for validation
+  daysDifference: number;
   wardencheck: boolean;
-  outyet: boolean;
   approvedby: string;
 }
 
@@ -33,12 +26,13 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
   returnDate,
   daysDifference,
   wardencheck,
-  // outyet,
   approvedby,
 }) => {
   const avatarLetter = name.charAt(0).toUpperCase();
   const [approver, setApprover] = useState(approvedby);
   const [rejected, setRejected] = useState(false);
+  const [inputRoll, setInputRoll] = useState('');
+  const [error, setError] = useState('');
 
   const handleCardClick = async (id: string) => {
     try {
@@ -50,10 +44,7 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
         body: JSON.stringify({ id }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! 
-          : ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! : ${response.status}`);
 
       const data = await response.json();
       console.log('Response:', data);
@@ -62,44 +53,30 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
     }
   };
 
-  const handleApprove = async () => {
-    const approverName = 'Warden John';
-    setApprover(approverName);
-    setRejected(false);
+  const handleConfirm = async () => {
+    if (inputRoll.trim() === id) {
+      const approverName = 'Gate Security';
+      setApprover(approverName);
+      setRejected(false);
+      setError('');
 
-    try {
-      await fetch('https://your-backend-endpoint.com/approve', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, approvedby: approverName }),
-      });
-    } catch (error) {
-      console.error('Error approving outpass:', error);
+      try {
+        await fetch('https://your-backend-endpoint.com/confirm-exit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, approvedby: approverName }),
+        });
+      } catch (error) {
+        console.error('Error confirming exit:', error);
+      }
+    } else {
+      setError('Roll number does not match.');
     }
   };
 
-  const handleReject = async () => {
-    setRejected(true);
-    setApprover('');
-
-    try {
-      await fetch('https://your-backend-endpoint.com/reject', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, rejected: true }),
-      });
-    } catch (error) {
-      console.error('Error rejecting outpass:', error);
-    }
-  };
-
-  // const cardClassName = `${styles.OutpassCard} ${approver && !rejected ? styles.approved : ''}`;
   const cardClassName = `${styles.OutpassCard} ${approver && !rejected ? styles.approved : ''} ${rejected ? styles.rejected : ''}`;
-
 
   return (
     <article className={cardClassName} onClick={() => handleCardClick(id)}>
@@ -114,9 +91,9 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
           </div>
         </div>
         <div className={styles.statContainer}>
-            <p className={styles.status}>{hostel}</p>
-            <p className={styles.year}>{year}</p>
-          </div>
+          <p className={styles.status}>{hostel}</p>
+          <p className={styles.year}>{year}</p>
+        </div>
       </div>
 
       <div className={styles.detailsBlock}>
@@ -128,8 +105,6 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
           <p className={styles.date}>
             {leaveDate} | {returnDate}
           </p>
-
-          {/* <div className={styles.daysDifference}>{daysDifference}</div> */}
           <div
             className={`${styles.daysDifference} ${
               rejected
@@ -145,38 +120,34 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
       </div>
 
       <div className={styles.statusContainer}>
-        {wardencheck ? (
-          !approver && !rejected ? (
-            <div className={styles.buttonRow}>
-              <button
-                className={styles.approveButton}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleApprove();
-                }}
-              >
-                Approve
-              </button>
-              <button
-                className={styles.rejectButton}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleReject();
-                }}
-              >
-                Reject
-              </button>
-            </div>
-
-          ) : rejected ? (
-            <p className={styles.status}>Rejected</p>
-          ) : (
-            <p className={styles.status}>Approved by {approver}</p>
-          )
+        {!approver && !rejected ? (
+          <div className={styles.confirmBlock}>
+            <input
+              type="text"
+              className={styles.rollInput}
+              placeholder="Enter roll number to confirm"
+              value={inputRoll}
+              onChange={(e) => {
+                setInputRoll(e.target.value);
+                setError('');
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              className={styles.confirmButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleConfirm();
+              }}
+            >
+              Confirm
+            </button>
+            {error && <p className={styles.error}>{error}</p>}
+          </div>
+        ) : rejected ? (
+          <p className={styles.status}>Rejected</p>
         ) : (
-          <p className={styles.status}>
-            {rejected ? 'Rejected' : `Approved by ${approver}`}
-          </p>
+          <p className={styles.status}>Student marked out of campus</p>
         )}
       </div>
     </article>

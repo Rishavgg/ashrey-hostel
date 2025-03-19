@@ -59,6 +59,7 @@ const OutofCampus: React.FC = () => {
           padding:"10px",
         }}
       >
+        
       {view === "Tile" ? (
         <div className={styles.tileView}>
           {outCampusData.length === 0 && <p>No requests found.</p>}
