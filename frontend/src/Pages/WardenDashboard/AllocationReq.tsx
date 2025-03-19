@@ -22,7 +22,6 @@ const AddEditStudent: React.FC = () => {
       <br />
 
       <div style={{ padding: '0px 25px', display: 'flex', flexWrap: 'wrap', gap: '0px' }}>
-        {/* 🔁 Swap Request */}
         <RequestCard
           type="swap"
           students={[
@@ -31,7 +30,6 @@ const AddEditStudent: React.FC = () => {
           ]}
         />
 
-        {/* 🛏️ Apply - 2 Students */}
         <RequestCard
           type="apply"
           newRoom="H15 B26"
@@ -41,7 +39,6 @@ const AddEditStudent: React.FC = () => {
           ]}
         />
 
-        {/* 🛏️ Apply - 3 Students */}
         <RequestCard
           type="apply"
           newRoom="H10 L2"
