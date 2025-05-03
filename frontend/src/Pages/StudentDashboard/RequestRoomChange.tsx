@@ -1,7 +1,7 @@
 
 import PageTitle from "../../components/PageTitle";
 import styles from '../../components/Css/TileView.module.css';
-import RoomChangeForm from "../../components/RoomChangeForm";
+// import RoomChangeForm from "../../components/RoomChangeForm";
 
 const RoomChange: React.FC = () => {
 
@@ -24,16 +24,16 @@ const RoomChange: React.FC = () => {
       {/* Tile-like grid structure from FindStudent */}
       <div className={styles.tileView}>
 
-      <RoomChangeForm
+      {/* <RoomChangeForm
         mode="swap"
         studentName="John Doe"
         currentRoom={{ id: "r1", roomNo: "B-102" }}
         swapCandidates={["Alice", "Bob", "Charlie"]}
         availableRooms={[{ id: "r2", roomNo: "C-201" }, { id: "r3", roomNo: "A-103" }]}
-        onSubmit={()=>{}}
+        // onSubmit={()=>{}}
         // onCancel={() => setShowForm(false)}
         // isLoading={()=>{}}
-      />
+      /> */}
         
 
 

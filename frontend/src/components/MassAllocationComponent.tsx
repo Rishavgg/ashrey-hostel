@@ -41,10 +41,10 @@ interface HostelCardProps {
   studentPairs: StudentPair[];
 }
 
-const colorMap = {
-  green: "bg-green-400",
-  purple: "bg-purple-300",
-};
+// const colorMap = {
+//   green: "bg-green-400",
+//   purple: "bg-purple-300",
+// };
 
 const MassAllocationComponent: React.FC<HostelCardProps> = ({
   room,
