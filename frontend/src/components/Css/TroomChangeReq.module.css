@@ -1,0 +1,103 @@
+.formContainer {
+    width: 100%;
+    padding: 0 24px;
+  }
+  
+  .formHeader {
+    margin-bottom: 20px;
+  }
+  
+  .formTitle {
+    border-radius: 8px;
+    background: #e8def8;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px;
+    margin: 0;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .formFields {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: space-between;
+    color: #49454f;
+  }
+  
+  .fieldWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .fieldLabel {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .fieldInput {
+    border-radius: 8px;
+    background: #f7f2fa;
+    border: 1px solid rgba(121, 116, 126, 0.18);
+    padding: 10px 19px;
+    font-size: 16px;
+  }
+  
+  .formActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .actionButton {
+    border: none;
+    border-radius: 8px;
+    color: #49454f;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    padding: 10px 18px;
+    transition: background 0.2s ease;
+  }
+  
+  .successButton {
+    background: #e8def8;
+  }
+  
+  .successButton:hover {
+    background: #cbb8e8;
+  }
+  
+  .cancelButton {
+    background: transparent;
+    border: 1px solid #49454f;
+  }
+  
+  .cancelButton:hover {
+    background: #e6e6e6;
+  }
+  
+  .buttonText {
+    font-weight: bold;
+  }
+  
+  .buttonIcon {
+    font-size: 20px;
+    margin-left: 4px;
+  }
+  
+  @media (max-width: 900px) {
+    .formFields {
+      flex-direction: column;
+    }
+  }
+  

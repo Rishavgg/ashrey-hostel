@@ -17,7 +17,7 @@ import { useState } from "react";
 
 // Define Warden Component
 const Gate = () => {
-  const [activePage, setActivePage] = useState<string>('Outpass Approved'); // Default page
+  const [activePage, setActivePage] = useState<string>('Approved Outpasses'); // Default page
   // Callback for changing the active page
   const handlePageChange = (page: string) => {
     setActivePage(page);

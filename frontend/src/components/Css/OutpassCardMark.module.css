@@ -1,0 +1,268 @@
+
+.OutpassCard {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    min-width: 18rem;
+    padding: 18px;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.1s ease;
+  }
+  
+  .OutpassCard:hover {
+    background: var(--Schemes-Secondary-Container, #E8DEF8);
+  }
+  
+  .OutpassCard:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 3px #CEB6F5;
+  }
+  
+  /* Avatar + Name + ID */
+  .avatarBlock {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .avatBlock{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: space-between;
+    /* margin-bottom: 12px; */
+  }
+  
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 4px;
+    background-color: #242323;
+  }
+  
+  .letter {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .name {
+    color: #000000;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .id {
+    color: #444444;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  /* Visit and date details */
+  .detailsBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+  
+  .visitInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .placeOfVisit,
+  .reasonForVisit {
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .dateInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .date {
+    color: #6b6b6b;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  
+  .daysDifference {
+    color: #6b6b6b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background-color: #f4f4f4;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  /* Status + Year */
+  .statusContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    width: 100%;
+  }
+  
+  .status {
+    color: #000000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: right;
+  }
+  
+  .year {
+    color: #444444;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-align: right;
+  }
+  
+  .approved {
+    background-color: #BBF1B2;
+    transition: background-color 0.3s ease;
+  }
+  
+  .approved:hover {
+    background-color: #BBF1B2;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  .buttonRow {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  
+  .approveButton,
+  .rejectButton {
+    padding: 0 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+  }
+  
+  .approveButton {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .rejectButton {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .OutpassCard {
+    height: 260px; /* Adjust this as per your desired height */
+    overflow: hidden;
+  }
+  
+  .statContainer{
+    width: fit-content;
+    justify-content: flex-end;
+  
+  }
+  
+  .rejected {
+    background-color: #FFD4D4; /* Light red background */
+    transition: background-color 0.3s ease;
+  }
+  
+  .rejected:hover {
+    background-color: #FFD4D4;
+    transition: background-color 0.3s ease;
+  }
+  
+  .daysDifference {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .daysApproved {
+    background-color: #a5d6a7; /* light green */
+    color: #1b5e20;
+  }
+  
+  .daysRejected {
+    background-color: #f2969f; /* light red */
+    color: #b71c1c;
+  }
+  
+  .daysPending {
+    background-color: #f4f4f4; /* default grey */
+    color: #6b6b6b;
+  }
+  
+
+
+.confirmBlock {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1.3rem;
+  }
+  
+  .rollInput {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  .confirmButton {
+    padding: 0.5rem;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .confirmButton:hover {
+    background-color: #45a049;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.9rem;
+  }
+  

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Css/OutpassCard.module.css';
+import styles from './Css/OutpassCardMark.module.css';
 
 interface OutpassCardProps {
   name: string;
@@ -25,7 +25,7 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
   leaveDate,
   returnDate,
   daysDifference,
-  wardencheck,
+  // wardencheck,
   approvedby,
 }) => {
   const avatarLetter = name.charAt(0).toUpperCase();
@@ -125,7 +125,7 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
             <input
               type="text"
               className={styles.rollInput}
-              placeholder="Enter roll number to confirm"
+              placeholder="Enter Enroll No."
               value={inputRoll}
               onChange={(e) => {
                 setInputRoll(e.target.value);
@@ -142,13 +142,15 @@ const OutpassCard: React.FC<OutpassCardProps> = ({
             >
               Confirm
             </button>
-            {error && <p className={styles.error}>{error}</p>}
+            
           </div>
+          
         ) : rejected ? (
           <p className={styles.status}>Rejected</p>
         ) : (
           <p className={styles.status}>Student marked out of campus</p>
         )}
+        {error && <p className={styles.error}>{error}</p>}
       </div>
     </article>
   );
