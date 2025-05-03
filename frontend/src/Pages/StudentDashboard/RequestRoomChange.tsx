@@ -31,8 +31,8 @@ const RoomChange: React.FC = () => {
         swapCandidates={["Alice", "Bob", "Charlie"]}
         availableRooms={[{ id: "r2", roomNo: "C-201" }, { id: "r3", roomNo: "A-103" }]}
         onSubmit={()=>{}}
-        onCancel={() => setShowForm(false)}
-        isLoading={()=>{}}
+        // onCancel={() => setShowForm(false)}
+        // isLoading={()=>{}}
       />
         
 
