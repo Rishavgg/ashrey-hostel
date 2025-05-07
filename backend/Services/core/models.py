@@ -12,7 +12,7 @@ from datetime import timedelta
 
 class Student(models.Model):
     # user based authentication
-    # user = models.OneToOneField('accounts.CustomUser', on_delete=models.CASCADE, limit_choices_to={'role': 'student'}, null=True, blank=True)
+    user = models.OneToOneField('accounts.CustomUser', on_delete=models.CASCADE, limit_choices_to={'role': 'student'}, null=True, blank=True)
 
     name = models.CharField(max_length=21)
     enroll_number = models.IntegerField(unique=True)
@@ -24,7 +24,7 @@ class Student(models.Model):
     alloted = models.BooleanField(default=False)  # Whether the student is assigned to a room
     
     cg = models.FloatField(default=0.0)  # Cumulative Grade (CG)
-    grad_year = models.IntegerField(null=False)  # Graduation year
+    admn_year = models.IntegerField(null=False)  # Graduation year
     
     priority_score = models.FloatField(default=0.0)  # Priority score for room assignment
     
@@ -44,7 +44,7 @@ class Student(models.Model):
 
         # Update status and score
         self.alloted = self.room is not None
-        self.priority_score = 5000 - self.grad_year + self.cg
+        self.priority_score = 5000 - self.admn_year + self.cg
 
         # Save the student
         super().save(*args, **kwargs)
@@ -168,13 +168,13 @@ class HostelRoom(models.Model):
 class Hostel_Management(models.Model):
     # user based authentication
     
-    # user = models.OneToOneField(
-    #     'accounts.CustomUser', 
-    #     on_delete=models.CASCADE, 
-    #     limit_choices_to=Q(role__in=['warden', 'chief_warden', 'caretaker', 'guard']), 
-    #     null=True, 
-    #     blank=True
-    # )
+    user = models.OneToOneField(
+        'accounts.CustomUser', 
+        on_delete=models.CASCADE, 
+        limit_choices_to=Q(role__in=['warden', 'chief_warden', 'caretaker', 'guard']), 
+        null=True, 
+        blank=True
+    )
     
     ROLE_CHOICES = [
         ('guard', 'Guard'),
