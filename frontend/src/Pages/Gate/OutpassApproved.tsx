@@ -1,4 +1,4 @@
-import OutpassCard from "../../components/OutpassCard";
+import OutpassCard from "../../components/OutpassCardMark";
 import PageTitle from "../../components/PageTitle";
 import styles from '../../components/Css/TileView.module.css';
 

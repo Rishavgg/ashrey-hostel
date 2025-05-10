@@ -5,7 +5,7 @@ import { useState } from "react";
 import ListOfRooms from "./ListOfRooms.tsx";
 import InventoryForm from "./InventoryForm.tsx";
 import ParticipateInMassAllocation from "./ParticipateInMassAllocation.tsx";
-import RegisterComplaint from "./RegisterComplaint.tsx";
+import RegisterComplaint from "./RequestOutpass.tsx";
 import RequestRoomChange from "./RequestRoomChange.tsx";
 
 const HomePage = () => {

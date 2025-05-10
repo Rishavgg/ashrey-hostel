@@ -179,6 +179,11 @@ import AssignRoomForm from '../../components/ManualAllocation.tsx';
 
 const AddEditRooms: React.FC = () => {
     return (
+        <>
+    <div style={{width:'79vw', padding:"20px", position:"sticky", boxShadow:"rgba(0, 0, 0, 0.1) 0px 2px 4px"}}>
+        <PageTitle text="Manual Allocation" />
+    </div>
+
     <div>
         <div style={{width:'79vw', padding:"20px", position:"sticky", boxShadow:"rgba(0, 0, 0, 0.1) 0px 2px 4px"}}>
         <PageTitle text="Manual Allocation" />
@@ -208,6 +213,7 @@ const AddEditRooms: React.FC = () => {
         </div>
         {/* Add your find-a-student page content here */}
     </div>
+    </>
     );
 };
 

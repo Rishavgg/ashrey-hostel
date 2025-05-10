@@ -1,5 +1,7 @@
 // import FilterBar from "../../components/FilterBar";
 import PageTitle from "../../components/PageTitle";
+import MassAllocationComponent from "../../components/MassAllocationComponent";
+
 const MassAllocation: React.FC = () => {
     return (
       <div>
@@ -9,8 +11,52 @@ const MassAllocation: React.FC = () => {
 
         <br />
         
-        <h2>Under Construction</h2>
+        {/* <h2>Under Construction</h2> */}
+        <div
+            style={{
+              padding:"20px",
+            }}
+          >
+        <MassAllocationComponent
+
+            room="H15 B26"
+            level={3}
+            floor={-3}
+            balcony={true}
+            sunny={false}
+            studentPairs={[
+              {
+                id: "pair1",
+                status: "green",
+                student1: {
+                  name: "Jhon Doe",
+                  roll: "H15 B9",
+                  hostel: "H15",
+                },
+                student2: {
+                  name: "Jhon Doe",
+                  roll: "H7 L5",
+                  hostel: "H7",
+                },
+              },
+              {
+                id: "pair2",
+                status: "purple",
+                student1: {
+                  name: "Jhon Doe",
+                  roll: "H15 B9",
+                  hostel: "H15",
+                },
+                student2: {
+                  name: "Jhon Doe",
+                  roll: "H7 L5",
+                  hostel: "H7",
+                },
+              },
+            ]}
+          />
         {/* Add your find-a-student page content here */}
+      </div>
       </div>
     );
   };

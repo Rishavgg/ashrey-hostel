@@ -9,7 +9,7 @@ import AdminProtectedRoute from "./AdminProtectedRoute";
 import ChooseRole from "../Pages/ChooseRole/ChooseRole.tsx";
 import ChiefWardenDashboard from "../Pages/ChiefWardenDashboard/ChiefWardenDashboard.tsx"
 
-import Gate from "../Pages/Gate/OutpassHistory.tsx"
+import Gate from "../Pages/Gate/GateDashboard.tsx"
 
 export const router = createBrowserRouter([
     {
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
                 element: (
                    <AdminProtectedRoute>
                         <Warden />
-                   </AdminProtectedRoute>
+                   </AdminProtectedRoute>  
                 ),
             },
             {
@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
             {
                 path: 'student-dashboard',
                 element: (
-                 <ProtectedRoute>
+                <ProtectedRoute>
                         <Student />
                 </ProtectedRoute>
                 ),

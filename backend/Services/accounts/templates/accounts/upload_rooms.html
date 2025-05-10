@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Hostel Rooms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        button, a {
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Hostel Rooms</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="excel_file">Select Excel File:</label><br>
+            <input type="file" name="excel_file" accept=".xlsx" required><br><br>
+
+            <button type="submit">Upload Rooms</button>
+        </form>
+
+        <br>
+        <a href="{% url 'download_excel_template' %}">Download Room Excel Template</a>
+    </div>
+</body>
+</html>

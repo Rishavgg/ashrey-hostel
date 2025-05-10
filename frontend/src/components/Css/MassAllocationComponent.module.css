@@ -1,0 +1,85 @@
+.card {
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    width: 100%;
+    max-width: 28rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .badge {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-weight: 600;
+  }
+  
+  .iconGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .pairCard {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .selected {
+    border-color: #a78bfa;
+  }
+  
+  .radio {
+    margin-right: 0.5rem;
+  }
+  
+  .leftInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  
+  .statusDot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+  }
+  
+  .green {
+    background-color: #34d399;
+  }
+  
+  .purple {
+    background-color: #d8b4fe;
+  }
+  
+  .name {
+    font-weight: 600;
+  }
+  
+  .subInfo {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  

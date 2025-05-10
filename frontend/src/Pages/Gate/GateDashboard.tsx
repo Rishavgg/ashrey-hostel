@@ -1,4 +1,4 @@
-import Navbar from '../../components/NavbarWarden.tsx';
+import Navbar from '../../components/NavbarGate.tsx';
 // import FindStudent from "./FindStudent.tsx"; 
 // import HostelFees from './HostelFees.tsx'; 
 // import ManualAllocation from './ManualAllocation.tsx';
@@ -17,7 +17,7 @@ import { useState } from "react";
 
 // Define Warden Component
 const Gate = () => {
-  const [activePage, setActivePage] = useState<string>('Find a student'); // Default page
+  const [activePage, setActivePage] = useState<string>('Approved Outpasses'); // Default page
   // Callback for changing the active page
   const handlePageChange = (page: string) => {
     setActivePage(page);
@@ -30,7 +30,7 @@ const Gate = () => {
         return <OutofCampus />;
       case 'Outpass history':
         return <OutpassHistory />;
-      case 'Outpass Requests':
+      case 'Approved Outpasses':
         return <OutpassApproved />;
     }
   };

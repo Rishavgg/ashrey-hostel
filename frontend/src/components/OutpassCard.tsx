@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import styles from './Css/OutpassCard.module.css';
 
 interface OutpassCardProps {
+  // from profile
   name: string;
   id: string;
   hostel: string;
   year: string;
+
+  // from form
   placeOfVisit: string;
   reasonForVisit: string;
   leaveDate: string;
   returnDate: string;
-  daysDifference: number;
+
+  daysDifference: number; //can be calculated
+
+  // metadata for validation
   wardencheck: boolean;
   outyet: boolean;
   approvedby: string;
