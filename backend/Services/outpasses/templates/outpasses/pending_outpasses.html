@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pending Outpasses - Mark In</title>
+</head>
+<body>
+    <h2>Pending Outpasses to Mark In</h2>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if outpasses %}
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Reason</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Mark In</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outpass in outpasses %}
+                    <tr>
+                        <td>{{ outpass.student.name }}</td>
+                        <td>{{ outpass.reason }}</td>
+                        <td>{{ outpass.from_date }} {{ outpass.from_time }}</td>
+                        <td>{{ outpass.to_date }} {{ outpass.to_time }}</td>
+                        <td>
+                            <form action="{% url 'mark-in-outpass' outpass.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Mark In</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No outpasses to mark in.</p>
+    {% endif %}
+</body>
+</html>

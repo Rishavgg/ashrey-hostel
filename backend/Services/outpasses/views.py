@@ -209,14 +209,131 @@ def warden_outpass_view(request):
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.db.models import Q
 from core.models import Outpass
-from django.db.models import Q  
-
 
 @login_required
 def history_outpass_view(request):
     outpasses = Outpass.objects.filter(
-        models.Q(markin=True) | models.Q(rejected=True)
+        Q(markin=True) | Q(rejected=True)
     ).select_related('student', 'student__room').order_by('-start_date')
 
     return render(request, 'outpasses/outpass_history.html', {'outpasses': outpasses})
+
+
+
+
+
+
+
+# ------------------------------outpass to be marked out--------------------------
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q
+from core.models import Outpass, Hostel_Management
+
+@login_required
+def guard_outpass_view(request):
+    # Ensure only guards can access
+    try:
+        guard = Hostel_Management.objects.get(user=request.user)
+    except Hostel_Management.DoesNotExist:
+        raise PermissionDenied("Only guards can access this page.")
+    
+    if guard.role != 'guard':
+        raise PermissionDenied("Access denied. Only guards can mark outpasses.")
+
+    # Show only approved and not rejected or already marked out
+    outpasses = Outpass.objects.filter(
+        approvedcheck=True,
+        markout=False,
+        rejected=False
+    ).select_related('student', 'student__room').order_by('-start_date')
+
+    return render(request, 'outpasses/guard_outpass_list.html', {'outpasses': outpasses})
+
+
+
+@login_required
+def mark_out_outpass(request, outpass_id):
+    try:
+        guard = Hostel_Management.objects.get(user=request.user)
+    except Hostel_Management.DoesNotExist:
+        raise PermissionDenied("Only guards can perform this action.")
+    
+    if guard.role != 'guard':
+        raise PermissionDenied("Only guards can mark outpasses.")
+
+    outpass = get_object_or_404(Outpass, id=outpass_id)
+
+    if outpass.markout:
+        raise PermissionDenied("This outpass has already been marked out.")
+
+    if outpass.rejected or not outpass.approvedcheck:
+        raise PermissionDenied("Only approved and not rejected outpasses can be marked out.")
+
+    outpass.markout = True
+    outpass.save()
+
+    return redirect('guard_outpass_list')
+
+
+
+
+
+
+# ---------------------------------------markin outpass--------------------------
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import PermissionDenied
+from core.models import Outpass, Hostel_Management
+
+@login_required
+def guard_markin_view(request):
+    try:
+        guard = Hostel_Management.objects.get(user=request.user)
+    except Hostel_Management.DoesNotExist:
+        raise PermissionDenied("Only guards can access this page.")
+
+    if guard.role != 'guard':
+        raise PermissionDenied("Only guards can mark in outpasses.")
+
+    # Get all outpasses that are marked out but not yet marked in
+    outpasses = Outpass.objects.filter(
+        markout=True,
+        markin=False,
+        rejected=False,
+        approvedcheck=True
+    ).select_related('student', 'student__room').order_by('-start_date')
+
+    return render(request, 'outpasses/guard_markin_list.html', {'outpasses': outpasses})
+
+
+
+
+
+
+
+@login_required
+def mark_in_outpass(request, outpass_id):
+    try:
+        guard = Hostel_Management.objects.get(user=request.user)
+    except Hostel_Management.DoesNotExist:
+        raise PermissionDenied("Only guards can perform this action.")
+
+    if guard.role != 'guard':
+        raise PermissionDenied("Only guards can mark in outpasses.")
+
+    outpass = get_object_or_404(Outpass, id=outpass_id)
+
+    if not outpass.markout or outpass.markin:
+        raise PermissionDenied("Invalid operation: Cannot mark in before mark out or already marked in.")
+
+    outpass.markin = True
+    outpass.save()
+
+    return redirect('guard_markin_list')

@@ -1,0 +1,8 @@
+<h2>Edit Room: {{ room.room_number }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+    <a href="{% url 'room_management' %}">Cancel</a>
+</form>

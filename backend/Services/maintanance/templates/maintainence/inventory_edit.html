@@ -1,0 +1,45 @@
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Inventory Form</title>
+</head>
+<body>
+    <h1>Edit Inventory Form - Room {{ form.hostel_room.room_number }} ({{ form.hostel_room.hostel.name }})</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <table border="1">
+            <tr>
+                <th>Inventory</th>
+                <th>Condition (Handover)</th>
+                <th>Condition (Return)</th>
+            </tr>
+
+            {% for item in inventory_items %}
+            <tr>
+                <td>{{ item.label }}</td>
+                <td>{{ item.s_value|yesno:"Good,Bad" }}</td>
+                <td>
+                    <label>
+                        <input type="radio" name="{{ item.c_name }}" value="True" {% if item.c_value %}checked{% endif %}> Good
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ item.c_name }}" value="False" {% if item.c_value is not none and not item.c_value %}checked{% endif %}> Bad
+                    </label>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p><strong>Student:</strong> {{ form.filled_by_student }}</p>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

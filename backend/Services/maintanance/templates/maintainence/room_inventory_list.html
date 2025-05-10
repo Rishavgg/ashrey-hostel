@@ -1,0 +1,137 @@
+<!-- <form method="get">
+    <label>Filter by Hostel:</label>
+    <select name="hostel">
+        <option value="">All</option>
+        {% for hostel in hostels %}
+            <option value="{{ hostel.name }}" {% if hostel.name == request.GET.hostel %}selected{% endif %}>{{ hostel.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Filter by Student (Enrollment No):</label>
+    <select name="student">
+        <option value="">All</option>
+        {% for student in students %}
+            <option value="{{ student.enrollment_no }}" {% if student.enrollment_no == request.GET.student %}selected{% endif %}>
+                {{ student.enrollment_no }} - {{ student.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Room Number</th>
+        <th>Hostel</th>
+        <th>Filled by Student</th>
+        <th>Allow Edit</th>
+        <th>Edit</th>
+    </tr>
+    {% for item in room_list %}
+        <tr>
+            <td>{{ item.room.room_number }}</td>
+            <td>{{ item.room.hostel.name }}</td>
+            
+            <td>
+                {% if item.inventory and item.inventory.filled_by_student %}
+                    {{ item.inventory.filled_by_student.name }}
+                {% else %}
+                    Not Filled
+                {% endif %}
+            </td>
+
+            <td>
+                {% if item.inventory and item.inventory.allow_edit %}
+                    <input type="checkbox" checked disabled>
+                {% else %}
+                    <input type="checkbox" disabled>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if item.inventory %}
+                    <a href="{% url 'edit_inventory_form' item.inventory.id %}">Edit</a>
+                {% else %}
+                    No Inventory Form
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table> -->
+
+
+
+
+<form method="get">
+    <label>Filter by Hostel:</label>
+    <select name="hostel">
+        <option value="">All</option>
+        {% for hostel in hostels %}
+            <option value="{{ hostel.name }}" {% if hostel.name == request.GET.hostel %}selected{% endif %}>{{ hostel.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Search by Student Name or Enrollment No:</label>
+    <input type="text" name="student_query" value="{{ request.GET.student_query }}" placeholder="Search student">
+
+    <label>Allow Edit:</label>
+    <select name="allow_edit">
+        <option value="">All</option>
+        <option value="true" {% if request.GET.allow_edit == 'true' %}selected{% endif %}>True</option>
+        <option value="false" {% if request.GET.allow_edit == 'false' %}selected{% endif %}>False</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<form method="post">
+    {% csrf_token %}
+    <table border="1">
+        <tr>
+            <th>Room Number</th>
+            <th>Hostel</th>
+            <th>Filled by Student</th>
+            <th>Allow Edit</th>
+            <th>Edit</th>
+        </tr>
+        {% for item in page_obj %}
+            <tr>
+                <td>{{ item.room.room_number }}</td>
+                <td>{{ item.room.hostel.name }}</td>
+                <td>
+                    {% if item.inventory and item.inventory.filled_by_student %}
+                        {{ item.inventory.filled_by_student.name }}
+                    {% else %}
+                        Not Filled
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.inventory %}
+                        <input type="checkbox" name="allow_edit_{{ item.inventory.id }}" {% if item.inventory.allow_edit %}checked{% endif %}>
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.inventory %}
+                        <a href="{% url 'edit_inventory_form' item.inventory.id %}">Edit</a>
+                    {% else %}
+                        No Inventory Form
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">Save Changes</button>
+</form>
+
+<div>
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_previous %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>

@@ -1,0 +1,19 @@
+<h2>Outpasses to be Marked In</h2>
+
+{% for outpass in outpasses %}
+  <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+    <strong>Student:</strong> {{ outpass.student.name }}<br>
+    <strong>Room:</strong> {{ outpass.student.room }}<br>
+    <strong>Location:</strong> {{ outpass.location }}<br>
+    <strong>Reason:</strong> {{ outpass.reason }}<br>
+    <strong>Start:</strong> {{ outpass.start_date }}<br>
+    <strong>End:</strong> {{ outpass.end_date }}<br>
+
+    <form method="post" action="{% url 'mark_in_outpass' outpass.id %}">
+      {% csrf_token %}
+      <button type="submit">Mark In</button>
+    </form>
+  </div>
+{% empty %}
+  <p>No outpasses waiting to be marked in.</p>
+{% endfor %}

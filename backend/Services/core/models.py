@@ -32,6 +32,18 @@ class Student(models.Model):
     room = models.ForeignKey('HostelRoom', related_name='students', null=True, blank=True, on_delete=models.SET_NULL)
     hosteller = models.BooleanField(default=True)
     
+    GENDER_CHOICES = [
+        ('m', 'Male'),
+        ('f', 'Female'),
+        ('o', 'Other'),
+    ]
+
+    gender = models.CharField(
+        max_length=1,
+        choices=GENDER_CHOICES,
+        default='m'
+    )
+    
     def save(self, *args, **kwargs):
         # Get the previous room before saving
         old_room = None
@@ -123,26 +135,48 @@ class HostelRoom(models.Model):
     level = models.IntegerField(default=-10)
     balcony = models.BooleanField(default=False)
     sunny = models.BooleanField(default=False)
+    
+    # variable to show the room in public room list 
+    show = models.BooleanField(default=True)
+    
+    
+    # In models.py, inside the Student model
 
+    # def save(self, *args, **kwargs):
+    #     # Calculate priority score based on room attributes
+    #     self.priority_score = 100 + 5 * self.balcony - 3 * abs(self.level)
+
+    #     # Save to generate ID if not exists (needed for FK relationships)
+    #     super().save(*args, **kwargs)
+
+    #     # Dynamically calculate occupancy based on assigned students
+    #     self.occupancy = Student.objects.filter(room=self).count()
+
+    #     # Ensure occupancy does not exceed capacity
+    #     if self.occupancy > self.capacity:
+    #         raise ValidationError(f"Room {self.room_number} exceeds its capacity of {self.capacity}.")
+
+    #     # Perform additional custom validations
+    #     self.full_clean()
+
+    #     # Final save with updated occupancy
+    #     super().save(*args, **kwargs)
+    
+    
     def save(self, *args, **kwargs):
         # Calculate priority score based on room attributes
         self.priority_score = 100 + 5 * self.balcony - 3 * abs(self.level)
 
-        # Save to generate ID if not exists (needed for FK relationships)
+        # Temporarily skip occupancy count if not yet saved
+        is_new = self.pk is None
         super().save(*args, **kwargs)
 
-        # Dynamically calculate occupancy based on assigned students
-        self.occupancy = Student.objects.filter(room=self).count()
+        if is_new:
+            # Only update occupancy after the room has been saved and assigned an ID
+            self.occupancy = Student.objects.filter(room=self).count()
+            # Save only the updated occupancy field
+            HostelRoom.objects.filter(pk=self.pk).update(occupancy=self.occupancy)
 
-        # Ensure occupancy does not exceed capacity
-        if self.occupancy > self.capacity:
-            raise ValidationError(f"Room {self.room_number} exceeds its capacity of {self.capacity}.")
-
-        # Perform additional custom validations
-        self.full_clean()
-
-        # Final save with updated occupancy
-        super().save(*args, **kwargs)
 
     def clean(self):
         if not (-13 <= self.level <= 5):
@@ -296,3 +330,73 @@ class Outpass(models.Model):
         return f"Outpass for {self.student.name} ({self.start_date} → {self.end_date})"
 
 
+#------------------------------------------------------------------------------------------------------
+
+
+from django.db import models
+from core.models import HostelRoom, Student
+
+
+class InventoryForm(models.Model):
+    hostel_room = models.ForeignKey(HostelRoom, on_delete=models.CASCADE, related_name='inventory_forms')
+
+    # Inventory checked by student (suffix _s) and caretaker (_c)
+    fan_s = models.BooleanField(default=False)
+    fan_c = models.BooleanField(default=False)
+
+    tube_light_s = models.BooleanField(default=False)
+    tube_light_c = models.BooleanField(default=False)
+
+    fan_regulator_s = models.BooleanField(default=False)
+    fan_regulator_c = models.BooleanField(default=False)
+
+    switch_board_s = models.BooleanField(default=False)
+    switch_board_c = models.BooleanField(default=False)
+
+    cupboard_s_s = models.BooleanField(default=False)
+    cupboard_s_c = models.BooleanField(default=False)
+
+    cupboard_safe_s = models.BooleanField(default=False)
+    cupboard_safe_c = models.BooleanField(default=False)
+
+    book_rack_s = models.BooleanField(default=False)
+    book_rack_c = models.BooleanField(default=False)
+
+    writing_table_s = models.BooleanField(default=False)
+    writing_table_c = models.BooleanField(default=False)
+
+    chair_s = models.BooleanField(default=False)
+    chair_c = models.BooleanField(default=False)
+
+    door_s = models.BooleanField(default=False)
+    door_c = models.BooleanField(default=False)
+
+    door_lock_s = models.BooleanField(default=False)
+    door_lock_c = models.BooleanField(default=False)
+
+    window_shutters_s = models.BooleanField(default=False)
+    window_shutters_c = models.BooleanField(default=False)
+
+    window_panes_s = models.BooleanField(default=False)
+    window_panes_c = models.BooleanField(default=False)
+
+    bed_s = models.BooleanField(default=False)
+    bed_c = models.BooleanField(default=False)
+
+    mattress_s = models.BooleanField(default=False)
+    mattress_c = models.BooleanField(default=False)
+
+    walls_s = models.BooleanField(default=False)
+    walls_c = models.BooleanField(default=False)
+
+    hot_air_regulator_s = models.BooleanField(default=False)
+    hot_air_regulator_c = models.BooleanField(default=False)
+
+    # Who filled it
+    filled_by_student = models.ForeignKey(Student, null=True, blank=True, on_delete=models.SET_NULL, related_name='inventory_forms')
+
+    # Control edit access
+    allow_edit = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Inventory for {self.hostel_room}"

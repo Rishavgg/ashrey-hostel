@@ -21,6 +21,53 @@ class HostelManagementForm(forms.ModelForm):
 
 
 
+# from django import forms
+# from django.contrib.auth.forms import UserCreationForm
+# from accounts.models import CustomUser
+# from core.models import Student
+
+# class StudentUserCreationForm(UserCreationForm):
+#     # Extra fields from the Student model
+#     name = forms.CharField(max_length=21)
+#     enroll_number = forms.IntegerField()
+#     student_contact = forms.IntegerField()
+#     parent_contact1 = forms.IntegerField()
+#     parent_contact2 = forms.IntegerField()
+#     cg = forms.FloatField()
+#     admn_year = forms.IntegerField()
+
+#     class Meta:
+#         model = CustomUser
+#         fields = ['username', 'password1', 'password2', 'email']
+
+#     def clean_enroll_number(self):
+#         enroll = self.cleaned_data.get('enroll_number')
+#         if Student.objects.filter(enroll_number=enroll).exists():
+#             raise forms.ValidationError("This enrollment number is already registered.")
+#         return enroll
+
+#     def save(self, commit=True):
+#         # Save the user (CustomUser)
+#         user = super().save(commit=False)
+#         user.role = 'student'
+#         if commit:
+#             user.save()
+
+#             # Create the Student object linked to the user
+#             Student.objects.create(
+#                 user=user,
+#                 name=self.cleaned_data['name'],
+#                 enroll_number=self.cleaned_data['enroll_number'],
+#                 email=self.cleaned_data['email'],
+#                 student_contact=self.cleaned_data['student_contact'],
+#                 parent_contact1=self.cleaned_data['parent_contact1'],
+#                 parent_contact2=self.cleaned_data['parent_contact2'],
+#                 cg=self.cleaned_data['cg'],
+#                 admn_year=self.cleaned_data['admn_year'],
+#             )
+#         return user
+
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from accounts.models import CustomUser
@@ -35,6 +82,11 @@ class StudentUserCreationForm(UserCreationForm):
     parent_contact2 = forms.IntegerField()
     cg = forms.FloatField()
     admn_year = forms.IntegerField()
+    gender = forms.ChoiceField(
+        choices=Student.GENDER_CHOICES,
+        widget=forms.RadioSelect,  # You can change this to Select for a dropdown
+        required=True
+    )
 
     class Meta:
         model = CustomUser
@@ -64,8 +116,12 @@ class StudentUserCreationForm(UserCreationForm):
                 parent_contact2=self.cleaned_data['parent_contact2'],
                 cg=self.cleaned_data['cg'],
                 admn_year=self.cleaned_data['admn_year'],
+                gender=self.cleaned_data['gender'],  # Save gender field
             )
         return user
+
+
+
 
 
 
@@ -137,6 +193,13 @@ class StudentEditForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = [
-            'name', 'enroll_number', 'email', 'student_contact',
-            'parent_contact1', 'parent_contact2', 'cg', 'admn_year'
+            'name',
+            'enroll_number',
+            'email',
+            'student_contact',
+            'parent_contact1',
+            'parent_contact2',
+            'cg',
+            'admn_year',
+            'gender',  # Added gender field
         ]

@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Inventory Form</title>
+</head>
+<body>
+    <h1>Room Inventory Form</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <th>Inventory</th>
+                <th>Condition When Handed Over</th>
+            </tr>
+            {% for item in condition_fields %}
+            <tr>
+                <td>{{ item.label }}</td>
+                <td>
+                    <label><input type="radio" name="{{ item.name }}" value="good" {% if item.value %}checked{% endif %}> Good</label>
+                    <label><input type="radio" name="{{ item.name }}" value="bad" {% if not item.value %}checked{% endif %}> Bad</label>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <button type="submit">Submit Form</button>
+    </form>
+</body>
+</html>
+
