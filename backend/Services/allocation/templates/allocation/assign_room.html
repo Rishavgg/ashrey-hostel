@@ -1,0 +1,29 @@
+<h2>Assign Students to Room {{ room.room_number }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {% for index, selected_student in dropdown_data %}
+        <label for="student_{{ index }}">Student {{ index|add:1 }}:</label>
+        <select name="student_{{ index }}" id="student_{{ index }}">
+            <option value="">-- Select Student --</option>
+            {% for student in all_students %}
+                <option value="{{ student.id }}"
+                        {% if selected_student and selected_student.id == student.id %}
+                            selected
+                        {% endif %}>
+                    {{ student.name }}
+                    {% if student.room %}
+                        (Room: {{ student.room.room_number }})
+                    {% endif %}
+                </option>
+            {% endfor %}
+        </select><br>
+    {% endfor %}
+
+    {% if confirm_required %}
+        <p>One or more students are already assigned to other rooms. Type "CONFIRM" to override:</p>
+        <input type="text" name="confirm" placeholder="Type CONFIRM">
+    {% endif %}
+
+    <button type="submit">Assign</button>
+</form>

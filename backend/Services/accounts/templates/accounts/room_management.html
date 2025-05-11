@@ -1,36 +1,26 @@
-
 <form method="get" id="filter-form">
-    <!-- Search Bar -->
     <input type="text" name="q" value="{{ query }}" placeholder="Search by room number or hostel">
-
-    <!-- Hostel Filter -->
     <select name="hostel">
         <option value="">All Hostels</option>
         {% for hostel in hostels %}
         <option value="{{ hostel.id }}" {% if hostel.id|stringformat:"s" == selected_hostel %}selected{% endif %}>{{ hostel.name }}</option>
         {% endfor %}
     </select>
-
-    <!-- Occupancy Filter -->
     <select name="occupancy">
         <option value="">All</option>
         <option value="full" {% if occupancy_filter == 'full' %}selected{% endif %}>Full</option>
         <option value="partial" {% if occupancy_filter == 'partial' %}selected{% endif %}>Partially Occupied</option>
         <option value="available" {% if occupancy_filter == 'available' %}selected{% endif %}>Empty</option>
     </select>
-
-    <!-- Capacity Filter -->
     <select name="capacity">
         <option value="">All Capacities</option>
         <option value="1" {% if capacity_filter == '1' %}selected{% endif %}>Single Room</option>
         <option value="2" {% if capacity_filter == '2' %}selected{% endif %}>Double Room</option>
         <option value="3" {% if capacity_filter == '3' %}selected{% endif %}>Triple Room</option>
     </select>
-
     <button type="submit">Search & Filter</button>
 </form>
 
-<!-- Room List -->
 <div>
     {% if page_obj.has_other_pages %}
         <div>
@@ -48,7 +38,6 @@
         </div>
     {% endif %}
 
-    <!-- Room List Table -->
     <form id="room-form" method="post">
         {% csrf_token %}
         <table>
@@ -59,7 +48,7 @@
                     <th>Capacity</th>
                     <th>Occupancy</th>
                     <th>Show</th>
-                    <th>Edit</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,18 +65,19 @@
                         <input type="hidden" name="room_id" value="{{ room.id }}">
                     </td>
                     <td>
-                        <a href="{% url 'edit_room' room.id %}">Edit</a>
+                        <a href="{% url 'edit_room' room.id %}">Edit </a> |
+                        
+                        <a href="{% url 'assign_room' room.id %}"> Assign</a>
+                        
+                        
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <!-- Save Button (Always visible) -->
         <button type="submit" id="save-button">Save Changes</button>
     </form>
 
-    <!-- Pagination Controls -->
     {% if page_obj.has_other_pages %}
         <div>
             <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
@@ -105,6 +95,6 @@
     {% endif %}
 </div>
 
-<script>
-    // No need to toggle save button visibility anymore
-</script>
+
+
+

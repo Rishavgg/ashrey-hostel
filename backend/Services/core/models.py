@@ -400,3 +400,93 @@ class InventoryForm(models.Model):
 
     def __str__(self):
         return f"Inventory for {self.hostel_room}"
+
+
+
+# -------------------------------------room change----------------------------
+
+
+from django.db import models
+from django.core.exceptions import ValidationError
+from core.models import HostelRoom, Student, Hostel_Management
+
+
+class RoomChangeRequest(models.Model):
+    REQUEST_TYPES = [
+        ('swap', 'Swap Rooms'),
+        ('change', 'Change Room'),
+    ]
+
+    request_type = models.CharField(max_length=10, choices=REQUEST_TYPES)
+    
+    requested_by = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='initiated_requests')
+    requested_with = models.ForeignKey(Student, null=True, blank=True, on_delete=models.SET_NULL, related_name='received_requests')
+
+    # Target room for 'change' requests
+    room = models.ForeignKey(HostelRoom, null=True, blank=True, on_delete=models.SET_NULL)
+
+    approved_for_apply = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+
+    priority_total = models.FloatField(default=0.0)
+
+    approved_by = models.ForeignKey(
+        Hostel_Management,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        limit_choices_to=models.Q(role__in=['warden', 'chief_warden']),
+        related_name='room_change_requests_approved'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # def clean(self):
+    #     # Ensure mutual exclusivity
+    #     if self.approved and self.rejected:
+    #         raise ValidationError("A request cannot be both approved and rejected.")
+
+    #     # Logic for SWAP request
+    #     if self.request_type == 'swap':
+    #         if not self.requested_with:
+    #             raise ValidationError("Requested with must be specified for a swap request.")
+    #         if self.requested_by == self.requested_with:
+    #             raise ValidationError("Requester and requested with cannot be the same student.")
+    #         if self.room:
+    #             raise ValidationError("Room must not be filled for a swap request.")
+
+    #     # Logic for CHANGE request
+    #     elif self.request_type == 'change':
+    #         if not self.room:
+    #             raise ValidationError("Room must be specified for a change request.")
+
+    #         if self.room.capacity == 1:
+    #             if self.requested_with:
+    #                 raise ValidationError("Requested with must not be filled for a single-occupancy room.")
+    #         elif self.room.capacity == 2:
+    #             if not self.requested_with:
+    #                 raise ValidationError("Requested with must be filled for a double-occupancy room.")
+    #             # Validate room availability
+    #             current_occupants = Student.objects.filter(room=self.room).exclude(id__in=[self.requested_by.id, self.requested_with.id]).count()
+    #             if current_occupants > 0:
+    #                 raise ValidationError("Room does not have enough space for both students.")
+    #         else:
+    #             raise ValidationError("Invalid room capacity.")
+
+    #     # If rejected, no further validation is needed
+    #     if self.rejected:
+    #         return
+
+    # def save(self, *args, **kwargs):
+    #     # Only calculate priority — don't validate
+    #     if self.requested_by and self.requested_with:
+    #         self.priority_total = self.requested_by.priority_score + self.requested_with.priority_score
+    #     elif self.requested_by:
+    #         self.priority_total = self.requested_by.priority_score
+
+    #     super().save(*args, **kwargs)
+
+
+    def __str__(self):
+        return f"{self.request_type.title()} Request by {self.requested_by.name}"
