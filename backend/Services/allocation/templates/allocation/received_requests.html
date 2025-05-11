@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Change Requests Received</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+        }
+        .request {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            padding: 10px 16px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            margin-bottom: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>Room Change Requests Received</h2>
+
+    {% if already_accepted %}
+        <div class="info">
+            <p><strong>Note:</strong> You have already accepted one request. All others have been rejected.</p>
+        </div>
+    {% else %}
+        {% if received_requests %}
+            <form method="post">
+                {% csrf_token %}
+                {% for req in received_requests %}
+                    <div class="request">
+                        <p><strong>{{ req.requested_by.name }}</strong> has requested to 
+                        {% if req.request_type == 'swap' %}
+                            <strong>swap rooms</strong> with you.
+                        {% else %}
+                            <strong>change to room {{ req.room.name }}</strong> and wants to room with you.
+                        {% endif %}</p>
+                        <button type="submit" name="request_id" value="{{ req.id }}">Accept This Request</button>
+                    </div>
+                {% endfor %}
+            </form>
+        {% else %}
+            <p>No pending requests at the moment.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

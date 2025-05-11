@@ -1,0 +1,14 @@
+<h2>Warden Dashboard</h2>
+{% for req in requests %}
+  <div>
+    <p>{{ req.requested_by.name }} → {{ req.request_type }}</p>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="request_id" value="{{ req.id }}">
+      <button name="action" value="approve">Approve</button>
+      <button name="action" value="reject">Reject</button>
+    </form>
+  </div>
+{% empty %}
+  <p>No pending requests.</p>
+{% endfor %}

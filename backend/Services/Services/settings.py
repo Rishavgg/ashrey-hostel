@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'accounts',
     'outpasses',
     'maintanance',
+    'allocation',
     'corsheaders',
     'rest_framework',
     'django.contrib.admin',

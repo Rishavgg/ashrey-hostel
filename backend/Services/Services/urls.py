@@ -15,6 +15,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('outpass/', include('outpasses.urls')),
     path('maintanance/', include('maintanance.urls')),
-    
+    path('allocation/', include('allocation.urls')),
 
 ]

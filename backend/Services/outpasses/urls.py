@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('outpass/history/', history_outpass_view, name='outpass_history'),
+    path('outpass/history/', history_outpass_view, name='outpass_history'),         #warden-chefwarden-gate/
     path('request/', create_outpass, name='outpass_request'),
     path('already-exists/', TemplateView.as_view(template_name='outpasses/already_exists.html'), name='outpass_already_exists'),
     # path('request/', create_outpass, name='create_outpass'),
