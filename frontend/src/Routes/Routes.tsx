@@ -32,9 +32,9 @@ export const router = createBrowserRouter([
             {
                 path: 'warden-dashboard',
                 element: (
-                   <AdminProtectedRoute>
+                //    <AdminProtectedRoute>
                         <Warden />
-                   </AdminProtectedRoute>  
+                //    </AdminProtectedRoute>  
                 ),
             },
             {

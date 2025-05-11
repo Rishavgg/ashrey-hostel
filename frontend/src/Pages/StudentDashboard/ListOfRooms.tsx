@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import HostelCard from "../../components/HostelCard.tsx";
 import HostelTable from "../../components/HostelTable.tsx";
 import FilterBar from "../../components/FilterBar.tsx";
-import { fetchPublicRooms } from "../../services/managerService.tsx";
+import { fetchPublicRoomss} from "../../services/managerService.tsx";
 import styles from '../../components/Css/TileView.module.css'
 
 interface HostelCardProps {
@@ -26,7 +26,7 @@ const PublicRoom = () => {
     const fetchRooms = async () => {
       try {
         setLoading(true);
-        const roomsData = await fetchPublicRooms(page,size);
+        const roomsData = await fetchPublicRoomss(page,size);
         const transformedRooms: HostelCardProps[] = roomsData.map((room) => ({
           hotelName: room.hostelName, // Use hostelName directly from API response
           balcony: room.balcony ? 1 : 0,

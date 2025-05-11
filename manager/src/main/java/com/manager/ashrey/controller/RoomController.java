@@ -25,7 +25,7 @@ public class RoomController {
 //            @RequestParam Long hostelId,
 //            @RequestParam Long blockId,
 //            @RequestParam String roomType) {
-//
+
 //        RoomType type;
 //        try {
 //            type = RoomType.valueOf(roomType.toUpperCase());
