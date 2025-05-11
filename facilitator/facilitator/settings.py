@@ -34,13 +34,14 @@ CwIDAQAB
 -----END PUBLIC KEY-----
 """
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 CORS_ALLOW_ALL_ORIGINS = True
 
+# For testing/development only - remove in production
+SESSION_COOKIE_HTTPONLY = False 
 AUTH_USER_MODEL = 'auth_service.CustomUser'
 
 # Application definition
@@ -75,16 +76,15 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# LOGIN_URL = 'keycloak_login'
-
-KEYCLOAK_SERVER_URL = 'http://localhost:8080/'
+KEYCLOAK_PUBLIC_URL = 'http://localhost:8080/'
 KEYCLOAK_REALM = 'myrealm'
 KEYCLOAK_CLIENT_ID = 'ashrey-manager-client'
-KEYCLOAK_CLIENT_SECRET = "aoE2Ck0WvoL2wceisM5c5MtYab8KMM6H"
-KEYCLOAK_REDIRECT_URI = 'http://localhost:8081/callback/'
-LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = 'http://localhost:8081/home/'
+KEYCLOAK_CLIENT_SECRET = "**********"
+KEYCLOAK_SERVER_URL = os.getenv('INTERNAL_KEYCLOAK_URL', 'http://keycloak:8080/')
+KEYCLOAK_REDIRECT_URI = os.getenv('EXTERNAL_FACILITATOR_URL', 'http://localhost:8081/') + 'callback/'
+LOGOUT_REDIRECT_URL = os.getenv('EXTERNAL_FRONTEND_URL', 'http://localhost:5173/')
+LOGIN_REDIRECT_URL = os.getenv('EXTERNAL_FACILITATOR_URL', 'http://localhost:8081/') + 'home/'
+EXTERNAL_FRONTEND_URL = 'http://localhost:5173'
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",
