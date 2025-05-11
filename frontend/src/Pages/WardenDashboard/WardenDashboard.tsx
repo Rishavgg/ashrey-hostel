@@ -48,7 +48,7 @@ const Warden = () => {
             }}
             onCancel={() => console.log('Manual allocation cancelled')}
             isLoading={false}
-          /> */}
+          /> */ }
       case 'Mass Allocation':
         return <MassAllocation />;
       case 'Allocation Request':
