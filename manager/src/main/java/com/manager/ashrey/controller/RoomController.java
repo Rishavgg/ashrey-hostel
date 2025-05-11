@@ -34,4 +34,4 @@ public class RoomController {
 //        }
 //        return roomRepository.findAvailableRooms(hostelId, blockId, roomType);
 //    }
-// }
+}
