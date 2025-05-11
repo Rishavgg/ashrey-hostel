@@ -20,6 +20,8 @@ export interface Room {
   hostelId: number | null;
 }
 
+
+
 export interface Student {
   id: number;
   name: string;
@@ -142,22 +144,36 @@ export const registerWarden = async (wardenDetails: { name: string; hostel: stri
   }
 };
 
-// interface Room {
-  //   name: string;
-  //   roomId: number;
-  //   roomNumber: string;
-//   capacity: number;
-//   currentOccupancy: number;
-//   floor: number;
-//   level: number;
-//   sunlight: boolean;
-//   balcony: boolean;
-//   hostelId: number | null;
-//   hostelName: string;
-// }
+interface Rooms {
+    name: string;
+    roomId: number;
+    roomNumber: string;
+  capacity: number;
+  currentOccupancy: number;
+  floor: number;
+  level: number;
+  sunlight: boolean;
+  balcony: boolean;
+  hostelId: number | null;
+  hostelName: string;
+}
 
 // Fetch rooms data from the API
 export const fetchPublicRooms = async (page:number, size:number): Promise<Room[]> => {
+  try {
+    const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/rooms`,
+      {params: { page, size }} // Pass pagination parameters
+    );
+    return response.data.content; // Assuming the rooms are in the "content" field
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
+    throw error;
+  }
+};
+
+// last 
+// Fetch rooms data from the API
+export const fetchPublicRoomss = async (page:number, size:number): Promise<Rooms[]> => {
   try {
     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/warden/rooms`,
       {params: { page, size }} // Pass pagination parameters
@@ -212,8 +228,50 @@ export const fetchRoomsByHostelId = async (
   }
 };
 
+// last 
+export const fetchRoomsByHostelIds = async (
+  hostelId: number,
+  page: number = 0,
+  size: number = 10
+): Promise<{
+  rooms: Rooms[];
+  totalPages: number;
+  totalElements: number;
+}> => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/warden/hostels/${hostelId}/rooms`,
+      { params: { page, size } }
+    );
+    
+    return {
+      rooms: response.data.content,
+      totalPages: response.data.totalPages,
+      totalElements: response.data.totalElements
+    };
+  } catch (error) {
+    console.error(`Error fetching rooms for hostel ${hostelId}:`, error);
+    return { rooms: [], totalPages: 0, totalElements: 0 };
+  }
+};
+
 // Transform room data for UI components
 export const transformRoomForUI = (room: Room) => {
+  return {
+    name: `Room ${room.roomNumber}`,
+    roomId: room.roomId,
+    roomNo: room.roomNumber,
+    capacity: room.capacity,
+    occupancy: room.currentOccupancy,
+    balcony: room.balcony ? 1 : 0,
+    sunny: room.sunlight ? 1 : 0,
+    level: room.level,
+    floor: room.floor
+  };
+};
+
+//last
+export const transformRoomForUIs = (room: Rooms) => {
   return {
     name: `Room ${room.roomNumber}`,
     roomId: room.roomId,
@@ -341,6 +399,17 @@ export const assignRoomToStudent = async (
 // Group rooms by capacity (room type)
 export const groupRoomsByCapacity = (rooms: Room[]): Record<number, Room[]> => {
   return rooms.reduce((acc: Record<number, Room[]>, room) => {
+    if (!acc[room.capacity]) {
+      acc[room.capacity] = [];
+    }
+    acc[room.capacity].push(room);
+    return acc;
+  }, {});
+};
+
+//last
+export const groupRoomsByCapacitys = (rooms: Rooms[]): Record<number, Rooms[]> => {
+  return rooms.reduce((acc: Record<number, Rooms[]>, room) => {
     if (!acc[room.capacity]) {
       acc[room.capacity] = [];
     }
