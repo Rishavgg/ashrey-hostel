@@ -15,23 +15,23 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
-   @PostMapping(value = "/addRoom")
-   public Room createRoom(@RequestBody RoomDto roomDto) {
-       return roomService.createRoom(roomDto);
-   }
+//    @PostMapping(value = "/addRoom")
+//    public Room createRoom(@RequestBody RoomDto roomDto) {
+//        return roomService.createRoom(roomDto);
+//    }
 
-   @GetMapping("/availableRooms")
-   public List<Room> getAvailableRooms(
-           @RequestParam Long hostelId,
-           @RequestParam Long blockId,
-           @RequestParam String roomType) {
+//    @GetMapping("/availableRooms")
+//    public List<Room> getAvailableRooms(
+//            @RequestParam Long hostelId,
+//            @RequestParam Long blockId,
+//            @RequestParam String roomType) {
 
-       RoomType type;
-       try {
-           type = RoomType.valueOf(roomType.toUpperCase());
-       } catch (IllegalArgumentException e) {
-           throw new RuntimeException("Invalid room type provided: " + roomType);
-       }
-       return roomRepository.findAvailableRooms(hostelId, blockId, roomType);
-   }
-}
+//        RoomType type;
+//        try {
+//            type = RoomType.valueOf(roomType.toUpperCase());
+//        } catch (IllegalArgumentException e) {
+//            throw new RuntimeException("Invalid room type provided: " + roomType);
+//        }
+//        return roomRepository.findAvailableRooms(hostelId, blockId, roomType);
+//    }
+// }
