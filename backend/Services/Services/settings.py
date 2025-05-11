@@ -41,6 +41,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'core',
     'accounts',
     'outpasses',
@@ -122,6 +123,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Ashrey Hostel Admin",
+    "site_header": "Ashrey Hostel",
+    "site_brand": "Ashrey Hostel",
+    "welcome_sign": "Welcome to Ashrey Hostel Admin",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": ['auth', 'contenttypes', 'sessions'],
+    "order_with_respect_to": ["auth", "your_app_name"],
+}
+
 
 
 # Internationalization
