@@ -75,15 +75,23 @@ class Student(models.Model):
 
     def clean(self):
         if self.room:
+            # Gender-based hostel restriction
+            hostel_name = self.room.hostel.name.lower() if self.room.hostel and self.room.hostel.name else ''
+            if self.gender == 'f' and hostel_name != 'geeta':
+                raise ValidationError("Female students can only be assigned to the Geeta hostel.")
+            if self.gender == 'm' and hostel_name == 'geeta':
+                raise ValidationError("Male students cannot be assigned to the Geeta hostel.")
+
             # Count current students in the room excluding the current instance (in case of update)
             current_occupancy = Student.objects.filter(room=self.room).exclude(id=self.id).count()
             
             # Check if adding this student would exceed the room's capacity
             if current_occupancy >= self.room.capacity:
                 raise ValidationError(f"Room {self.room.room_number} is already full (capacity: {self.room.capacity}).")
-        
+
         # Update 'alloted' status accordingly
         self.alloted = self.room is not None
+
 
         
     def __str__(self):

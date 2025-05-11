@@ -124,26 +124,6 @@ def register_student(request):
 
 
 
-# from django.shortcuts import render, redirect
-# from django.contrib import messages
-# from accounts.forms import HostelManagerUserCreationForm
-
-# def register_hostel_manager(request):
-#     if request.method == 'POST':
-#         form = HostelManagerUserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Hostel manager account created successfully.")
-#             return redirect('hostel-manager-register')  # or another page
-#         else:
-#             messages.error(request, "There was an error in the form. Please correct it.")
-#     else:
-#         form = HostelManagerUserCreationForm()
-
-#     return render(request, 'accounts/register_hostel_manager.html', {'form': form})
-
-
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from accounts.forms import HostelManagerUserCreationForm
@@ -170,44 +150,6 @@ def register_hostel_manager(request):
 
     return render(request, 'accounts/register_hostel_manager.html', {'form': form})
 
-
-
-
-# from django.shortcuts import render, redirect
-# from django.contrib import messages
-# from accounts.forms import HostelManagerUserCreationForm
-# from core.models import Hostel_Management  # adjust import to your actual app
-# from django.db import transaction
-
-# @transaction.atomic
-# def register_hostel_manager(request):
-#     if request.method == 'POST':
-#         form = HostelManagerUserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.role = 'warden'  # Or dynamically assign from form
-#             user.is_staff = True
-#             user.set_password(form.cleaned_data["password"])
-#             user.save()
-
-#             # Create linked Hostel_Management record
-#             Hostel_Management.objects.create(
-#                 user=user,
-#                 name=form.cleaned_data.get('name'),
-#                 email=form.cleaned_data.get('email'),
-#                 ph_number=form.cleaned_data.get('ph_number'),
-#                 role=user.role,
-#                 hostel=form.cleaned_data.get('hostel')  # Ensure the form has this
-#             )
-
-#             messages.success(request, "Hostel manager registered successfully.")
-#             return redirect('hostel-manager-register')
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#     else:
-#         form = HostelManagerUserCreationForm()
-
-#     return render(request, 'accounts/register_hostel_manager.html', {'form': form})
 
 
 
@@ -422,6 +364,7 @@ def hostel_room_list_view(request):
     return render(request, 'accounts/room_management.html', {
         'page_obj': page_obj,
         'query': query,
+        
         'hostels': hostels,
         'selected_hostel': selected_hostel,
         'occupancy_filter': occupancy_filter,
@@ -469,192 +412,6 @@ def edit_room_view(request, pk):
 
 
 # # --------------------upload room data-----------------------------
-
-# from django.shortcuts import render, redirect
-# from django.contrib import messages
-# from django.http import HttpResponse
-# from openpyxl import Workbook, load_workbook
-# from io import BytesIO
-
-# from core.models import Hostels, HostelRoom
-
-
-# def upload_rooms(request):
-#     if request.method == "POST" and request.FILES.get("excel_file"):
-#         excel_file = request.FILES["excel_file"]
-#         try:
-#             wb = load_workbook(excel_file)
-#             sheet = wb.active
-#         except Exception as e:
-#             messages.error(request, f"Invalid Excel file: {str(e)}")
-#             return redirect("upload_rooms")
-
-#         failed_rows = []
-#         for row_idx, row in enumerate(sheet.iter_rows(min_row=2), start=2):
-#             try:
-#                 room_number = int(row[0].value)
-#                 hostel_name = str(row[1].value).strip()
-#                 capacity = int(row[2].value)
-#                 show_raw = str(row[3].value).strip().lower()
-#                 show = show_raw == "true"
-
-#                 hostel = Hostels.objects.filter(name__iexact=hostel_name).first()
-#                 if not hostel:
-#                     raise ValueError(f"Hostel '{hostel_name}' not found.")
-
-#                 # Create or update the room
-#                 HostelRoom.objects.update_or_create(
-#                     room_number=room_number,
-#                     hostel=hostel,
-#                     defaults={"capacity": capacity, "show": show},
-#                 )
-
-#             except Exception as e:
-#                 failed_rows.append([
-#                     row[0].value,
-#                     row[1].value,
-#                     row[2].value,
-#                     row[3].value,
-#                     str(e)
-#                 ])
-
-#         if failed_rows:
-#             return _generate_failed_upload_response(failed_rows)
-
-#         messages.success(request, "Rooms uploaded successfully!")
-#         return redirect("upload_rooms")
-
-#     return render(request, "accounts/upload_rooms.html")
-
-
-# def _generate_failed_upload_response(failed_rows):
-#     """Generates an Excel file from failed rows and returns as a download."""
-#     error_wb = Workbook()
-#     error_ws = error_wb.active
-#     error_ws.title = "Upload Errors"
-#     error_ws.append(["Room Number", "Hostel Name", "Capacity", "Show", "Failure Reason"])
-#     for fr in failed_rows:
-#         error_ws.append(fr)
-
-#     error_output = BytesIO()
-#     error_wb.save(error_output)
-#     error_output.seek(0)
-
-#     response = HttpResponse(
-#         error_output,
-#         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#     )
-#     response["Content-Disposition"] = "attachment; filename=room_upload_errors.xlsx"
-#     return response
-
-
-
-
-
-# # views.py
-# from openpyxl import Workbook
-# from io import BytesIO
-# from django.http import HttpResponse
-# from core.models import HostelRoom
-
-# def download_excel_template(request):
-#     wb = Workbook()
-#     ws = wb.active
-#     ws.title = "Room Template"
-
-#     # Header
-#     ws.append(["Room Number", "Hostel Name", "Capacity", "Show (True/False)"])
-
-#     # Fetch existing rooms from the DB
-#     rooms = HostelRoom.objects.select_related("hostel").all()
-#     for room in rooms:
-#         ws.append([
-#             room.room_number,
-#             room.hostel.name if room.hostel else "",
-#             room.capacity,
-#             "True" if room.show else "False"
-#         ])
-
-#     # Save to response
-#     output = BytesIO()
-#     wb.save(output)
-#     output.seek(0)
-
-#     response = HttpResponse(
-#         output,
-#         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-#     )
-#     response["Content-Disposition"] = 'attachment; filename="room_template_with_data.xlsx"'
-#     return response
-
-
-
-
-
-
-
-
-
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib import messages
-from django.db import transaction
-import openpyxl
-import tempfile
-
-from core.models import HostelRoom, Hostels  # Adjust paths as needed
-
-# def bulk_upload_rooms(request):
-#     if request.method == 'POST' and request.FILES.get('file'):
-#         file = request.FILES['file']
-#         wb = openpyxl.load_workbook(file)
-#         sheet = wb.active
-
-#         headers = [cell.value for cell in sheet[1]]
-#         failed_rows = []
-
-#         for row in sheet.iter_rows(min_row=2, values_only=True):
-#             data = dict(zip(headers, row))
-#             try:
-#                 with transaction.atomic():
-#                     hostel = Hostels.objects.get(name=data['hostel'])  # assumes 'name' is unique
-#                     room = HostelRoom.objects.create(
-#                         room_number=int(data['room_number']),
-#                         hostel=hostel,
-#                         capacity=int(data.get('capacity', 2)),
-#                         floor=int(data.get('floor', 0)),
-#                         level=int(data.get('level', 0)),
-#                         balcony=bool(int(data.get('balcony', 0))),
-#                         sunny=bool(int(data.get('sunny', 0))),
-#                         show=bool(int(data.get('show', 1))),
-#                     )
-#             except Exception as e:
-#                 failed_data = list(row) + [str(e)]
-#                 failed_rows.append(failed_data)
-
-#         if failed_rows:
-#             output_wb = openpyxl.Workbook()
-#             output_ws = output_wb.active
-#             output_ws.title = "Failed Records"
-#             output_ws.append(headers + ['error'])
-
-#             for row in failed_rows:
-#                 output_ws.append(row)
-
-#             with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp:
-#                 output_wb.save(tmp.name)
-#                 tmp.seek(0)
-#                 response = HttpResponse(
-#                     tmp.read(),
-#                     content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-#                 )
-#                 response['Content-Disposition'] = 'attachment; filename=failed_room_uploads.xlsx'
-#                 return response
-
-#         messages.success(request, "Bulk room upload completed successfully.")
-#         return render(request, 'accounts/bulk_upload_rooms.html')
-
-#     return render(request, 'accounts/bulk_upload_rooms.html')
 
 
 

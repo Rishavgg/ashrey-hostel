@@ -232,9 +232,15 @@ from .forms import RoomChangeRequestForm
 from core.models import RoomChangeRequest, Student, Hostel_Management
 from django.contrib.auth.decorators import login_required
 
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import RoomChangeRequestForm
+from core.models import RoomChangeRequest, Student, Hostel_Management
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
+
 @login_required
-
-
 def submit_request_view(request):
     student = get_object_or_404(Student, user=request.user)
 
@@ -242,16 +248,23 @@ def submit_request_view(request):
         form = RoomChangeRequestForm(request.POST, student=student)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.requested_by = student  # Assign before any use
+            obj.requested_by = student  # Set this explicitly
 
             if obj.request_type == 'swap':
+                # Cannot swap with self
                 if obj.requested_with and obj.requested_by == obj.requested_with:
                     form.add_error('requested_with', 'You cannot swap with yourself.')
                     return render(request, 'allocation/submit_request.html', {'form': form})
 
-                obj.priority_total = obj.requested_by.priority_score + obj.requested_with.priority_score
-                obj.save()
-                return redirect('allocation:request_submitted')
+                # Ensure both students have rooms
+                if not obj.requested_by.room:
+                    form.add_error(None, 'You must have a room assigned to request a swap.')
+                elif not obj.requested_with or not obj.requested_with.room:
+                    form.add_error('requested_with', 'Requested student must also have a room assigned.')
+                else:
+                    obj.priority_total = obj.requested_by.priority_score + obj.requested_with.priority_score
+                    obj.save()
+                    return redirect('allocation:request_submitted')
 
             else:  # request_type == "change"
                 if not obj.room:
@@ -276,46 +289,69 @@ def submit_request_view(request):
     return render(request, 'allocation/submit_request.html', {'form': form})
 
 
+
+
+
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from core.models import RoomChangeRequest, Student
+from core.models import Student, RoomChangeRequest
+from django.db.models import Q  # Add this import
 
 @login_required
 def view_received_requests(request):
     student = get_object_or_404(Student, user=request.user)
 
+    # Block accepting new requests if student is in any pending warden-reviewed request
+    has_pending_warden_request = RoomChangeRequest.objects.filter(
+        approved_for_apply=True,
+        approved=False,
+        rejected=False
+    ).filter(Q(requested_by=student) | Q(requested_with=student)).exists()
+
+    # Show only unaccepted, unapproved, unrejected requests
     received_requests = RoomChangeRequest.objects.filter(
         requested_with=student,
         approved_for_apply=False,
         rejected=False
     )
 
-    already_accepted = RoomChangeRequest.objects.filter(
-        requested_with=student,
-        approved_for_apply=True,
-        rejected=False
-    ).exists()
+    if request.method == 'POST':
+        # Accept the chosen request
+        if 'accept' in request.POST and not has_pending_warden_request:
+            req_id = request.POST.get('request_id')
+            chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
+            chosen_request.approved_for_apply = True
+            chosen_request.save()
 
-    if request.method == 'POST' and not already_accepted:
-        req_id = request.POST.get('request_id')
-        chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
-        chosen_request.approved_for_apply = True
-        chosen_request.save()
+            # Reject all other pending requests where this student was requested_with
+            RoomChangeRequest.objects.filter(
+                requested_with=student,
+                approved_for_apply=False,
+                rejected=False
+            ).exclude(id=chosen_request.id).update(rejected=True)
 
-        # Reject all other pending requests for this student
-        RoomChangeRequest.objects.filter(
-            requested_with=student,
-            approved_for_apply=False,
-            rejected=False
-        ).exclude(id=chosen_request.id).update(rejected=True)
+            return redirect('allocation:request_confirmed')
 
-        return redirect('allocation:request_confirmed')
+        # Reject the current request
+        elif 'reject' in request.POST:
+            req_id = request.POST.get('request_id')
+            chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
+            chosen_request.rejected = True
+            chosen_request.save()
+
+            return redirect('allocation:request_confirmed')
 
     return render(request, 'allocation/received_requests.html', {
         'received_requests': received_requests,
-        'already_accepted': already_accepted,
+        'has_pending_warden_request': has_pending_warden_request,
     })
 
+
+
+# @login_required
+# def confirm_request_view(request, request_id):
+#     return redirect('allocation:incoming_requests')
 
 
 
@@ -387,6 +423,51 @@ def warden_dashboard(request):
 
 
 
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib.auth.decorators import login_required
+# from core.models import RoomChangeRequest, Student
+
+# @login_required
+# def incoming_requests_view(request):
+#     student = get_object_or_404(Student, user=request.user)
+
+#     # Check if the student has an active accepted request waiting for warden action
+#     has_pending_request = RoomChangeRequest.objects.filter(
+#         approved_for_apply=True,
+#         rejected=False,
+#         approved=False
+#     ).filter(
+#         models.Q(requested_by=student) | models.Q(requested_with=student)
+#     ).exists()
+
+#     # Show all incoming swap or double-occupancy change requests waiting for student's response
+#     incoming_requests = RoomChangeRequest.objects.filter(
+#         requested_with=student,
+#         approved_for_apply=False,
+#         rejected=False,
+#     )
+
+#     if request.method == 'POST' and not has_pending_request:
+#         selected_id = request.POST.get('selected_request')
+#         selected = get_object_or_404(RoomChangeRequest, id=selected_id, requested_with=student)
+
+#         # Accept the selected one
+#         selected.approved_for_apply = True
+#         selected.save()
+
+#         # Reject all others
+#         RoomChangeRequest.objects.filter(
+#             requested_with=student,
+#             approved_for_apply=False,
+#             rejected=False
+#         ).exclude(id=selected_id).update(rejected=True)
+
+#         return redirect('allocation:request_confirmed')
+
+#     return render(request, 'allocation/incoming_requests.html', {
+#         'requests': incoming_requests,
+#         'has_pending': has_pending_request,
+#     })
 
 
 

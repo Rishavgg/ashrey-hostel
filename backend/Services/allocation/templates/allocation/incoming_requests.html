@@ -1,0 +1,21 @@
+<h2>Incoming Room Requests</h2>
+
+{% if has_pending %}
+  <p>You already have a pending accepted request. Wait for the warden to act.</p>
+{% elif requests %}
+  <form method="post">
+    {% csrf_token %}
+    <ul>
+      {% for req in requests %}
+        <li>
+          <input type="radio" name="selected_request" value="{{ req.id }}" required>
+          {{ req.request_type }} request from {{ req.requested_by.user.username }} 
+          {% if req.room %} for room {{ req.room.room_number }} {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <button type="submit">Accept Selected Request</button>
+  </form>
+{% else %}
+  <p>No incoming requests at this time.</p>
+{% endif %}

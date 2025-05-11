@@ -16,6 +16,6 @@ urlpatterns = [
     path('submitted/', lambda r: render(r, 'allocation/submitted.html'), name='request_submitted'),
     path('confirmed/', lambda r: render(r, 'allocation/confirmed.html'), name='request_confirmed'),
     path('received-requests/', views.view_received_requests, name='received_requests'),
-    
+    # path('incoming/', views.incoming_requests_view, name='incoming_requests'),
     
 ]

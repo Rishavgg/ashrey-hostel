@@ -35,6 +35,9 @@ urlpatterns = [
     
     # path('rooms/upload/', upload_rooms, name='upload_rooms'),
     # path('rooms/template/download/', download_excel_template, name='download_excel_template'),
+    
+    
+    
 
 
 ]
