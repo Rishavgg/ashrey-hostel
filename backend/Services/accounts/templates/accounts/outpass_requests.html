@@ -1,0 +1,246 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Outpass Requests{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="section-header">Outpass Requests</h1>
+            <div class="btn-group" role="group">
+                <a href="{% url 'out_of_campus' %}" class="btn btn-outline-primary">
+                    View Students Out of Campus
+                </a>
+                <a href="{% url 'outpass_history' %}" class="btn btn-outline-secondary">
+                    Outpass History
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Requests Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning bg-opacity-25">
+                <h5 class="mb-0">Pending Requests ({{ pending_requests|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if pending_requests %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Enrollment</th>
+                                <th>Room</th>
+                                <th>Destination</th>
+                                <th>Reason</th>
+                                <th>Dates</th>
+                                <th>Duration</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outpass in pending_requests %}
+                            <tr>
+                                <td>{{ outpass.student.name }}</td>
+                                <td>{{ outpass.student.enroll_number }}</td>
+                                <td>{{ outpass.student.room.room_number }}</td>
+                                <td>{{ outpass.location }}</td>
+                                <td>{{ outpass.reason }}</td>
+                                <td>{{ outpass.start_date|date:"M d" }} - {{ outpass.end_date|date:"M d, Y" }}</td>
+                                <td>{{ outpass.days_of_leave }} days</td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'approve_outpass' outpass.id %}" class="btn btn-sm btn-success" 
+                                           onclick="return confirm('Approve outpass for {{ outpass.student.name }}?')">Approve</a>
+                                        <a href="{% url 'reject_outpass' outpass.id %}" class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Reject outpass for {{ outpass.student.name }}?')">Reject</a>
+                                        <button type="button" class="btn btn-sm btn-primary" 
+                                                data-bs-toggle="modal" data-bs-target="#viewOutpassModal{{ outpass.id }}">
+                                            Details
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="mb-0 text-muted">No pending outpass requests at this time.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recently Approved Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success bg-opacity-25">
+                <h5 class="mb-0">Recently Approved Outpasses</h5>
+            </div>
+            <div class="card-body">
+                {% if approved_requests %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Destination</th>
+                                <th>Dates</th>
+                                <th>Marked Out</th>
+                                <th>Marked In</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outpass in approved_requests %}
+                            <tr>
+                                <td>{{ outpass.student.name }}</td>
+                                <td>{{ outpass.location }}</td>
+                                <td>{{ outpass.start_date|date:"M d" }} - {{ outpass.end_date|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if outpass.markout %}
+                                    <span class="badge bg-success">Yes</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if outpass.markin %}
+                                    <span class="badge bg-success">Yes</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" 
+                                            data-bs-toggle="modal" data-bs-target="#viewOutpassModal{{ outpass.id }}">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="mb-0 text-muted">No recently approved outpasses.</p>
+                </div>
+                {% endif %}
+                
+                {% if approved_requests %}
+                <div class="text-center mt-3">
+                    <a href="{% url 'outpass_history' %}" class="btn btn-outline-secondary">View Full History</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Outpass Detail Modals -->
+{% for outpass in pending_requests %}
+<div class="modal fade" id="viewOutpassModal{{ outpass.id }}" tabindex="-1" aria-labelledby="viewOutpassModalLabel{{ outpass.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewOutpassModalLabel{{ outpass.id }}">
+                    Outpass Request Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Student Information</h6>
+                        <p><strong>Name:</strong> {{ outpass.student.name }}</p>
+                        <p><strong>Enrollment:</strong> {{ outpass.student.enroll_number }}</p>
+                        <p><strong>Room:</strong> {{ outpass.student.room.room_number }}</p>
+                        <p><strong>Hostel:</strong> {{ outpass.student.room.hostel.name }}</p>
+                        <p><strong>Contact:</strong> {{ outpass.student.student_contact }}</p>
+                        <p><strong>Parent Contact:</strong> {{ outpass.student.parent_contact1 }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Outpass Information</h6>
+                        <p><strong>Destination:</strong> {{ outpass.location }}</p>
+                        <p><strong>Reason:</strong> {{ outpass.reason }}</p>
+                        <p><strong>Start Date:</strong> {{ outpass.start_date|date:"F d, Y" }}</p>
+                        <p><strong>End Date:</strong> {{ outpass.end_date|date:"F d, Y" }}</p>
+                        <p><strong>Duration:</strong> {{ outpass.days_of_leave }} days</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <div>
+                        <a href="{% url 'reject_outpass' outpass.id %}" class="btn btn-danger">Reject</a>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="{% url 'approve_outpass' outpass.id %}" class="btn btn-success">Approve</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Modals for approved outpasses -->
+{% for outpass in approved_requests %}
+<div class="modal fade" id="viewOutpassModal{{ outpass.id }}" tabindex="-1" aria-labelledby="viewOutpassModalLabel{{ outpass.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewOutpassModalLabel{{ outpass.id }}">
+                    Approved Outpass Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Student Information</h6>
+                        <p><strong>Name:</strong> {{ outpass.student.name }}</p>
+                        <p><strong>Enrollment:</strong> {{ outpass.student.enroll_number }}</p>
+                        <p><strong>Room:</strong> {{ outpass.student.room.room_number }}</p>
+                        <p><strong>Hostel:</strong> {{ outpass.student.room.hostel.name }}</p>
+                        <p><strong>Contact:</strong> {{ outpass.student.student_contact }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Outpass Information</h6>
+                        <p><strong>Destination:</strong> {{ outpass.location }}</p>
+                        <p><strong>Reason:</strong> {{ outpass.reason }}</p>
+                        <p><strong>Start Date:</strong> {{ outpass.start_date|date:"F d, Y" }}</p>
+                        <p><strong>End Date:</strong> {{ outpass.end_date|date:"F d, Y" }}</p>
+                        <p><strong>Duration:</strong> {{ outpass.days_of_leave }} days</p>
+                        <p><strong>Status:</strong> 
+                            {% if outpass.markout and outpass.markin %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif outpass.markout %}
+                                <span class="badge bg-warning">Out of Campus</span>
+                            {% else %}
+                                <span class="badge bg-info">Approved (Not Left Yet)</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Approved By:</strong> {{ outpass.approved_by.name }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

@@ -2,6 +2,7 @@ from django import forms
 from .models import CustomUser
 # from services.models import HostelManagement  # Adjust import as per your model name
 from core.models import Hostel_Management
+from core.models import Student, Outpass, HostelRoom
 
 
 class CustomUserForm(forms.ModelForm):
@@ -203,3 +204,55 @@ class StudentEditForm(forms.ModelForm):
             'admn_year',
             'gender',  # Added gender field
         ]
+
+# ------------------------warden dashbaord form------------------------
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = [
+            'name', 'enroll_number', 'email', 'student_contact',
+            'parent_contact1', 'parent_contact2', 'admn_year',
+            'gender', 'room', 'hosteller'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student Name'}),
+            'enroll_number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enrollment Number'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'student_contact': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Student Phone'}),
+            'parent_contact1': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Parent Phone 1'}),
+            'parent_contact2': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Parent Phone 2'}),
+            'admn_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Admission Year'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'room': forms.Select(attrs={'class': 'form-control'}),
+            'hosteller': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class OutpassForm(forms.ModelForm):
+    class Meta:
+        model = Outpass
+        fields = ['student', 'location', 'reason', 'start_date', 'end_date']
+        widgets = {
+            'student': forms.Select(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Destination'}),
+            'reason': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Reason for leave'}),
+            'start_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }
+
+class RoomForm(forms.ModelForm):
+    class Meta:
+        model = HostelRoom
+        fields = [
+            'room_number', 'capacity', 'floor', 'level',
+            'balcony', 'sunny', 'show'
+        ]
+        widgets = {
+            'room_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'capacity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'floor': forms.NumberInput(attrs={'class': 'form-control'}),
+            'level': forms.NumberInput(attrs={'class': 'form-control'}),
+            'balcony': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'sunny': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'show': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }

@@ -6,6 +6,7 @@ from .views import register_hostel_manager
 from .views import search_students
 from django.urls import path
 from .views import search_students, edit_student, hostel_room_list_view ,bulk_upload_rooms
+from . import views
 # upload_rooms, download_excel_template
 
 
@@ -35,6 +36,15 @@ urlpatterns = [
     
     # path('rooms/upload/', upload_rooms, name='upload_rooms'),
     # path('rooms/template/download/', download_excel_template, name='download_excel_template'),
+    path('warden_dashboard/', views.warden_dashboard, name='warden_dashboard'),
+    path('manage_students/', views.manage_students, name='manage_students'),
+    # path('manual_allocation/', views.manual_allocation, name='manual_allocation'),
+    # path('mass_allocation/', views.mass_allocation, name='mass_allocation'),
+    # path('allocation_request/', views.allocation_request, name='allocation_request'),
+    path('outpass_requests/', views.outpass_requests, name='outpass_requests'),
+    path('out_of_campus/', views.out_of_campus, name='out_of_campus'),
+    path('outpass_history/', views.outpass_history, name='outpass_history'),
+    path('manage_rooms/', views.manage_rooms, name='manage_rooms'),
 
 
 ]
