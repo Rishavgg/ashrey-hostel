@@ -1,25 +1,85 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Warden Dashboard</title>
-</head>
-<body>
-    <h2>Welcome, Warden!</h2>
-    <p>This is the Warden Dashboard.</p>
-    <p><a href="{% url 'logout' %}">Logout</a></p>
-</body>
-</html> -->
+{% extends 'accounts/base.html' %}
 
+{% block title %}Warden Dashboard{% endblock %}
 
-<!-- templates/accounts/warden_dashboard.html -->
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="section-header">Warden Dashboard: {{ hostel.name }}</h1>
+    </div>
+</div>
 
+<div class="row mb-4">
+    <!-- Stats Cards -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Students</h5>
+                <p class="card-text display-6">{{ total_students }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Pending Outpass Requests</h5>
+                <p class="card-text display-6">{{ pending_outpasses }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Available Rooms</h5>
+                <p class="card-text display-6">{{ available_rooms }}</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Warden Dashboard</title>
-</head>
-<body>
-    <h1>Welcome to the Warden Dashboard</h1>
-</body>
-</html>
+<div class="row mb-4">
+    <!-- Recent Activity -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recent Outpass Activity</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_outpasses %}
+                    <ul class="list-group list-group-flush">
+                        {% for outpass in recent_outpasses %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ outpass.student.name }} ({{ outpass.student.enroll_number }})
+                                <span class="badge rounded-pill bg-{% if outpass.approvedcheck %}success{% elif outpass.rejected %}danger{% else %}warning{% endif %}">
+                                    {% if outpass.approvedcheck %}Approved{% elif outpass.rejected %}Rejected{% else %}Pending{% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No recent outpass activity.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quick Actions -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'manage_students' %}" class="btn btn-primary">Manage Students</a>
+                    <a href="{% url 'outpass_requests' %}" class="btn btn-info">Review Outpass Requests</a>
+                    <a href="{% url 'out_of_campus' %}" class="btn btn-secondary">View Students Out of Campus</a>
+                    <a href="{% url 'manage_rooms' %}" class="btn btn-outline-dark">Manage Rooms</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

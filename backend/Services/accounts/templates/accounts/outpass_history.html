@@ -1,0 +1,268 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Outpass History{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="section-header">Outpass History</h1>
+            <div class="btn-group" role="group">
+                <a href="{% url 'outpass_requests' %}" class="btn btn-outline-primary">
+                    Pending Requests
+                </a>
+                <a href="{% url 'out_of_campus' %}" class="btn btn-outline-secondary">
+                    Students Out of Campus
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filters Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" action="{% url 'outpass_history' %}">
+                    <div class="row align-items-end">
+                        <div class="col-md-8">
+                            <div class="form-group mb-0">
+                                <label for="searchInput">Search by Student Name or Enrollment Number</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="searchInput" name="search"
+                                        placeholder="Search..." value="{{ search_query }}">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            {% if search_query %}
+                            <a href="{% url 'outpass_history' %}" class="btn btn-outline-secondary">
+                                Clear Filters
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Table Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">All Outpass Records</h5>
+            </div>
+            <div class="card-body">
+                {% if outpasses %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Enrollment</th>
+                                <th>Destination</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for outpass in outpasses %}
+                            <tr>
+                                <td>{{ outpass.student.name }}</td>
+                                <td>{{ outpass.student.enroll_number }}</td>
+                                <td>{{ outpass.location }}</td>
+                                <td>{{ outpass.start_date|date:"M d, Y" }}</td>
+                                <td>{{ outpass.end_date|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if outpass.rejected %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% elif outpass.approvedcheck and outpass.markout and outpass.markin %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% elif outpass.approvedcheck and outpass.markout %}
+                                        <span class="badge bg-warning">Out of Campus</span>
+                                    {% elif outpass.approvedcheck %}
+                                        <span class="badge bg-info">Approved</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" 
+                                            data-bs-toggle="modal" data-bs-target="#viewHistoryModal{{ outpass.id }}">
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Outpass history pagination">
+                        <ul class="pagination">
+                            {% if outpasses.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ outpasses.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;&laquo;</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                            {% endif %}
+
+                            {% for i in outpasses.paginator.page_range %}
+                                {% if outpasses.number == i %}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{{ i }}</span>
+                                </li>
+                                {% elif i > outpasses.number|add:'-3' and i < outpasses.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ i }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ i }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if outpasses.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ outpasses.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ outpasses.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;&raquo;</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="text-muted mb-0">No outpass records found.</p>
+                    {% if search_query %}
+                    <div class="mt-3">
+                        <a href="{% url 'outpass_history' %}" class="btn btn-outline-secondary">Clear Search</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Detail Modals -->
+{% for outpass in outpasses %}
+<div class="modal fade" id="viewHistoryModal{{ outpass.id }}" tabindex="-1" aria-labelledby="viewHistoryModalLabel{{ outpass.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewHistoryModalLabel{{ outpass.id }}">
+                    Outpass Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Student Information</h6>
+                        <p><strong>Name:</strong> {{ outpass.student.name }}</p>
+                        <p><strong>Enrollment:</strong> {{ outpass.student.enroll_number }}</p>
+                        <p><strong>Room:</strong> {{ outpass.student.room.room_number }}</p>
+                        <p><strong>Hostel:</strong> {{ outpass.student.room.hostel.name }}</p>
+                        <p><strong>Contact:</strong> {{ outpass.student.student_contact }}</p>
+                        <p><strong>Parent Contact:</strong> {{ outpass.student.parent_contact1 }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Outpass Information</h6>
+                        <p><strong>Destination:</strong> {{ outpass.location }}</p>
+                        <p><strong>Reason:</strong> {{ outpass.reason }}</p>
+                        <p><strong>Start Date:</strong> {{ outpass.start_date|date:"F d, Y" }}</p>
+                        <p><strong>End Date:</strong> {{ outpass.end_date|date:"F d, Y" }}</p>
+                        <p><strong>Duration:</strong> {{ outpass.days_of_leave }} days</p>
+                        
+                        <hr>
+                        
+                        <h6 class="mb-3">Status Information</h6>
+                        <p><strong>Status:</strong>
+                            {% if outpass.rejected %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% elif outpass.approvedcheck and outpass.markout and outpass.markin %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif outpass.approvedcheck and outpass.markout %}
+                                <span class="badge bg-warning">Out of Campus</span>
+                            {% elif outpass.approvedcheck %}
+                                <span class="badge bg-info">Approved</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </p>
+                        
+                        {% if outpass.approvedcheck %}
+                            <p><strong>Approved By:</strong> {{ outpass.approved_by.name }}</p>
+                        {% endif %}
+                        
+                        {% if outpass.markout %}
+                            <p><strong>Left Campus:</strong> Yes</p>
+                        {% else %}
+                            <p><strong>Left Campus:</strong> No</p>
+                        {% endif %}
+                        
+                        {% if outpass.markin %}
+                            <p><strong>Returned to Campus:</strong> Yes</p>
+                        {% else %}
+                            <p><strong>Returned to Campus:</strong> No</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                {% if outpass.approvedcheck and outpass.markout and not outpass.markin %}
+                <!-- <a href="#" class="btn btn-success" onclick='markStudentIn({{ outpass.id }})'>Mark Return</a> -->
+                 <a href="#" class="btn btn-success" onclick=''>Mark Return</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- JavaScript for Mark Return functionality -->
+<script>
+    function markStudentIn(outpassId) {
+        if (confirm('Confirm this student has returned to campus?')) {
+            // This would typically be done via AJAX or a form POST
+            window.location.href = "/mark_return/" + outpassId + "/";
+        }
+    }
+</script>
+{% endblock %}

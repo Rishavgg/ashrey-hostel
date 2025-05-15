@@ -1,23 +1,131 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Hostel Management{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hostel Management System{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        .sidebar-link:hover {
+            background-color: #e9ecef;
+        }
+        .sidebar-link.active {
+            background-color: #e7e1f7;
+            color: #6c42e0;
+        }
+        .sidebar-icon {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .content-area {
+            padding: 20px;
+        }
+        .nav-header {
+            padding: 15px;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 10px;
+        }
+        .action-button {
+            border-radius: 6px;
+        }
+        .search-input {
+            border-radius: 20px;
+            padding-left: 2.5rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 10px center;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section-header {
+            color: #444;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
-        <h1>Hostel Management System</h1>
-        <hr>
-    </header>
-
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <footer>
-        <hr>
-        <p>© 2025 Hostel System</p>
-    </footer>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 p-0 sidebar">
+                <div class="nav-header">Hostel Management</div>
+                <div class="d-flex flex-column">
+                    <div class="nav-header">Student Details</div>
+                    <a href="{% url 'manage_students' %}" class="sidebar-link {% if request.resolver_match.url_name == 'manage_students' %}active{% endif %}">
+                        <span class="sidebar-icon">👥</span> Manage students
+                    </a>
+                    
+                    <div class="nav-header">Allocation</div>
+                    <a href="{% url 'outpass_requests' %}" class="sidebar-link {% if request.resolver_match.url_name == 'manual_allocation' %}active{% endif %}">
+                        <span class="sidebar-icon">📝</span> Manual Allocation
+                    </a>
+                    <a href="{% url 'outpass_requests' %}" class="sidebar-link {% if request.resolver_match.url_name == 'mass_allocation' %}active{% endif %}">
+                        <span class="sidebar-icon">👥</span> Mass Allocation
+                    </a>
+                    <a href="{% url 'outpass_requests' %}" class="sidebar-link {% if request.resolver_match.url_name == 'allocation_request' %}active{% endif %}">
+                        <span class="sidebar-icon">📨</span> Allocation Request
+                    </a>
+                    
+                    <div class="nav-header">Outpass</div>
+                    <a href="{% url 'outpass_requests' %}" class="sidebar-link {% if request.resolver_match.url_name == 'outpass_requests' %}active{% endif %}">
+                        <span class="sidebar-icon">📑</span> Outpass Requests
+                    </a>
+                    <a href="{% url 'out_of_campus' %}" class="sidebar-link {% if request.resolver_match.url_name == 'out_of_campus' %}active{% endif %}">
+                        <span class="sidebar-icon">🚶</span> Out of campus
+                    </a>
+                    <a href="{% url 'outpass_history' %}" class="sidebar-link {% if request.resolver_match.url_name == 'outpass_history' %}active{% endif %}">
+                        <span class="sidebar-icon">🕒</span> Outpass history
+                    </a>
+                    
+                    <div class="nav-header">Hostel Details</div>
+                    <a href="{% url 'manage_rooms' %}" class="sidebar-link {% if request.resolver_match.url_name == 'manage_rooms' %}active{% endif %}">
+                        <span class="sidebar-icon">🏠</span> Manage rooms
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 content-area">
+                {% if messages %}
+                    <div class="messages mt-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

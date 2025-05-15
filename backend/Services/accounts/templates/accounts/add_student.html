@@ -1,0 +1,164 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Add New Student{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="section-header">Add New Student</h1>
+            <a href="{% url 'manage_students' %}" class="btn btn-outline-secondary">
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-3">Personal Information</h5>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">Full Name</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                <div class="text-danger">
+                                    {{ form.name.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.enroll_number.id_for_label }}" class="form-label">Enrollment Number</label>
+                                {{ form.enroll_number }}
+                                {% if form.enroll_number.errors %}
+                                <div class="text-danger">
+                                    {{ form.enroll_number.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="text-danger">
+                                    {{ form.email.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="{{ form.gender.id_for_label }}" class="form-label">Gender</label>
+                                {{ form.gender }}
+                                {% if form.gender.errors %}
+                                <div class="text-danger">
+                                    {{ form.gender.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.admn_year.id_for_label }}" class="form-label">Admission Year</label>
+                                {{ form.admn_year }}
+                                {% if form.admn_year.errors %}
+                                <div class="text-danger">
+                                    {{ form.admn_year.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5 class="card-title mb-3">Contact & Room Information</h5>
+
+                            <div class="mb-3">
+                                <label for="{{ form.student_contact.id_for_label }}" class="form-label">Student Contact</label>
+                                {{ form.student_contact }}
+                                {% if form.student_contact.errors %}
+                                <div class="text-danger">
+                                    {{ form.student_contact.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.parent_contact1.id_for_label }}" class="form-label">Parent Contact 1</label>
+                                {{ form.parent_contact1 }}
+                                {% if form.parent_contact1.errors %}
+                                <div class="text-danger">
+                                    {{ form.parent_contact1.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.parent_contact2.id_for_label }}" class="form-label">Parent Contact 2</label>
+                                {{ form.parent_contact2 }}
+                                {% if form.parent_contact2.errors %}
+                                <div class="text-danger">
+                                    {{ form.parent_contact2.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.room.id_for_label }}" class="form-label">Room Assignment</label>
+                                {{ form.room }}
+                                {% if form.room.errors %}
+                                <div class="text-danger">
+                                    {{ form.room.errors }}
+                                </div>
+                                {% endif %}
+                                <div class="form-text text-muted">Leave blank if not assigned yet</div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                {{ form.hosteller }}
+                                <label class="form-check-label" for="{{ form.hosteller.id_for_label }}">Is a Hosteller</label>
+                                {% if form.hosteller.errors %}
+                                <div class="text-danger">
+                                    {{ form.hosteller.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="reset" class="btn btn-outline-secondary me-md-2">Reset</button>
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Filter room options based on hostel
+    // This is a placeholder - you might want to implement AJAX to filter rooms by hostel dynamically
+    document.addEventListener('DOMContentLoaded', function() {
+        const roomSelect = document.getElementById('{{ form.room.id_for_label }}');
+        const hostellerCheckbox = document.getElementById('{{ form.hosteller.id_for_label }}');
+        
+        // Disable room selection if not a hosteller
+        hostellerCheckbox.addEventListener('change', function() {
+            roomSelect.disabled = !this.checked;
+        });
+        
+        // Initialize based on initial value
+        roomSelect.disabled = !hostellerCheckbox.checked;
+    });
+</script>
+{% endblock %}
+
+{% endblock content %}

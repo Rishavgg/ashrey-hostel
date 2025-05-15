@@ -5,7 +5,17 @@ from django.contrib import messages
 from .forms import CustomUserForm
 from core.models import Hostel_Management  # adjust to actual model name
 from django.db import models
+from django.db.models import F
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
+from core.models import Student, Outpass, Hostel_Management, Hostels, HostelRoom
+from .forms import StudentForm, OutpassForm
 
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
     if request.method == 'POST':
@@ -35,13 +45,248 @@ def user_login(request):
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
 
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+# @login_required
+# def warden_dashboard(request):
+#     return render(request, 'accounts/warden_dashboard.html')
 
 @login_required
 def warden_dashboard(request):
-    return render(request, 'accounts/warden_dashboard.html')
+    # Get the current user's profile
+    try:
+        profile = Hostel_Management.objects.get(user=request.user)
+        # Get the hostel associated with this warden
+        hostel = profile.hostel
+        
+        # Count statistics
+        total_students = Student.objects.filter(room__hostel=hostel, hosteller=True).count()
+        pending_outpasses = Outpass.objects.filter(
+            student__room__hostel=hostel,
+            approvedcheck=False, 
+            rejected=False
+        ).count()
+        
+        approved_outpasses = Outpass.objects.filter(
+            student__room__hostel=hostel,
+            approvedcheck=True
+        ).count()
+        
+        # Get rooms with available capacity
+        available_rooms = HostelRoom.objects.filter(
+            hostel=hostel,
+            show=True
+        ).exclude(occupancy__gte=F('capacity'))
+        
+        context = {
+            'profile': profile,
+            'hostel': hostel,
+            'total_students': total_students,
+            'pending_outpasses': pending_outpasses,
+            'approved_outpasses': approved_outpasses,
+            'available_rooms': available_rooms.count(),
+        }
+        
+        return render(request, 'accounts/warden_dashboard.html', context)
+    except Hostel_Management.DoesNotExist:
+        messages.error(request, "Warden profile not found. Please contact administrator.")
+        return redirect('home')
+
+@login_required
+def manage_students(request):
+    """View to list all students with search and filter functionality"""
+    
+    # Get warden's hostel
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    hostel = profile.hostel
+    
+    # Get query parameters
+    search_query = request.GET.get('search', '')
+    year_filter = request.GET.get('year', '')
+    hostel_filter = request.GET.get('hostel', '')
+    
+    # Start with all students
+    students = Student.objects.all()
+    
+    # Apply filters
+    if search_query:
+        students = students.filter(
+            Q(name__icontains=search_query) |
+            Q(enroll_number__icontains=search_query) |
+            Q(email__icontains=search_query)
+        )
+    
+    if year_filter and year_filter != 'Any':
+        students = students.filter(admn_year=year_filter)
+    
+    if hostel_filter and hostel_filter != 'Any':
+        students = students.filter(room__hostel__name=hostel_filter)
+    
+    # Pagination
+    paginator = Paginator(students, 10)  # 10 students per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    
+    # Get available years for filter
+    years = Student.objects.values_list('admn_year', flat=True).distinct()
+    hostels = Hostels.objects.all()
+    
+    context = {
+        'students': page_obj,
+        'search_query': search_query,
+        'year_filter': year_filter,
+        'hostel_filter': hostel_filter,
+        'years': years,
+        'hostels': hostels,
+        'profile': profile,
+    }
+    
+    return render(request, 'warden/manage_students.html', context)
+
+@login_required
+def add_student(request):
+    """View to add a new student"""
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Student added successfully")
+            return redirect('manage_students')
+    else:
+        form = StudentForm()
+    
+    return render(request, 'warden/add_student.html', {'form': form})
+
+@login_required
+def outpass_requests(request):
+    """View to list all outpass requests with approval functionality"""
+    
+    # Get warden's hostel
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    hostel = profile.hostel
+    
+    # Get outpass requests for students in this hostel
+    pending_requests = Outpass.objects.filter(
+        student__room__hostel=hostel,
+        approvedcheck=False,
+        rejected=False
+    ).order_by('start_date')
+    
+    approved_requests = Outpass.objects.filter(
+        student__room__hostel=hostel,
+        approvedcheck=True
+    ).order_by('-start_date')[:5]  # Show only recent 5
+    
+    context = {
+        'pending_requests': pending_requests,
+        'approved_requests': approved_requests,
+        'profile': profile,
+    }
+    
+    return render(request, 'accounts/outpass_requests.html', context)
+
+@login_required
+def approve_outpass(request, outpass_id):
+    """View to approve an outpass request"""
+    outpass = get_object_or_404(Outpass, id=outpass_id)
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    
+    # Check if this warden can approve this outpass
+    if outpass.student.room.hostel != profile.hostel:
+        messages.error(request, "You can only approve outpasses for students in your hostel")
+        return redirect('outpass_requests')
+    
+    # Approve the outpass
+    outpass.approvedcheck = True
+    outpass.approved_by = profile
+    outpass.save()
+    
+    messages.success(request, f"Outpass for {outpass.student.name} approved successfully")
+    return redirect('outpass_requests')
+
+@login_required
+def reject_outpass(request, outpass_id):
+    """View to reject an outpass request"""
+    outpass = get_object_or_404(Outpass, id=outpass_id)
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    
+    # Check if this warden can reject this outpass
+    if outpass.student.room.hostel != profile.hostel:
+        messages.error(request, "You can only reject outpasses for students in your hostel")
+        return redirect('outpass_requests')
+    
+    # Reject the outpass
+    outpass.rejected = True
+    outpass.save()
+    
+    messages.success(request, f"Outpass for {outpass.student.name} rejected")
+    return redirect('outpass_requests')
+
+@login_required
+def out_of_campus(request):
+    """View to show students currently out of campus"""
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    hostel = profile.hostel
+    
+    students_out = Outpass.objects.filter(
+        student__room__hostel=hostel,
+        approvedcheck=True,
+        markout=True,
+        markin=False
+    ).order_by('end_date')
+    
+    context = {
+        'students_out': students_out,
+        'profile': profile,
+    }
+    
+    return render(request, 'accounts/out_of_campus.html', context)
+
+@login_required
+def outpass_history(request):
+    """View to show outpass history"""
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    hostel = profile.hostel
+    
+    # Get query parameters
+    search_query = request.GET.get('search', '')
+    
+    # Get all past outpasses
+    outpasses = Outpass.objects.filter(
+        student__room__hostel=hostel
+    ).order_by('-start_date')
+    
+    if search_query:
+        outpasses = outpasses.filter(
+            Q(student__name__icontains=search_query) |
+            Q(student__enroll_number__icontains=search_query)
+        )
+    
+    # Pagination
+    paginator = Paginator(outpasses, 10)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'outpasses': page_obj,
+        'search_query': search_query,
+        'profile': profile,
+    }
+    
+    return render(request, 'accounts/outpass_history.html', context)
+
+@login_required
+def manage_rooms(request):
+    """View to manage hostel rooms"""
+    profile = get_object_or_404(Hostel_Management, user=request.user)
+    hostel = profile.hostel
+    
+    rooms = HostelRoom.objects.filter(hostel=hostel).order_by('room_number')
+    
+    context = {
+        'rooms': rooms,
+        'profile': profile,
+    }
+    
+    return render(request, 'accounts/manage_rooms.html', context)
 
 @login_required
 def student_dashboard(request):
