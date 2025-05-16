@@ -1,8 +1,7 @@
 # Hostel Management System [G78]
 
-[![Watch the video](https://github.com/user-attachments/assets/17d31a67-e2a4-4580-9eb8-4ab97297b90c)](https://drive.google.com/file/d/1P_tkagZiqkC3tZ-zmfuaGngpilf4E1Ck/view?usp=sharing)
-
-
+## Video
+[![Watch the video](https://github.com/user-attachments/assets/17d31a67-e2a4-4580-9eb8-4ab97297b90c)](https://drive.google.com/file/d/1FZ4LHD8pz4orPLfjhsguTgeW03ZT5xIt/view?usp=sharing)
 
 ## Overview
 This project is a microservices-based Hostel Management System developed using Spring Boot. It manages hostel room allocations, complaints, outpass applications, and various user roles such as Admin, Chief Warden, Warden, Caretaker, and Student. The system leverages Keycloak for authentication, Eureka for service discovery, and Docker for containerization.
