@@ -1,6 +1,6 @@
 # Hostel Management System [G78]
 
-## Video
+## Video (click image to play)
 [![Watch the video](https://github.com/user-attachments/assets/17d31a67-e2a4-4580-9eb8-4ab97297b90c)](https://drive.google.com/file/d/1FZ4LHD8pz4orPLfjhsguTgeW03ZT5xIt/view?usp=sharing)
 
 ## Overview
