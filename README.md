@@ -177,5 +177,3 @@ npm install tailwindcss @tailwindcss/vite --legacy-peer-deps
 npm dev run
 ```
 
-## Run All the services using Docker
-
