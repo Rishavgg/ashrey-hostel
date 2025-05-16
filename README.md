@@ -1,10 +1,10 @@
-# Hostel Management System [G78]
+# Ashrey (Hostel Management System) [G78]
 
 ## Video (click image to play)
 [![Watch the video](https://github.com/user-attachments/assets/17d31a67-e2a4-4580-9eb8-4ab97297b90c)](https://drive.google.com/file/d/1FZ4LHD8pz4orPLfjhsguTgeW03ZT5xIt/view?usp=sharing)
 
 ## Overview
-This project is a microservices-based Hostel Management System developed using Spring Boot. It manages hostel room allocations, complaints, outpass applications, and various user roles such as Admin, Chief Warden, Warden, Caretaker, and Student. The system leverages Keycloak for authentication, Eureka for service discovery, and Docker for containerization.
+This project is a microservices-based Hostel Management System developed using Django and Spring Boot. It manages hostel room allocations, complaints, outpass applications, and various user roles such as Admin, Chief Warden, Warden, Caretaker, and Student. The system leverages Keycloak for authentication, Eureka for service discovery, and Docker for containerization.
 
 ## Features
 - **User Authentication & Role Management**:
@@ -59,6 +59,7 @@ The project is divided into several microservices:
    - Sends email and in-app notifications for events such as room allocations, outpass approvals, and complaint resolutions.
 
 ## Technology Stack
+- **Django** (micro-services, admin panel support, authentication)
 - **Spring Boot**
 - **Spring Cloud** (Eureka, Config Server)
 - **Keycloak** for Authentication and Authorization
@@ -83,6 +84,59 @@ The project is divided into several microservices:
 git clone https://github.com/Rishavgg/ashrey-hostel.git
 cd ashrey-hostel
 ```
+## **Running the Microservices**
+
+### **Build and Run Containers (Excluding Frontend)**
+
+```bash
+docker-compose up --scale frontend=0 -d
+```
+
+### ** Check Running Containers**
+
+```bash
+docker ps
+```
+
+### **Expected Output**
+
+```bash
+CONTAINER ID   IMAGE                       COMMAND                  CREATED             STATUS             PORTS                                                           NAMES
+hide           ashrey-hostel-facilitator   "sh -c 'python manag…"   About an hour ago   Up About an hour   0.0.0.0:8081->8081/tcp, :::8081->8081/tcp                       facilitator_app
+hide           ashrey-hostel-keycloak      "/opt/keycloak/bin/k…"   About an hour ago   Up About an hour   8443/tcp, 0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 9000/tcp   keycloak_app
+hide           ashrey-hostel-manager       "java -jar /manager-…"   About an hour ago   Up About an hour   0.0.0.0:9090->9090/tcp, :::9090->9090/tcp                       manager_app
+hide           postgres                    "docker-entrypoint.s…"   4 days ago          Up About an hour   0.0.0.0:5433->5432/tcp, :::5433->5432/tcp                       database
+```
+
+---
+
+## **Access Points**
+
+* **Facilitator Service:** [http://localhost:8081](http://localhost:8081)
+* **Keycloak Service:** [http://localhost:8080](http://localhost:8080)
+* **Manager Service:** [http://localhost:9090](http://localhost:9090)
+* **Database (Postgres):** `localhost:5433`
+
+---
+
+## **Stopping the Containers**
+
+```bash
+docker-compose down
+```
+
+---
+
+## **Frontend is Running Locally**
+
+To make sure the frontend is not running in Docker:
+
+```bash
+docker-compose down frontend
+```
+
+You can now run the frontend separately on your local machine.
+
 
 ## Run Frontend
 
@@ -122,3 +176,6 @@ npm install tailwindcss @tailwindcss/vite --legacy-peer-deps
 ```bash
 npm dev run
 ```
+
+## Run All the services using Docker
+
