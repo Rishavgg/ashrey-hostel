@@ -1,6 +1,15 @@
-<h2>Submit Room Change Request</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Submit</button>
-</form>
+{% extends "accounts/base/student_dashboard.html" %}
+{% load static %}
+
+{% block title %}Request Room Change{% endblock %}
+{% block page_title %}Submit Room Change Request{% endblock %}
+
+{% block content %}
+  <h2 class="section-title">Submit Room Change Request</h2>
+
+  <form method="post" class="form-container">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endblock %}

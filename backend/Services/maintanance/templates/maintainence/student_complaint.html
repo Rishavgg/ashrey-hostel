@@ -1,0 +1,42 @@
+{% extends "accounts/base/student_dashboard.html" %}
+{% load static %}
+
+{% block title %}Complaint Form{% endblock %}
+{% block page_title %}Complaint Form{% endblock %}
+
+{% block content %}
+<h2>Submit a Complaint</h2>
+<form method="post" class="mb-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<hr>
+
+<h3>Unresolved Complaints</h3>
+{% if unresolved_complaints %}
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Submitted On</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for complaint in unresolved_complaints %}
+        <tr>
+          <td>{{ complaint.title }}</td>
+          <td>{{ complaint.description }}</td>
+          <td>{{ complaint.created_at|date:"Y-m-d H:i" }}</td>
+          <td>{% if complaint.resolved %}✅ Resolved{% else %}⏳ Pending{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No unresolved complaints.</p>
+{% endif %}
+{% endblock %}

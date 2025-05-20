@@ -1,8 +1,10 @@
-
-
-
-
+{% extends 'accounts/base/caretaker_dashboard.html' %}
 {% load static %}
+
+{% block title %}Room Inventory List{% endblock %}
+{% block page_title %}Room Inventory{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,3 +45,5 @@
     </form>
 </body>
 </html>
+
+{% endblock %}

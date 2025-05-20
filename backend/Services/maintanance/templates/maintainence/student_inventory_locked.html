@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inventory Form Locked</title>
-</head>
-<body>
-    <h2>Inventory Form Access Restricted</h2>
-    <p>Inventory form already filled by: {{ filled_by.get_full_name }}.</p>
-    <p>If this is not you or your roommate, contact the caretaker.</p>
-</body>
-</html>
+{% extends "accounts/base/student_dashboard.html" %}
+{% load static %}
+
+{% block title %}Inventory Form Locked{% endblock %}
+{% block page_title %}Inventory Form Locked{% endblock %}
+
+{% block content %}
+  <div class="alert alert-warning">
+    <h2>Inventory Form Already Submitted</h2>
+    <p>This inventory form was already filled by <strong>{{ filled_by.get_full_name }}</strong>.</p>
+    <p>If you believe this is incorrect, please contact the caretaker or warden.</p>
+  </div>
+{% endblock %}

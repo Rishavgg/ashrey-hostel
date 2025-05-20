@@ -1,36 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Received Requests</title>
-</head>
-<body>
-    <h2>Your Received Room Change Requests</h2>
+{% extends "accounts/base/student_dashboard.html" %}
+{% load static %}
 
-    {% if has_pending_warden_request %}
-        <p>You have pending requests awaiting approval by the warden. You cannot accept or reject new requests at this time.</p>
-    {% endif %}
+{% block title %}Room Requests{% endblock %}
+{% block page_title %}Received Room Change Requests{% endblock %}
 
-    <ul>
-        {% for request in received_requests %}
-            <li>
-                Request from {{ request.requested_by.user.username }} to swap with you for room {{ request.room.name }}.
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/OutOfCampusTable.css' %}" />
 
-                <form method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <input type="hidden" name="request_id" value="{{ request.id }}">
-                    
-                    {% if not has_pending_warden_request %}
-                        <button type="submit" name="accept">Accept</button>
-                    {% endif %}
-                    
-                    <button type="submit" name="reject" {% if has_pending_warden_request %} disabled {% endif %}>Reject</button>
-                </form>
-            </li>
+  <h2 class="section-title">Received Room Change Requests</h2>
+
+  {% if has_pending_warden_request %}
+    <p class="info-message">You already have a pending request under review. You cannot accept more until it's resolved.</p>
+  {% endif %}
+
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Requested By</th>
+          <th>Type</th>
+          <th>Target Room</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for req in received_requests %}
+          <tr>
+            <td>{{ req.requested_by.user.get_full_name }}</td>
+            <td>{{ req.request_type|title }}</td>
+            <td>
+              {% if req.room %}
+                {{ req.room.room_number }} ({{ req.room.hostel.name }})
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>
+              <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="request_id" value="{{ req.id }}">
+                {% if not has_pending_warden_request %}
+                  <button name="accept" class="btn btn-success">Accept</button>
+                {% else %}
+                  <button class="btn" disabled>Accept</button>
+                {% endif %}
+                <button name="reject" class="btn btn-danger">Reject</button>
+              </form>
+            </td>
+          </tr>
         {% empty %}
-            <p>No requests found.</p>
+          <tr>
+            <td colspan="4" class="empty-message">No room change requests at the moment.</td>
+          </tr>
         {% endfor %}
-    </ul>
-</body>
-</html>
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

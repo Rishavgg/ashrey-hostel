@@ -1,68 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Warden Outpass Approval</title>
-    <style>
-        body { font-family: Arial; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { padding: 10px; border: 1px solid #ddd; }
-        form { display: inline; }
-        .approved { background-color: #d4edda; }
-        .rejected { background-color: #f8d7da; }
-    </style>
-</head>
-<body>
-    <h2>Outpass Requests - Your Hostel</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Student</th>
-                <th>Room</th>
-                <th>Reason</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for outpass in outpasses %}
-                <tr class="{% if outpass.approvedcheck %}approved{% elif outpass.rejected %}rejected{% endif %}">
-                    <td>{{ outpass.student.name }}</td>
-                    <td>{{ outpass.student.room.room_number }}</td>
-                    <td>{{ outpass.reason }}</td>
-                    <td>{{ outpass.start_date }}</td>
-                    <td>{{ outpass.end_date }}</td>
-                    <td>
-                        {% if outpass.approvedcheck %}
-                            ✅ Approved
-                        {% elif outpass.rejected %}
-                            ❌ Rejected
-                        {% else %}
-                            ⏳ Pending
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if not outpass.approvedcheck and not outpass.rejected %}
-                            <form method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="outpass_id" value="{{ outpass.id }}">
-                                <button type="submit" name="action" value="accept">Accept</button>
-                            </form>
-                            <form method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="outpass_id" value="{{ outpass.id }}">
-                                <button type="submit" name="action" value="reject">Reject</button>
-                            </form>
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="7">No outpasses found.</td></tr>
-            {% endfor %}
-        </tbody>
+{% extends "accounts/base/warden_dashboard.html" %}
+{% load static %}
+
+{% block title %}Outpass Requests{% endblock %}
+{% block page_title %}Outpass Requests{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/OutOfCampusTable.css' %}" />
+
+  <h2 class="section-title">Outpass Requests - Your Hostel</h2>
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Room</th>
+          <th>Reason</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for outpass in outpasses %}
+          <tr class="
+              {% if outpass.approvedcheck %} row-approved
+              {% elif outpass.rejected %} row-rejected
+              {% endif %}
+          ">
+            <td>{{ outpass.student.name }}</td>
+            <td>{{ outpass.student.room.room_number }}</td>
+            <td>{{ outpass.reason }}</td>
+            <td>{{ outpass.start_date }}</td>
+            <td>{{ outpass.end_date }}</td>
+            <td>
+              {% if outpass.approvedcheck %}
+                ✅ Approved
+              {% elif outpass.rejected %}
+                ❌ Rejected
+              {% else %}
+                ⏳ Pending
+              {% endif %}
+            </td>
+            <td>
+              {% if not outpass.approvedcheck and not outpass.rejected %}
+                <form method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="outpass_id" value="{{ outpass.id }}">
+                  <button class="action-button approve" type="submit" name="action" value="accept">Accept</button>
+                </form>
+                <form method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="outpass_id" value="{{ outpass.id }}">
+                  <button class="action-button reject" type="submit" name="action" value="reject">Reject</button>
+                </form>
+              {% else %}
+                -
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="empty-message">No outpasses found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
-</body>
-</html>
+  </div>
+{% endblock %}

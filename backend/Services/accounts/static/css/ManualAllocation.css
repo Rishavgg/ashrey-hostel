@@ -1,0 +1,205 @@
+.formContainer {
+    width: 100%;
+  }
+  
+  .formHeader {
+    margin-bottom: 20px;
+  }
+  
+  .formTitle {
+    border-radius: 8px;
+    background: #e8def8;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px;
+    margin: 0;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .formFields {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: space-between;
+    color: #49454f;
+  }
+  
+  .fieldWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .fieldLabel {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .fieldInput {
+    border-radius: 8px;
+    background: #f7f2fa;
+    border: 1px solid rgba(121, 116, 126, 0.18);
+    padding: 10px 19px;
+    font-size: 16px;
+  }
+  
+  .formActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .actionButton {
+    border: none;
+    border-radius: 8px;
+    color: #49454f;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    padding: 10px;
+    transition: background 0.2s ease;
+  }
+  
+  .successButton {
+    background: #e8def8;
+  }
+  
+  .successButton:hover {
+    background: #cbb8e8;
+  }
+  
+  .cancelButton {
+    background: transparent;
+    border: 1px solid #49454f;
+  }
+  
+  .cancelButton:hover {
+    background: #e6e6e6;
+  }
+  
+  .buttonText {
+    font-weight: bold;
+  }
+  
+  .buttonIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  
+  .errorMessage {
+    font-size: 12px;
+    color: #ff0000;
+    margin-top: 5px;
+  }
+  
+  .hostelSelect, .studentSelect {
+    display: flex;
+    width: 48%;
+    gap: 20px;
+    flex-direction: column;
+  }
+  
+  @media (max-width: 900px) {
+    .formFields {
+      flex-direction: column;
+    }
+  
+    .hostelSelect,
+    .studentSelect {
+      width: 100%;
+    }
+  }
+  
+  .hostelSelectSingle {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+  }
+  
+
+  /* Table Styling */
+.styled-table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+  border-radius: 8px;
+  background: #f7f2fa;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  min-width: 600px;
+  background-color: white;
+}
+
+.styled-table thead {
+  background-color: #e8def8;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tr:last-child td {
+  border-bottom: none;
+}
+
+.styled-table tr:hover {
+  background-color: #f0e8ff;
+}
+
+.table-action-link {
+  color: #6a1b9a;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.table-action-link:hover {
+  text-decoration: underline;
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.table-action-button {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #49454f;
+  background-color: #e8def8;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.table-action-button:hover {
+  background-color: #cbb8e8;
+}
+
+.assign-button {
+  background-color: #dbe6f5;
+}
+
+.assign-button:hover {
+  background-color: #b5d1f2;
+}

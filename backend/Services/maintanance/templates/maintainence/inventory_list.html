@@ -1,68 +1,69 @@
+{% extends 'accounts/base/caretaker_dashboard.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inventory List</title>
-</head>
-<body>
-    <h1>Room Inventory Forms</h1>
 
-    <form method="get">
-        <input type="text" name="search" placeholder="Search by room number" value="{{ search_query }}">
-        <select name="hostel">
-            <option value="">All Hostels</option>
-            {% for hostel in hostels %}
-                <option value="{{ hostel.id }}" {% if hostel.id|stringformat:"s" == selected_hostel %}selected{% endif %}>{{ hostel.name }}</option>
-            {% endfor %}
-        </select>
-        <select name="form_status">
-            <option value="all" {% if form_status == 'all' %}selected{% endif %}>All</option>
-            <option value="filled" {% if form_status == 'filled' %}selected{% endif %}>Filled</option>
-            <option value="unfilled" {% if form_status == 'unfilled' %}selected{% endif %}>Unfilled</option>
-        </select>
-        <button type="submit">Filter</button>
-    </form>
+{% block title %}Room Inventory List{% endblock %}
+{% block page_title %}Room Inventory{% endblock %}
 
+{% block content %}
+  <h2>Room Inventory Forms</h2>
 
-    <form method="post" action="{% url 'maintenance:inventory-save' %}">
+  <form method="get" class="filterForm">
+      <input type="text" name="search" placeholder="Search by room number" value="{{ search_query }}">
+      <select name="hostel">
+          <option value="">All Hostels</option>
+          {% for hostel in hostels %}
+              <option value="{{ hostel.id }}" {% if hostel.id|stringformat:"s" == selected_hostel %}selected{% endif %}>{{ hostel.name }}</option>
+          {% endfor %}
+      </select>
+      <select name="form_status">
+          <option value="all" {% if form_status == 'all' %}selected{% endif %}>All</option>
+          <option value="filled" {% if form_status == 'filled' %}selected{% endif %}>Filled</option>
+          <option value="unfilled" {% if form_status == 'unfilled' %}selected{% endif %}>Unfilled</option>
+      </select>
+      <button type="submit">Filter</button>
+  </form>
 
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <th>Room No</th>
-                <th>Hostel</th>
-                <th>Filled by Student</th>
-                <th>Allow Edit</th>
-                <th>Edit</th>
-            </tr>
-            {% for form in page_obj %}
-            <tr>
-                <td>{{ form.hostel_room.room_number }}</td>
-                <td>{{ form.hostel_room.hostel.name }}</td>
-                <td>{% if form.filled_by_student %}Yes{% else %}No{% endif %}</td>
-                <td><input type="checkbox" name="allow_edit_{{ form.id }}" {% if form.allow_edit %}checked{% endif %}></td>
-                <td>
-                    <a href="{% url 'maintenance:inventory-edit' form.id %}">Edit</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="5">No inventory forms found.</td></tr>
-            {% endfor %}
-        </table>
+  <form method="post" action="{% url 'maintenance:inventory-save' %}">
+      {% csrf_token %}
+      <table border="1">
+          <tr>
+              <th>Room No</th>
+              <th>Hostel</th>
+              <th>Filled by Student</th>
+              <th>Allow Edit</th>
+              <th>Edit</th>
+          </tr>
+          {% for form in page_obj %}
+              <tr>
+                  <td>{{ form.hostel_room.room_number }}</td>
+                  <td>{{ form.hostel_room.hostel.name }}</td>
+                  <td>{% if form.filled_by_student %}Yes{% else %}No{% endif %}</td>
+                  <td>
+                      <input type="checkbox" name="allow_edit_{{ form.id }}" {% if form.allow_edit %}checked{% endif %}>
+                  </td>
+                  <td>
+                      <a href="{% url 'maintenance:inventory-edit' form.id %}">Edit</a>
+                  </td>
+              </tr>
+          {% empty %}
+              <tr>
+                  <td colspan="5">No inventory forms found.</td>
+              </tr>
+          {% endfor %}
+      </table>
 
-        <button type="submit">Save Allow Edit Changes</button>
-    </form>
+      <button type="submit">Save Allow Edit Changes</button>
+  </form>
 
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_hostel %}hostel={{ selected_hostel }}&{% endif %}{% if form_status %}form_status={{ form_status }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
+  <div class="pagination">
+      {% if page_obj.has_previous %}
+          <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_hostel %}hostel={{ selected_hostel }}&{% endif %}{% if form_status %}form_status={{ form_status }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
 
-        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
-        {% if page_obj.has_next %}
-            <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_hostel %}hostel={{ selected_hostel }}&{% endif %}{% if form_status %}form_status={{ form_status }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-    </div>
-</body>
-</html>
+      {% if page_obj.has_next %}
+          <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_hostel %}hostel={{ selected_hostel }}&{% endif %}{% if form_status %}form_status={{ form_status }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+  </div>
+{% endblock %}

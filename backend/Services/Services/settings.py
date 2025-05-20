@@ -24,6 +24,12 @@ REST_FRAMEWORK = {
     )
 }
 
+STATIC_URL = '/static/'
+
+# If needed
+STATICFILES_DIRS = [
+    BASE_DIR / "Services" / "accounts" / "static",
+]
 
 
 # Quick-start development settings - unsuitable for production

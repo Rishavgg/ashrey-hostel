@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Active Outpass Exists</title>
-</head>
-<body>
+{% extends 'accounts/base/student_dashboard.html' %}
+{% load static %}
+
+{% block title %}Active Outpass Exists{% endblock %}
+{% block page_title %}Outpass Request Denied{% endblock %}
+
+{% block content %}
+  <div class="infoContainer">
     <h2>You already have an active outpass</h2>
     <p>Please wait until it is completed before submitting a new one.</p>
-</body>
-</html>
+  </div>
+{% endblock %}

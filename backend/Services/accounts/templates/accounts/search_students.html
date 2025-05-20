@@ -1,45 +1,85 @@
-<!-- templates/accounts/search_students.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Students</title>
-</head>
-<body>
-    <h2>Search Students</h2>
+{% extends "accounts/base/warden_dashboard.html" %}
+{% block title %}Search Students{% endblock %}
+{% block page_title %}Search Students{% endblock %}
 
-    <form method="get">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search by name, enroll number, or email">
-        <button type="submit">Search</button>
-    </form>
+{% block content %}
+<style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background-color: #f2f2f2; }
+    tr:hover { background-color: #f9f9f9; }
+    form input, form select, form button {
+        padding: 6px;
+        margin-right: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
 
-    {% if students %}
-        <h3>Results:</h3>
-        <ul>
-        {% for student in students %}
-            <li>
-                {{ student.name }} ({{ student.enroll_number }}) - {{ student.email }}
-                <!-- - <a href="{% url 'edit-student' student.id %}">Edit</a> -->
-                <a href="{% url 'edit-student' student.id %}">Edit</a>
-
-            </li>
+<form method="get" class="mb-4">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search by name, enroll number, or email">
+    
+    <select name="gender">
+        <option value="">All Genders</option>
+        <option value="m" {% if gender_filter == 'm' %}selected{% endif %}>Male</option>
+        <option value="f" {% if gender_filter == 'f' %}selected{% endif %}>Female</option>
+        <option value="o" {% if gender_filter == 'o' %}selected{% endif %}>Other</option>
+    </select>
+    
+    <input type="text" name="hostel" value="{{ hostel_filter }}" placeholder="Hostel name">
+    
+    <select name="admn_year">
+        <option value="">All Years</option>
+        {% for year in year_range %}
+            <option value="{{ year }}" {% if year_filter == year|stringformat:"s" %}selected{% endif %}>{{ year }}</option>
         {% endfor %}
-        </ul>
+    </select>
+    
+    <button type="submit">Filter</button>
+</form>
 
-        <!-- Pagination controls -->
-        <div>
-            {% if students.has_previous %}
-                <a href="?q={{ query }}&page={{ students.previous_page_number }}">Previous</a>
-            {% endif %}
+{% if students %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Enroll Number</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Admission Year</th>
+                <th>Hostel</th>
+                <th>Room</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.enroll_number }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.get_gender_display }}</td>
+                    <td>{{ student.admn_year }}</td>
+                    <td>{% if student.room %}{{ student.room.hostel.name }}{% else %}-{% endif %}</td>
+                    <td>{% if student.room %}{{ student.room.room_number }}{% else %}-{% endif %}</td>
+                    <td><a href="{% url 'edit-student' student.id %}" class="text-blue-500 hover:underline">Edit</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-            Page {{ students.number }} of {{ students.paginator.num_pages }}
+    <div class="mt-4">
+        {% if students.has_previous %}
+            <a href="?q={{ query }}&page={{ students.previous_page_number }}&gender={{ gender_filter }}&hostel={{ hostel_filter }}&admn_year={{ year_filter }}">Previous</a>
+        {% endif %}
 
-            {% if students.has_next %}
-                <a href="?q={{ query }}&page={{ students.next_page_number }}">Next</a>
-            {% endif %}
-        </div>
+        Page {{ students.number }} of {{ students.paginator.num_pages }}
 
-    {% elif query %}
-        <p>No matching students found.</p>
-    {% endif %}
-</body>
-</html>
+        {% if students.has_next %}
+            <a href="?q={{ query }}&page={{ students.next_page_number }}&gender={{ gender_filter }}&hostel={{ hostel_filter }}&admn_year={{ year_filter }}">Next</a>
+        {% endif %}
+    </div>
+{% elif query %}
+    <p>No matching students found.</p>
+{% endif %}
+{% endblock %}

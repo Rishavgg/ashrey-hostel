@@ -498,3 +498,18 @@ class RoomChangeRequest(models.Model):
 
     def __str__(self):
         return f"{self.request_type.title()} Request by {self.requested_by.name}"
+
+
+
+from django.db import models
+from core.models import Student  # Adjust the import path if Student is in another app
+
+class Complaint(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='complaints')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Complaint by {self.student.user.username} - {self.title}"

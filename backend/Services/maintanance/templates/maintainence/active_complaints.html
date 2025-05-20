@@ -1,0 +1,65 @@
+{% extends "accounts/base/caretaker_dashboard.html" %}
+{% block title %}Active Complaints{% endblock %}
+{% block page_title %}Active Complaints{% endblock %}
+
+{% block content %}
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        form button {
+            background-color: #38a169;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #2f855a;
+        }
+    </style>
+
+    <h2>Active Complaints</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Complaint</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.student.name }}</td>
+                <td>{{ complaint.text }}</td>
+                <td>{{ complaint.date }}</td>
+                <td>{% if complaint.solved %}✅ Solved{% else %}⏳ Active{% endif %}</td>
+                <td>
+                    {% if not complaint.solved %}
+                        <form method="post" action="{% url 'mark-complaint-solved' complaint.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Mark as Solved</button>
+                        </form>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No active complaints found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

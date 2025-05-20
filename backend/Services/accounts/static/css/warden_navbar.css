@@ -1,0 +1,147 @@
+/* Layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .layout {
+    display: flex;
+    height: 100vh;
+    background-color: #f9f8fc;
+  }
+  
+  /* Sidebar */
+  .outPassNav {
+    width: 260px;
+    background-color: #f4ebfa;
+    padding: 16px 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    overflow-y: auto;
+  }
+  
+  .outPassHeader {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+  
+  .headerContent {
+    margin: 16px 0 8px;
+  }
+  
+  .headerTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .dividerLine {
+    border: none;
+    height: 1px;
+    background-color: #e0dce4;
+    margin: 8px 0;
+  }
+  
+  .navItem {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin: 4px 0;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  
+  .navItem:hover {
+    background-color: #e8dbfa;
+  }
+  
+  .navItem.active {
+    background-color: #dfcef7;
+  }
+  
+  .stateLayer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+  }
+  
+  .label {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  
+  /* Main Content */
+  .mainContent {
+    flex-grow: 1;
+    padding: 32px;
+    overflow-y: auto;
+  }
+  
+  .pageTitle {
+    background-color: #e8dbfa;
+    padding: 32px;
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  
+  /* Content body (tile view, filters, buttons, etc.) */
+  .pageBody {
+    padding: 0 16px;
+  }
+  
+  button {
+    background-color: #e8dbfa;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button:hover {
+    background-color: #dfcef7;
+  }
+  
+  input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 8px;
+    min-width: 150px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .layout {
+      flex-direction: column;
+    }
+    
+    .outPassNav {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+  
+    .mainContent {
+      padding: 16px;
+    }
+  
+    .pageTitle {
+      font-size: 24px;
+      padding: 16px;
+    }
+  }
+  

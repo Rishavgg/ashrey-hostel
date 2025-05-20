@@ -1,0 +1,33 @@
+{% extends 'accounts/base/caretaker_dashboard.html' %}
+
+{% load static %}
+
+{% block title %}Past Complaints{% endblock %}
+{% block page_title %}Resolved Complaints{% endblock %}
+
+{% block content %}
+  <h2>Resolved Complaints</h2>
+
+  {% if complaint_data %}
+    {% for item in complaint_data %}
+      <div style="border: 1px solid #ccc; padding: 12px; margin-bottom: 16px;">
+        <h4>{{ item.complaint.title }}</h4>
+        <p><strong>Room:</strong> {{ item.room.room_number }} ({{ item.room.hostel.name }})</p>
+        <p><strong>Student:</strong> {{ item.student.name }} ({{ item.student.enroll_number }})</p>
+        <p><strong>Description:</strong> {{ item.complaint.description }}</p>
+        <p><strong>Date:</strong> {{ item.complaint.created_at|date:"d M Y H:i" }}</p>
+
+        {% if item.inventory_items %}
+          <p><strong>Related Inventory Items:</strong></p>
+          <ul>
+            {% for inv in item.inventory_items %}
+              <li>{{ inv.name }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No resolved complaints found.</p>
+  {% endif %}
+{% endblock %}

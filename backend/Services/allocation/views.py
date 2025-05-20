@@ -293,14 +293,114 @@ def submit_request_view(request):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render, redirect, get_object_or_404
+# from core.models import Student, RoomChangeRequest
+# from django.db.models import Q  # Add this import
+
+# @login_required
+# def view_received_requests(request):
+#     student = get_object_or_404(Student, user=request.user)
+
+#     # Block accepting new requests if student is in any pending warden-reviewed request
+#     has_pending_warden_request = RoomChangeRequest.objects.filter(
+#         approved_for_apply=True,
+#         approved=False,
+#         rejected=False
+#     ).filter(Q(requested_by=student) | Q(requested_with=student)).exists()
+
+#     # Show only unaccepted, unapproved, unrejected requests
+#     received_requests = RoomChangeRequest.objects.filter(
+#         requested_with=student,
+#         approved_for_apply=False,
+#         rejected=False
+#     )
+
+#     if request.method == 'POST':
+#         # Accept the chosen request
+#         if 'accept' in request.POST and not has_pending_warden_request:
+#             req_id = request.POST.get('request_id')
+#             chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
+#             chosen_request.approved_for_apply = True
+#             chosen_request.save()
+
+#             # Reject all other pending requests where this student was requested_with
+#             RoomChangeRequest.objects.filter(
+#                 requested_with=student,
+#                 approved_for_apply=False,
+#                 rejected=False
+#             ).exclude(id=chosen_request.id).update(rejected=True)
+
+#             return redirect('allocation:request_confirmed')
+
+#         # Reject the current request
+#         elif 'reject' in request.POST:
+#             req_id = request.POST.get('request_id')
+#             chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
+#             chosen_request.rejected = True
+#             chosen_request.save()
+
+#             return redirect('allocation:request_confirmed')
+
+#     return render(request, 'allocation/received_requests.html', {
+#         'received_requests': received_requests,
+#         'has_pending_warden_request': has_pending_warden_request,
+#     })
+
+
+
+
+
+
+
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from core.models import Student, RoomChangeRequest
-from django.db.models import Q  # Add this import
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, render, redirect
+from django.db.models import Q
 
 @login_required
 def view_received_requests(request):
-    student = get_object_or_404(Student, user=request.user)
+    if not hasattr(request.user, 'student'):
+        return HttpResponseForbidden("Only students can access this page.")
+
+    student = request.user.student
 
     # Block accepting new requests if student is in any pending warden-reviewed request
     has_pending_warden_request = RoomChangeRequest.objects.filter(
@@ -317,14 +417,13 @@ def view_received_requests(request):
     )
 
     if request.method == 'POST':
-        # Accept the chosen request
         if 'accept' in request.POST and not has_pending_warden_request:
             req_id = request.POST.get('request_id')
             chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
             chosen_request.approved_for_apply = True
             chosen_request.save()
 
-            # Reject all other pending requests where this student was requested_with
+            # Reject all others
             RoomChangeRequest.objects.filter(
                 requested_with=student,
                 approved_for_apply=False,
@@ -333,7 +432,6 @@ def view_received_requests(request):
 
             return redirect('allocation:request_confirmed')
 
-        # Reject the current request
         elif 'reject' in request.POST:
             req_id = request.POST.get('request_id')
             chosen_request = get_object_or_404(RoomChangeRequest, id=req_id, requested_with=student)
@@ -345,7 +443,35 @@ def view_received_requests(request):
     return render(request, 'allocation/received_requests.html', {
         'received_requests': received_requests,
         'has_pending_warden_request': has_pending_warden_request,
+        'active_page': 'View Requests',
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

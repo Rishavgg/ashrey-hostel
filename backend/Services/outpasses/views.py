@@ -7,25 +7,6 @@ from django.core.exceptions import PermissionDenied
 
 # -------------------------- create outpass--------------------
 
-# @login_required
-# def create_outpass(request):
-#     try:
-#         student = Student.objects.get(user=request.user)
-#     except Student.DoesNotExist:
-#         raise PermissionDenied("Only students can request an outpass.")
-
-#     if request.method == 'POST':
-#         form = OutpassForm(request.POST)
-#         if form.is_valid():
-#             outpass = form.save(commit=False)
-#             outpass.student = student
-#             outpass.save()
-#             return redirect('outpass_success')  # Or any confirmation page
-#     else:
-#         form = OutpassForm()
-
-#     return render(request, 'outpasses/outpass_form.html', {'form': form})
-
 
 
 from django.contrib.auth.decorators import login_required
@@ -51,7 +32,7 @@ def create_outpass(request):
 
     if has_active:
         messages.error(request, "You already have an active outpass.")
-        return redirect('outpass_already_exists')  # Or render a warning page
+        return redirect('outpasses:outpass_already_exists')  # Or render a warning page
 
     if request.method == 'POST':
         form = OutpassForm(request.POST)
@@ -59,7 +40,7 @@ def create_outpass(request):
             outpass = form.save(commit=False)
             outpass.student = student
             outpass.save()
-            return redirect('outpass_success')  # Confirmation page or home
+            return redirect('outpasses:outpass_success')  # Confirmation page or home
     else:
         form = OutpassForm()
 
@@ -76,6 +57,33 @@ from django.http import HttpResponse
 def outpass_success(request):
     return HttpResponse("Outpass request submitted successfully.")
 
+
+
+# -----------------------tout of campus----------------------------------------------
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from core.models import Outpass
+from core.models import Hostel_Management
+
+@login_required
+def out_of_campus_view(request):
+    try:
+        warden = Hostel_Management.objects.get(user=request.user, role='warden')
+    except Hostel_Management.DoesNotExist:
+        raise PermissionDenied("Only wardens can access this view.")
+
+    outpasses = Outpass.objects.filter(
+        student__room__hostel=warden.hostel,
+        markout=True,
+        markin=False
+    ).select_related('student', 'student__room')
+
+    return render(request, 'outpasses/out_of_campus.html', {
+        'outpasses': outpasses,
+        'active_page': 'Out of campus'
+    })
 
 
 
@@ -197,9 +205,14 @@ def warden_outpass_view(request):
             outpass.approved_by = warden  # still assign for record-keeping
         outpass.save()
 
-        return redirect('warden_outpass_view')
+        return redirect('outpasses:warden_outpass_view')
 
-    return render(request, 'outpasses/warden_outpass_list.html', {'outpasses': outpasses})
+    # return render(request, 'outpasses/warden_outpass_list.html', {'outpasses': outpasses})
+    return render(request, 'outpasses/warden_outpass_list.html', {
+        'outpasses': outpasses,
+        'active_page': 'Outpass Requests'
+    })
+
 
 
 
@@ -218,7 +231,12 @@ def history_outpass_view(request):
         Q(markin=True) | Q(rejected=True)
     ).select_related('student', 'student__room').order_by('-start_date')
 
-    return render(request, 'outpasses/outpass_history.html', {'outpasses': outpasses})
+    # return render(request, 'outpasses/outpass_history.html', {'outpasses': outpasses})
+    return render(request, 'outpasses/outpass_history.html', {
+        'outpasses': outpasses,
+        'active_page': 'Outpass History'
+    })
+
 
 
 
@@ -277,7 +295,7 @@ def mark_out_outpass(request, outpass_id):
     outpass.markout = True
     outpass.save()
 
-    return redirect('guard_outpass_list')
+    return redirect('outpasses:guard_outpass_list')
 
 
 

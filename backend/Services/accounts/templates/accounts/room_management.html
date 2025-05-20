@@ -1,46 +1,86 @@
-<form method="get" id="filter-form">
-    <input type="text" name="q" value="{{ query }}" placeholder="Search by room number or hostel">
-    <select name="hostel">
-        <option value="">All Hostels</option>
-        {% for hostel in hostels %}
-        <option value="{{ hostel.id }}" {% if hostel.id|stringformat:"s" == selected_hostel %}selected{% endif %}>{{ hostel.name }}</option>
-        {% endfor %}
-    </select>
-    <select name="occupancy">
-        <option value="">All</option>
-        <option value="full" {% if occupancy_filter == 'full' %}selected{% endif %}>Full</option>
-        <option value="partial" {% if occupancy_filter == 'partial' %}selected{% endif %}>Partially Occupied</option>
-        <option value="available" {% if occupancy_filter == 'available' %}selected{% endif %}>Empty</option>
-    </select>
-    <select name="capacity">
-        <option value="">All Capacities</option>
-        <option value="1" {% if capacity_filter == '1' %}selected{% endif %}>Single Room</option>
-        <option value="2" {% if capacity_filter == '2' %}selected{% endif %}>Double Room</option>
-        <option value="3" {% if capacity_filter == '3' %}selected{% endif %}>Triple Room</option>
-    </select>
-    <button type="submit">Search & Filter</button>
-</form>
+{% extends "accounts/base/warden_dashboard.html" %}
+{% load static %}
 
-<div>
-    {% if page_obj.has_other_pages %}
-        <div>
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-            <span>
-                {% if page_obj.has_previous %}
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page=1">&laquo; First</a>
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-                {% if page_obj.has_next %}
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.next_page_number }}">Next</a>
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
+{% block title %}Manage Rooms{% endblock %}
+{% block page_title %}Manage Rooms{% endblock %}
 
-    <form id="room-form" method="post">
-        {% csrf_token %}
-        <table>
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/ManualAllocation.css' %}">
+
+
+<main class="formContainer">
+
+  <!-- Filter Form -->
+  <form method="get" id="filter-form" class="form">
+    <section class="formFields">
+
+      <div class="fieldWrapper">
+        <label class="fieldLabel" for="search">Search</label>
+        <input type="text" name="q" id="search" class="fieldInput" value="{{ query }}" placeholder="Search by room number or hostel">
+      </div>
+
+      <div class="fieldWrapper">
+        <label class="fieldLabel" for="hostel">Hostel</label>
+        <select name="hostel" id="hostel" class="fieldInput">
+          <option value="">All Hostels</option>
+          {% for hostel in hostels %}
+          <option value="{{ hostel.id }}" {% if hostel.id|stringformat:"s" == selected_hostel %}selected{% endif %}>{{ hostel.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="fieldWrapper">
+        <label class="fieldLabel" for="occupancy">Occupancy</label>
+        <select name="occupancy" id="occupancy" class="fieldInput">
+          <option value="">All</option>
+          <option value="full" {% if occupancy_filter == 'full' %}selected{% endif %}>Full</option>
+          <option value="partial" {% if occupancy_filter == 'partial' %}selected{% endif %}>Partially Occupied</option>
+          <option value="available" {% if occupancy_filter == 'available' %}selected{% endif %}>Empty</option>
+        </select>
+      </div>
+
+      <div class="fieldWrapper">
+        <label class="fieldLabel" for="capacity">Capacity</label>
+        <select name="capacity" id="capacity" class="fieldInput">
+          <option value="">All Capacities</option>
+          <option value="1" {% if capacity_filter == '1' %}selected{% endif %}>Single Room</option>
+          <option value="2" {% if capacity_filter == '2' %}selected{% endif %}>Double Room</option>
+          <option value="3" {% if capacity_filter == '3' %}selected{% endif %}>Triple Room</option>
+        </select>
+      </div>
+
+    </section>
+
+    <div class="formActions">
+      <button type="submit" class="actionButton successButton">
+        <span class="buttonText">Search & Filter</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Pagination (Top) -->
+  {% if page_obj.has_other_pages %}
+  <div class="formHeader">
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    <div class="formActions">
+      {% if page_obj.has_previous %}
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page=1">&laquo; First</a>
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      {% if page_obj.has_next %}
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.next_page_number }}">Next</a>
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Room Table -->
+  <form id="room-form" method="post">
+    {% csrf_token %}
+    <div class="styled-table-container">
+        <table class="styled-table">
             <thead>
                 <tr>
                     <th>Room Number</th>
@@ -59,42 +99,42 @@
                     <td>{{ room.capacity }}</td>
                     <td>{{ room.occupancy }} / {{ room.capacity }}</td>
                     <td>
-                        <input type="checkbox" name="show_{{ room.id }}" id="show_{{ room.id }}" 
+                        <input type="checkbox" name="show_{{ room.id }}" id="show_{{ room.id }}"
                                {% if room.show %}checked{% endif %}
                                data-initial="{{ room.show }}">
                         <input type="hidden" name="room_id" value="{{ room.id }}">
                     </td>
-                    <td>
-                        <a href="{% url 'edit_room' room.id %}">Edit </a> |
-                        
-                        <a href="{% url 'allocation:assign_room' room.id %}"> Assign</a>
-                        
-                        
-                    </td>
+                    <td class="actions-cell">
+                        <a class="table-action-button" href="{% url 'edit_room' room.id %}">Edit</a>
+                        <a class="table-action-button assign-button" href="{% url 'allocation:assign_room' room.id %}">Assign</a>
+                      </td>
+                    
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit" id="save-button">Save Changes</button>
-    </form>
+    </div>
+    <div class="formActions">
+        <button type="submit" class="actionButton successButton">Save Changes</button>
+    </div>
+</form>
 
-    {% if page_obj.has_other_pages %}
-        <div>
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-            <span>
-                {% if page_obj.has_previous %}
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page=1">&laquo; First</a>
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-                {% if page_obj.has_next %}
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.next_page_number }}">Next</a>
-                    <a href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
-</div>
+  <!-- Pagination (Bottom) -->
+  {% if page_obj.has_other_pages %}
+  <div class="formHeader">
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    <div class="formActions">
+      {% if page_obj.has_previous %}
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page=1">&laquo; First</a>
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      {% if page_obj.has_next %}
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.next_page_number }}">Next</a>
+      <a class="actionButton cancelButton" href="?q={{ query }}&hostel={{ selected_hostel }}&occupancy={{ occupancy_filter }}&capacity={{ capacity_filter }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
 
-
-
-
+</main>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "accounts/base/student_dashboard.html" %}
+{% load static %}
+
+{% block title %}Available Rooms{% endblock %}
+{% block page_title %}Available Rooms{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/OutOfCampusTable.css' %}" />
+
+  <h2 class="section-title">Available Rooms</h2>
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Room Number</th>
+          <th>Hostel</th>
+          <th>Capacity</th>
+          <th>Occupancy</th>
+          <th>Floor</th>
+          <th>Level</th>
+          <th>Balcony</th>
+          <th>Sunny</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+          <tr>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.hostel.name }}</td>
+            <td>{{ room.capacity }}</td>
+            <td>{{ room.occupancy }}</td>
+            <td>{{ room.floor }}</td>
+            <td>{{ room.level }}</td>
+            <td>{{ room.balcony|yesno:"Yes,No" }}</td>
+            <td>{{ room.sunny|yesno:"Yes,No" }}</td>
+            <td>{{ room.priority_score }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="9" class="empty-message">No rooms currently available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

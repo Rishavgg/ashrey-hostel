@@ -270,18 +270,54 @@ def edit_student(request, student_id):
 
 
 
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.db.models import Q
+from django.core.paginator import Paginator
+from core.models import Student  # Adjust as needed
+
+# @login_required
+# def search_students(request):
+#     if not request.user.is_staff:
+#         messages.error(request, f"Access denied for user '{request.user.username}'. Staff privileges are required.")
+#         return redirect('login')
+
+#     query = request.GET.get('q', '')
+#     student_list = Student.objects.all()
+
+#     if query:
+#         student_list = student_list.filter(
+#             Q(name__icontains=query) |
+#             Q(enroll_number__icontains=query) |
+#             Q(email__icontains=query)
+#         )
+
+#     paginator = Paginator(student_list.order_by('name'), 10)
+#     page_number = request.GET.get('page')
+#     students = paginator.get_page(page_number)
+
+#     return render(request, 'accounts/search_students.html', {
+#         'students': students,
+#         'query': query,
+#         'active_page': 'Manage students',  # This matches the sidebar label
+#     })
+
+
+from django.utils.timezone import now
+from datetime import datetime
+
 @login_required
 def search_students(request):
-    
-    # if not request.user.is_staff:
-    #     messages.error(request, "You do not have permission to access this page.")
-    #     return redirect('login')
-    
     if not request.user.is_staff:
         messages.error(request, f"Access denied for user '{request.user.username}'. Staff privileges are required.")
         return redirect('login')
 
     query = request.GET.get('q', '')
+    gender_filter = request.GET.get('gender', '')
+    hostel_filter = request.GET.get('hostel', '')
+    year_filter = request.GET.get('admn_year', '')
+
     student_list = Student.objects.all()
 
     if query:
@@ -290,14 +326,28 @@ def search_students(request):
             Q(enroll_number__icontains=query) |
             Q(email__icontains=query)
         )
+    if gender_filter:
+        student_list = student_list.filter(gender=gender_filter)
+    if hostel_filter:
+        student_list = student_list.filter(room__hostel__name__icontains=hostel_filter)
+    if year_filter:
+        student_list = student_list.filter(admn_year=year_filter)
 
     paginator = Paginator(student_list.order_by('name'), 10)
     page_number = request.GET.get('page')
     students = paginator.get_page(page_number)
 
+    current_year = now().year
+    year_range = [str(y) for y in range(current_year - 4, current_year + 1)]
+
     return render(request, 'accounts/search_students.html', {
         'students': students,
         'query': query,
+        'gender_filter': gender_filter,
+        'hostel_filter': hostel_filter,
+        'year_filter': year_filter,
+        'year_range': year_range,
+        'active_page': 'Manage students',
     })
 
 
@@ -369,6 +419,7 @@ def hostel_room_list_view(request):
         'selected_hostel': selected_hostel,
         'occupancy_filter': occupancy_filter,
         'capacity_filter': capacity_filter,  # Pass capacity filter to the template
+        'active_page': 'Manage rooms' 
     })
 
 
@@ -480,3 +531,15 @@ def bulk_upload_rooms(request):
         return render(request, 'accounts/bulk_upload_rooms.html')
 
     return render(request, 'accounts/bulk_upload_rooms.html')
+
+
+# ----------------------------------public room list student---------------------------------------------
+
+from django.shortcuts import render
+from core.models import HostelRoom  # Replace with your actual model name if different
+
+def available_rooms_view(request):
+    rooms = HostelRoom.objects.filter(show=True).filter(capacity__gt=models.F('occupancy'))
+    return render(request, 'accounts/available_rooms.html', {'rooms': rooms})
+
+

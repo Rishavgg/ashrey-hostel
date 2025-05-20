@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Caretaker Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/warden_navbar.css' %}">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="outPassNav">
+      <header class="outPassHeader">
+        <!-- Section: Room Management -->
+        <div class="headerContent"><span class="headerTitle">Room Management</span></div>
+        <hr class="dividerLine" />
+        <a href="{% url 'maintenance:inventory-list' %}" class="navItem {% if active_page == 'Room Inventory' %}active{% endif %}">
+          <div class="stateLayer">
+            <img src="{% static 'icons/inventory.svg' %}" class="icon" />
+            <span class="label">Room Inventory</span>
+          </div>
+        </a>
+
+        <!-- Section: Complaint Management -->
+        <div class="headerContent"><span class="headerTitle">Complaint Management</span></div>
+        <hr class="dividerLine" />
+        <a href="{% url 'maintenance:active_complaints' %}" class="navItem {% if active_page == 'Active Complaints' %}active{% endif %}">
+          <div class="stateLayer">
+            <img src="{% static 'icons/active.svg' %}" class="icon" />
+            <span class="label">Active Complaints</span>
+          </div>
+        </a>
+        <a href="{% url 'maintenance:past_complaints' %}" class="navItem {% if active_page == 'Past Complaints' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/passive.svg' %}" class="icon" />
+              <span class="label">Past Complaints</span>
+            </div>
+          </a>
+        
+      </header>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="mainContent">
+      <div class="pageTitle">{% block page_title %}Dashboard{% endblock %}</div>
+      <div class="pageBody">{% block content %}{% endblock %}</div>
+    </main>
+  </div>
+</body>
+</html>

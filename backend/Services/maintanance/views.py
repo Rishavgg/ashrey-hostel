@@ -453,8 +453,10 @@ def student_inventory_form_view(request):
 
     if not inventory_form.allow_edit:
         return render(request, 'maintainence/student_inventory_locked.html', {
-            'filled_by': inventory_form.filled_by_student
+            'filled_by': inventory_form.filled_by_student,
+            'active_page': 'Inventory Form',
         })
+
 
     # Only include _s fields for student input
     condition_fields = []
@@ -481,6 +483,150 @@ def student_inventory_form_view(request):
         return redirect('maintenance:student-inventory-form')
 
     return render(request, 'maintainence/student_inventory_form.html', {
-        'form': inventory_form,
-        'condition_fields': condition_fields,
+    'form': inventory_form,
+    'condition_fields': condition_fields,
+    'active_page': 'Inventory Form',
     })
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from core.models import Student
+from .forms import ComplaintForm
+from core.models import Complaint
+
+@login_required
+def complaint_view(request):
+    try:
+        student = Student.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        return redirect('accounts:login')  # or show a forbidden page
+
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.student = student
+            complaint.save()
+            return redirect('maintenance:complaint')
+    else:
+        form = ComplaintForm()
+
+    unresolved_complaints = Complaint.objects.filter(student=student, resolved=False)
+
+    return render(request, 'maintainence/student_complaint.html', {
+        'form': form,
+        'unresolved_complaints': unresolved_complaints,
+        'active_page': 'Complaint',
+    })
+
+
+
+
+# _____________________________________coplaint view_____________
+# views.py in maintenance app
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from core.models import Student, HostelRoom
+from core.models import Complaint
+from django.core.exceptions import PermissionDenied
+
+
+@login_required
+def active_complaints_view(request):
+    # Uncomment this if caretaker role enforcement is needed
+    # if not hasattr(request.user, 'caretaker'):
+    #     raise PermissionDenied("Only caretakers can access this page.")
+
+    unresolved_complaints = Complaint.objects.filter(resolved=False).select_related('student__room__hostel')
+
+    complaint_data = []
+    for complaint in unresolved_complaints:
+        student = complaint.student
+        room = student.room  # Corrected field
+        inventory_items = room.inventory_items.all() if hasattr(room, 'inventory_items') else []
+
+        complaint_data.append({
+            'student': student,
+            'room': room,
+            'complaint': complaint,
+            'inventory_items': inventory_items,
+        })
+
+    return render(request, 'maintainence/active_complaints.html', {
+        'complaint_data': complaint_data,
+        'active_page': 'Active Complaints',
+    })
+    
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from core.models import Complaint
+from django.contrib import messages
+
+@login_required
+def active_complaints(request):
+    complaints = Complaint.objects.filter(resolved=False).order_by('-created_at')
+    return render(request, 'accounts/active_complaints.html', {
+        'complaints': complaints,
+        'active_page': 'Active Complaints',  # For sidebar highlighting
+    })
+
+
+
+
+
+# ------------------------------past complaints-----------------------------------
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from core.models import Complaint
+
+@login_required
+def past_complaints_view(request):
+    # Optionally restrict access to caretakers
+    # if not hasattr(request.user, 'caretaker'):
+    #     raise PermissionDenied("Only caretakers can access this page.")
+
+    resolved_complaints = Complaint.objects.filter(resolved=True).select_related('student__room__hostel')
+
+    complaint_data = []
+    for complaint in resolved_complaints:
+        student = complaint.student
+        room = student.room
+        inventory_items = room.inventory_items.all() if hasattr(room, 'inventory_items') else []
+
+        complaint_data.append({
+            'student': student,
+            'room': room,
+            'complaint': complaint,
+            'inventory_items': inventory_items,
+        })
+
+    return render(request, 'maintainence/past_complaints.html', {
+        'complaint_data': complaint_data,
+        'active_page': 'Past Complaints',
+    })
+
+
+# -------------------------
+
+
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import redirect
+from core.models import Complaint  # Adjust if your model name is different
+
+@login_required
+def mark_complaint_solved(request, complaint_id):
+    if request.method == 'POST':
+        complaint = get_object_or_404(Complaint, id=complaint_id)
+        complaint.resolved = True
+        complaint.save()
+        messages.success(request, "Complaint marked as solved.")
+    return redirect('active-complaints')  # Use the correct name from your urls

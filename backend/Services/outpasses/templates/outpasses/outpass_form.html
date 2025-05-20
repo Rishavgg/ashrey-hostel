@@ -1,58 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Request Outpass</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 20px;
-        }
-        .container {
-            max-width: 500px;
-            background: white;
-            padding: 30px;
-            margin: 0 auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        form input, form textarea, form select {
-            width: 100%;
-            padding: 8px 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0284c7;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .errorlist {
-            color: red;
-            margin: 0 0 10px 0;
-            padding: 0;
-            list-style: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Request an Outpass</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</body>
-</html>
+{% extends 'accounts/base/student_dashboard.html' %}
+{% load static %}
+
+{% block title %}Request Outpass{% endblock %}
+{% block page_title %}Request an Outpass{% endblock %}
+
+{% block content %}
+  <form method="post" class="formContainer">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+  </form>
+{% endblock %}
+

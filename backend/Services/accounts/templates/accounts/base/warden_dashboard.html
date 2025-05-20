@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Warden Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/warden_navbar.css' %}">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="outPassNav">
+      <header class="outPassHeader">
+        <!-- Section: Student Details -->
+        <div class="headerContent"><span class="headerTitle">Student Details</span></div>
+        <hr class="dividerLine" />
+        <a href="{% url 'search-students' %}" class="navItem {% if active_page == 'Manage students' %}active{% endif %}">
+          <div class="stateLayer">
+            <img src="{% static 'icons/community.svg' %}" class="icon" />
+            <span class="label">Manage students</span>
+          </div>
+        </a>
+
+        <!-- Section: Allocation -->
+        <div class="headerContent"><span class="headerTitle">Allocation</span></div>
+        <hr class="dividerLine" />
+        
+        <a href="{% url 'allocation:warden_dashboard' %}" class="navItem {% if active_page == 'Allocation Request' %}active{% endif %}">
+            <div class="stateLayer">
+            <img src="{% static 'icons/request.svg' %}" class="icon" />
+            <span class="label">Allocation Request</span>
+            </div>
+        </a>
+
+
+
+        <!-- Section: Outpass -->
+        <div class="headerContent"><span class="headerTitle">Outpass</span></div>
+        <hr class="dividerLine" />
+
+        <a href="{% url 'outpasses:warden_outpass_view' %}" class="navItem {% if active_page == 'Outpass Requests' %}active{% endif %}">
+            <div class="stateLayer">
+            <img src="{% static 'icons/assign.svg' %}" class="icon" />
+            <span class="label">Outpass Requests</span>
+            </div>
+        </a>
+
+
+        <a href="{% url 'outpasses:out_of_campus' %}" class="navItem {% if active_page == 'Out of campus' %}active{% endif %}">
+            <div class="stateLayer">
+                <img src="{% static 'icons/out.svg' %}" class="icon" />
+                <span class="label">Out of campus</span>
+            </div>
+        </a>
+        
+
+        <a href="{% url 'outpasses:outpass_history' %}" class="navItem {% if active_page == 'Outpass history' %}active{% endif %}">
+            <div class="stateLayer">
+            <img src="{% static 'icons/history.svg' %}" class="icon" />
+            <span class="label">Outpass history</span>
+            </div>
+        </a>
+
+
+        <!-- Section: Hostel Details -->
+        <div class="headerContent"><span class="headerTitle">Hostel Details</span></div>
+        <hr class="dividerLine" />
+
+        <a href="{% url 'room_management' %}" class="navItem {% if active_page == 'Manage rooms' %}active{% endif %}">
+            <div class="stateLayer">
+                <img src="{% static 'icons/list.svg' %}" class="icon" />
+                <span class="label">Manage rooms</span>
+            </div>
+        </a>
+        
+
+
+      </header>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="mainContent">
+      <div class="pageTitle">{% block page_title %}Dashboard{% endblock %}</div>
+      <div class="pageBody">{% block content %}{% endblock %}</div>
+    </main>
+  </div>
+</body>
+</html>

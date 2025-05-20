@@ -1,21 +1,340 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management - Login</title>
+    <style>
+        :root {
+            --primary: #2F80ED;
+            --dark: #1C2331;
+            --background: #F2F4F8;
+            --medium: #B0BEC5;
+            --success: #27AE60;
+            --warning: #F2994A;
+            --purple: #8E44AD;
+            --yellow: #F1C40F;
+            --red: #E74C3C;
+            --green: #2ECC71;
+            --blue: #3498DB;
+            --pink: #FF9FF3;
+            --shadow-light: rgba(255, 255, 255, 0.7);
+            --shadow-dark: rgba(174, 174, 192, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .login-page {
+            display: flex;
+            width: 100%;
+            /* min-height: 100vh; */
+            min-height: fit-content;
+            max-width: 1200px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .artwork-section {
+            flex: 1;
+            background-color: white;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            overflow: hidden;
+        }
+
+        .art-item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            flex: 1;
+            background-color: var(--background);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .art-circle {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+        }
+        
+        .art-square {
+            width: 70%;
+            height: 70%;
+        }
+        
+        .art-triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid;
+        }
+        
+        .art-semicircle {
+            width: 80%;
+            height: 80%;
+            border-radius: 100% 0 0 0;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--dark);
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            color: var(--medium);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 1px solid rgba(176, 190, 197, 0.3);
+            border-radius: 8px;
+            background-color: white;
+            color: var(--dark);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.2);
+        }
+
+        .input-field::placeholder {
+            color: #B0BEC5;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+            margin-bottom: 24px;
+        }
+
+        .forgot-password a {
+            font-size: 14px;
+            color: var(--purple);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--purple);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #7D3C98;
+        }
+
+        .messages {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            list-style-type: none;
+        }
+
+        .message-error {
+            background-color: rgba(242, 153, 74, 0.2);
+            color: var(--warning);
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1), inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .message-success {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: var(--success);
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1), inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--medium);
+            font-size: 14px;
+        }
+        
+        .form-footer a {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .login-page {
+                flex-direction: column;
+            }
+            
+            .artwork-section {
+                height: 200px;
+                flex: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="login-page">
+        <div class="artwork-section">
+            <!-- Geometric art grid similar to the reference image -->
+            <div class="art-item" style="background-color: #E74C3C;">
+                <div class="art-circle" style="background: #F1C40F; border: 10px solid #F1C40F;"></div>
+            </div>
+            <div class="art-item" style="background-color: #F1C40F;">
+                <div style="width: 80%; height: 80%; border-radius: 50%; background: linear-gradient(135deg, #FF9FF3 50%, #F1C40F 50%);"></div>
+            </div>
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div class="art-circle" style="background: #F1C40F;"></div>
+            </div>
+            <div class="art-item" style="background-color: #E74C3C;">
+                <div style="width: 90%; height: 90%; background: linear-gradient(45deg, #3498DB 50%, #8E44AD 50%);"></div>
+            </div>
+            <div class="art-item" style="background-color: #E74C3C;">
+                <div style="width: 80%; height: 80%; border-radius: 50%; background: linear-gradient(90deg, #E74C3C 80%, #2ECC71 20%);"></div>
+            </div>
+            
+            <div class="art-item" style="background-color: #E74C3C;">
+                <div style="width: 80%; height: 80%; border-radius: 0 100% 0 0; background: #3498DB;"></div>
+            </div>
+            <div class="art-item" style="background-color: #E74C3C;"></div>
+            <div class="art-item" style="background-color: #F1C40F;">
+                <div style="width: 70%; height: 70%; border-radius: 30% 70% 70% 30%; background: #E74C3C;"></div>
+            </div>
+            <div class="art-item" style="background-color: #FF9FF3;"></div>
+            <div class="art-item" style="background-color: #2ECC71;"></div>
+            
+            <div class="art-item" style="background-color: #FF9FF3;">
+                <div class="art-circle" style="background: #E74C3C;"></div>
+            </div>
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div class="art-square" style="background: #F1C40F;"></div>
+            </div>
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div style="width: 80%; height: 80%; background: radial-gradient(circle, #563D7C 20%, #8E44AD 20%);"></div>
+            </div>
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div class="art-circle" style="background: #8E44AD; border: 10px solid #563D7C;"></div>
+            </div>
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div class="art-circle" style="background: #E74C3C; transform: scale(0.5);"></div>
+            </div>
+            
+            <div class="art-item" style="background-color: #8E44AD;">
+                <div class="art-circle" style="background: #8E44AD;"></div>
+            </div>
+            <div class="art-item" style="background-color: #F1C40F;"></div>
+            <div class="art-item" style="background-color: #E74C3C;">
+                <div class="art-circle" style="background: #E74C3C;"></div>
+            </div>
+            <div class="art-item" style="background-color: #F1C40F;">
+                <div style="width: 90%; height: 40%; background: #F1C40F; border-radius: 50%; transform: rotate(30deg);"></div>
+            </div>
+        </div>
+        
+        <div class="login-container">
+            <div class="header">
+                <h1>Sign in to your account</h1>
+            </div>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" name="username" id="id_username" class="input-field" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" name="password" id="id_password" class="input-field" placeholder="••••••••" required>
+            </div>
+            
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Sign in</button>
+            
+            {% if messages %}
+                <ul class="messages {% if message.tags %}message-{{ message.tags }}{% else %}message-error{% endif %}">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <div class="form-footer">
+                Don't have an account yet? <a href="#">Sign up</a>
+            </div>
+        </form>
+    </div>
 </body>
-</html>
+</html> 

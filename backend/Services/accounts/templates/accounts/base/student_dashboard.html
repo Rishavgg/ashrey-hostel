@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Student Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/warden_navbar.css' %}">
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="outPassNav">
+      <header class="outPassHeader">
+        <!-- Section: Rooms -->
+        <div class="headerContent"><span class="headerTitle">Rooms</span></div>
+        <hr class="dividerLine" />
+        <a href="{% url 'public_room_list' %}" class="navItem {% if active_page == 'View Public Room List' %}active{% endif %}">
+          <div class="stateLayer">
+            <img src="{% static 'icons/list.svg' %}" class="icon" />
+            <span class="label">View Public Room List</span>
+          </div>
+        </a>
+        <a href="{% url 'allocation:submit_request' %}" class="navItem {% if active_page == 'Request Room Change' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/request.svg' %}" class="icon" />
+              <span class="label">Request Room Change</span>
+            </div>
+          </a>
+        
+          <a href="{% url 'allocation:received_requests' %}" class="navItem {% if active_page == 'View Requests' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/history.svg' %}" class="icon" />
+              <span class="label">View Requests</span>
+            </div>
+          </a>
+
+        <div class="headerContent"><span class="headerTitle">Outpass</span></div>
+        <hr class="dividerLine" />
+        <a href="{% url 'outpasses:outpass_request' %}" class="navItem {% if active_page == 'Outpass Request' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/assign.svg' %}" class="icon" />
+              <span class="label">Outpass Request</span>
+            </div>
+        </a>
+          
+          
+          
+          
+        
+
+        <!-- Section: Room and Inventory -->
+        <div class="headerContent"><span class="headerTitle">Room and Inventory</span></div>
+        <hr class="dividerLine" />
+
+        <a href="{% url 'maintenance:student-inventory-form' %}" class="navItem {% if active_page == 'Inventory Form' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/form.svg' %}" class="icon" />
+              <span class="label">Inventory Form</span>
+            </div>
+          </a>
+          <a href="{% url 'maintenance:complaint' %}" class="navItem {% if active_page == 'Complaint' %}active{% endif %}">
+            <div class="stateLayer">
+              <img src="{% static 'icons/complaint.svg' %}" class="icon" />
+              <span class="label">Complaint</span>
+            </div>
+          </a>
+          
+
+        
+          
+        
+      </header>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="mainContent">
+      <div class="pageTitle">{% block page_title %}Dashboard{% endblock %}</div>
+      <div class="pageBody">{% block content %}{% endblock %}</div>
+    </main>
+  </div>
+</body>
+</html>

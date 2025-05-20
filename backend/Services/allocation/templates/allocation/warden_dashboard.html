@@ -1,14 +1,63 @@
-<h2>Warden Dashboard</h2>
-{% for req in requests %}
-  <div>
-    <p>{{ req.requested_by.name }} → {{ req.request_type }}</p>
-    <form method="post">
-      {% csrf_token %}
-      <input type="hidden" name="request_id" value="{{ req.id }}">
-      <button name="action" value="approve">Approve</button>
-      <button name="action" value="reject">Reject</button>
-    </form>
-  </div>
-{% empty %}
-  <p>No pending requests.</p>
-{% endfor %}
+{% extends "accounts/base/warden_dashboard.html" %}
+{% load static %}
+
+{% block title %}Warden Dashboard{% endblock %}
+
+{% block page_title %}Warden Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/RequestCard.css' %}">
+
+<div class="request-grid">
+  {% for req in requests %}
+    <div class="card">
+      <div class="topRow">
+        <div class="typeTag">
+          <span class="icon">👥</span>
+          <span>{{ req.request_type|title }}</span>
+        </div>
+
+        {% if req.request_type == 'change' and req.room %}
+          <div class="newRoomTag">{{ req.room.room_number }}</div>
+        {% endif %}
+
+        <div class="initialsGroup">
+          <div class="initialCircle" style="background-color: #833434;">
+            {{ req.requested_by.name|slice:":1" }}
+          </div>
+          {% if req.request_with %}
+          <div class="initialCircle" style="background-color: #2D2D2D;">
+            {{ req.request_with.name|slice:":1" }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="bottomRow">
+        <div class="studentCard">
+          <div class="studentName">{{ req.requested_by.name }}</div>
+          <div class="studentRoom">{{ req.requested_by.room.room_number }}</div>
+        </div>
+        {% if req.requested_with %}
+        <div class="studentCard">
+          <div class="studentName">{{ req.requested_with.name }}</div>
+          <div class="studentRoom">{{ req.requested_with.room.room_number }}</div>
+        </div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="request_id" value="{{ req.id }}">
+          <div class="button-group">
+            <button class="approvebtn" name="action" value="approve">Approve</button>
+            <button class="approvebtn" name="action" value="reject" style="background-color: #F8D6D6;">Reject</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% empty %}
+    <p>No pending requests.</p>
+  {% endfor %}
+</div>
+{% endblock %}
+

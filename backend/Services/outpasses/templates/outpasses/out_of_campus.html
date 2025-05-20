@@ -1,0 +1,42 @@
+{% extends "accounts/base/warden_dashboard.html" %}
+{% load static %}
+
+{% block title %}Out of Campus{% endblock %}
+{% block page_title %}Out of Campus{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/OutOfCampusTable.css' %}">
+
+<h2 class="section-title">Students Out of Campus</h2>
+
+<div class="table-container">
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Room</th>
+        <th>Location</th>
+        <th>Reason</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for outpass in outpasses %}
+        <tr>
+          <td>{{ outpass.student.name }}</td>
+          <td>{{ outpass.student.room.room_number }}</td>
+          <td>{{ outpass.location }}</td>
+          <td>{{ outpass.reason }}</td>
+          <td>{{ outpass.start_date }}</td>
+          <td>{{ outpass.end_date }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="empty-message">No students currently out of campus.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,32 +1,38 @@
+{% extends "accounts/base/student_dashboard.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Student Inventory Form</title>
-</head>
-<body>
-    <h1>Room Inventory Form</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <th>Inventory</th>
-                <th>Condition When Handed Over</th>
-            </tr>
-            {% for item in condition_fields %}
-            <tr>
-                <td>{{ item.label }}</td>
-                <td>
-                    <label><input type="radio" name="{{ item.name }}" value="good" {% if item.value %}checked{% endif %}> Good</label>
-                    <label><input type="radio" name="{{ item.name }}" value="bad" {% if not item.value %}checked{% endif %}> Bad</label>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+{% block title %}Inventory Form{% endblock %}
+{% block page_title %}Room Inventory Form{% endblock %}
 
-        <button type="submit">Submit Form</button>
-    </form>
-</body>
-</html>
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/OutOfCampusTable.css' %}" />
 
+  <h2 class="section-title">Room Inventory Form</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="table-container">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Inventory Item</th>
+            <th>Condition (When Handed Over)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in condition_fields %}
+          <tr>
+            <td>{{ item.label }}</td>
+            <td>
+              <label><input type="radio" name="{{ item.name }}" value="good" {% if item.value %}checked{% endif %}> Good</label>
+              <label><input type="radio" name="{{ item.name }}" value="bad" {% if not item.value %}checked{% endif %}> Bad</label>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Submit Form</button>
+  </form>
+{% endblock %}
