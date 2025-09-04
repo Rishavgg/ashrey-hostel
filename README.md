@@ -6,6 +6,10 @@
 ## Overview
 This project is a microservices-based Hostel Management System developed using Django and Spring Boot. It manages hostel room allocations, complaints, outpass applications, and various user roles such as Admin, Chief Warden, Warden, Caretaker, and Student. The system leverages Keycloak for authentication, Eureka for service discovery, and Docker for containerization.
 
+## System Design
+<img width="512" height="326" alt="unnamed" src="https://github.com/user-attachments/assets/0905418c-612b-40c3-94d9-e580d6d1c90f" />
+
+
 ## Features
 - **User Authentication & Role Management**:
   - Admin, Chief Warden, Warden, Caretaker, and Student roles.
