@@ -69,9 +69,9 @@ The project is divided into several microservices:
 - **Keycloak** for Authentication and Authorization
 - **Docker** for Containerization
 - **MySQL** for Database Management
-- **Kafka or RabbitMQ** (Optional for asynchronous communication)
-- **Lombok** (for reducing boilerplate code)
-- **Feign Clients** (for inter-service communication)
+- **Kafka or RabbitMQ** (Optional for asynchronous communication) (not implemented)
+- **Lombok** (for reducing boilerplate code) 
+- **Feign Clients** (for inter-service communication) (not implemented)
 
 ## Prerequisites
 - **Java 11+**
